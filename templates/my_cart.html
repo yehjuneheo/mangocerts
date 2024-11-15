@@ -1,0 +1,50 @@
+<!-- myapp/my_cart.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Cart{% endblock %}
+
+{% block content %}
+
+<section id="cart">
+    <h2>My Cart</h2>
+    
+    {% if cart_items.exists %}
+        <div class="cart-items">
+            {% for item in cart_items %}
+                <div class="cart-item">
+                    <a href="{% url 'exam_detail' item.post.id %}">
+                    <!-- Image on the left -->
+                        {% if item.post.image %}
+                            <img src="{{ item.post.image_logo.url }}" alt="{{ item.post.title }}" class="cart-item-image">
+                        {% else %}
+                            <img src="{% static 'temp.png' %}" alt="Default Thumbnail" class="cart-item-image">
+                        {% endif %}
+                        <!-- Title and Description on the right -->
+                        <div class="cart-item-details">
+                            <a href="{% url 'exam_detail' item.post.id %}" class="cart-item-title">{{ item.post.title }}</a>
+                            <p class="cart-item-description">{{ item.post.description|truncatewords:20 }}</p>
+                        </div>
+                    </a>
+
+                    <!-- Purchase Button -->
+                    <form action="{% url 'purchase_course' item.post.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="purchase-button">Purchase</button>
+                    </form>
+
+                    <!-- Trash Icon for Remove Button -->
+                    <form action="{% url 'remove_from_cart' item.post.id %}" method="post" class="cart-item-remove-form">
+                        {% csrf_token %}
+                        <button type="submit" class="remove-button">
+                            <i class="fa fa-trash"></i> <!-- Font Awesome Trash Icon -->
+                        </button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty">Your cart is empty.</p>
+    {% endif %}
+</section>
+{% endblock %}

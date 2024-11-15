@@ -1,0 +1,1009 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ translations.timed_practice_exam }}{% endblock %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="{% static 'practice.css' %}">
+</head>
+<div class="exam-container">
+    
+    <!-- Sidebar for Question Numbers -->
+    <aside class="sidebar">
+        <div class="sidebar-container">
+            <button onclick="goBack()" id="back-btn" class="back-button">{{ translations.back }}</button>
+            <h2>{{ translations.exam }} {{ test_number }} ({{ translations.timed_mode }})</h2>
+        </div>
+        <ul id="question-list">
+            <!-- Dynamically populated with JavaScript -->
+        </ul>
+    </aside>
+
+    <!-- Main Content for Questions -->
+    <div class="question-container">
+        <!-- Introduction Section -->
+        <div id="intro-section" class="intro-section">
+            <h2>{{ translations.exam }} {{ test_number }} - {{ translations.timed_mode }}</h2>
+            <p id="intro-text">
+                {{ translations.intro_text_timed|safe }}
+            </p>
+            
+            <!-- Flag System Description -->
+            <div class="flag-description">
+                <p>
+                    <span class="status-circle status-flagged"></span>
+                    <strong>{{ translations.flagged }}:</strong> {{ translations.flagged_description }}
+                </p>
+                <p>
+                    <span style="margin-right: 5px;">&#10003;</span>
+                    <strong>{{ translations.submitted }}:</strong> {{ translations.submitted_description }}
+                </p>
+            </div>
+
+            <div id="exam-details">
+                <p><strong>{{ translations.mode }}:</strong> {{ translations.timed_mode }}</p>
+                <p><strong>{{ translations.language }}:</strong> {{ exam.get_language_display }}</p>
+                <p><strong>{{ translations.exam_format }}:</strong> 65 {{ translations.multiple_choice_questions }}</p>
+                <p><strong>{{ translations.difficulty_level }}:</strong> {{ translations.beginner }}</p>
+            </div>
+            <button onclick="startExam()" id="start-exam-btn" class="start-button">{{ translations.start_exam }}</button>
+        </div>
+    
+        <!-- Question Section (Initially Hidden) -->
+        <div id="question-section" class="hidden">
+            <h2 id="question-title-timed">
+                <div id="question2">
+                    <span id="question-number">{{ translations.question }} 1</span>
+                    <span id="question-status" class="status-circle"></span>
+                    <button id="flag-btn" class="flag-button" onclick="toggleFlag()" aria-label="{{ translations.flag_question }}">
+                        &#9873; <!-- Flag icon -->
+                    </button>
+                </div>
+                <!-- Timer Display at Top Right -->
+                <div class="timer-container">
+                    <span id="timer-text">{{ translations.time_remaining }}: </span><span id="timer">--:--</span>
+                </div>
+            </h2>
+            <p id="situation-text" class="situation"></p>
+            <p id="question-text"></p>
+            <ul id="options-list"></ul>
+
+            <!-- Submit Button -->
+            <button onclick="submitAnswer()" id="submit-btn" class="submit-button">{{ translations.submit }}</button>
+
+            <!-- Navigation Buttons -->
+            <div class="navigation">
+                <button onclick="prevQuestion()" id="prev-btn" class="nav-button">{{ translations.previous }}</button>
+                <button onclick="nextQuestion()" id="next-btn" class="nav-button">{{ translations.next }}</button>
+                <!-- Pause Button -->
+                <button onclick="pauseExam()" id="pause-btn" class="nav-button pause-button">{{ translations.pause }}</button>
+                <button onclick="finishExam()" id="finish-btn" class="nav-button finish-button">{{ translations.finish }}</button>
+            </div>
+        </div>
+
+        <!-- Paused Screen (Initially Hidden) -->
+        <div id="paused-screen" class="hidden">
+            <h2>{{ translations.exam_paused }}</h2>
+            <p>{{ translations.exam_paused_message }}</p>
+            <div class="paused-info">
+                <p id="paused-time-remaining"><strong>{{ translations.time_remaining }}:</strong> --:--</p>
+                <p id="paused-unanswered-questions"><strong>{{ translations.unanswered_questions }}:</strong> --</p>
+            </div>
+            <button onclick="resumeExam()" id="resume-btn" class="resume-button">{{ translations.resume }}</button>
+        </div>
+
+        <!-- Results Section (Initially Hidden) -->
+        <div id="results-section" class="hidden">
+            <h2>{{ translations.exam_results }}</h2>
+            <p id="results-summary"></p>
+            <p id="score-percentage"></p>
+            <p id="pass-status"></p>
+            <!-- Review Mode Button -->
+            <button onclick="enterReviewMode()" id="review-btn" class="review-button">{{ translations.review_answers }}</button>
+            <button onclick="retakeExam()" id="retake-btn" class="retake-button">{{ translations.retake_exam }}</button>
+        </div>
+
+        <!-- Review Mode Section (Initially Hidden) -->
+        <div id="review-section" class="hidden">
+            <div class="review-header">
+                <h2>{{ translations.review_mode }}</h2>
+                <p>{{ translations.review_mode_description }}</p>
+            </div>
+            <div class="review-questions">
+                <!-- Dynamically populated with JavaScript -->
+            </div>
+            <button onclick="exitReviewMode()" id="exit-review-btn" class="exit-review-button">{{ translations.back_to_results }}</button>
+        </div>
+    </div>
+</div>
+<!-- Timer and Exam Scripts -->
+<script>
+    // Pass the current exam ID, test number, and course ID from Django to JavaScript
+    const currentExamId = "{{ exam.id }}";
+    const testNumber = "{{ test_number }}";
+    const courseId = "{{ exam.id }}"; // Assuming exam.id is the course_id
+    const questions = JSON.parse('{{ questions_json|escapejs }}');
+    const mode = 'timed'; // For Timed Mode
+    let currentQuestion = 0;
+    let selectedAnswer = null;
+
+    // Timer Settings
+    const totalTime = 60 * {{ time_limit }}; // Total time in seconds (e.g., 30 minutes)
+    let timeRemaining = totalTime;
+    let timerInterval = null;
+    let timeExceeded = false;
+
+    // Initialize user responses
+    let userResponses = Array(questions.length).fill(null).map(() => ({
+        selectedAnswer: null,
+        selectedAnswers: [],
+        isCorrect: null,
+        flagged: false
+    }));
+
+    // Define a unique key for each exam and test number in localStorage
+    const localStorageKey = `userResponses_course_${courseId}_test_${testNumber}_mode_${mode}`;
+
+    // Load user responses from localStorage if available
+    const savedResponses = localStorage.getItem(localStorageKey);
+    if (savedResponses) {
+        try {
+            userResponses = JSON.parse(savedResponses);
+            // Ensure that userResponses has the correct length
+            if (!Array.isArray(userResponses) || userResponses.length !== questions.length) {
+                throw new Error("Invalid userResponses data.");
+            }
+        } catch (error) {
+            console.error("Failed to parse userResponses from localStorage:", error);
+            // Reset userResponses if parsing fails
+            userResponses = Array(questions.length).fill(null).map(() => ({
+                selectedAnswer: null,
+                selectedAnswers: [],
+                isCorrect: null,
+                flagged: false
+            }));
+            saveResponses(); // Save the reset responses
+        }
+    }
+
+    // Save user responses to localStorage whenever they are updated
+    function saveResponses() {
+        localStorage.setItem(localStorageKey, JSON.stringify(userResponses));
+    }
+
+    // Initialize exam state variables
+    let examPaused = false;
+    let examStarted = false;
+
+    // Load exam state from localStorage
+    const pausedState = localStorage.getItem(`examPaused_course_${courseId}_test_${testNumber}_mode_${mode}`);
+    if (pausedState !== null) {
+        examPaused = JSON.parse(pausedState);
+    }
+
+    const savedTimeRemaining = localStorage.getItem(`timeRemaining_course_${courseId}_test_${testNumber}_mode_${mode}`);
+    if (savedTimeRemaining !== null) {
+        timeRemaining = parseInt(savedTimeRemaining, 10);
+    }
+
+    const startedState = localStorage.getItem(`examStarted_course_${courseId}_test_${testNumber}_mode_${mode}`);
+    if (startedState !== null) {
+        examStarted = JSON.parse(startedState);
+    }
+
+    const savedCurrentQuestion = localStorage.getItem(`currentQuestion_course_${courseId}_test_${testNumber}_mode_${mode}`);
+    if (savedCurrentQuestion !== null) {
+        currentQuestion = parseInt(savedCurrentQuestion, 10);
+    } else {
+        currentQuestion = 0; // Default to first question
+    }
+
+    // Save exam state to localStorage
+    function saveExamState() {
+        localStorage.setItem(`examPaused_course_${courseId}_test_${testNumber}_mode_${mode}`, JSON.stringify(examPaused));
+        localStorage.setItem(`timeRemaining_course_${courseId}_test_${testNumber}_mode_${mode}`, timeRemaining);
+        localStorage.setItem(`examStarted_course_${courseId}_test_${testNumber}_mode_${mode}`, JSON.stringify(examStarted));
+        localStorage.setItem(`currentQuestion_course_${courseId}_test_${testNumber}_mode_${mode}`, currentQuestion);
+    }
+
+    // Initialize sidebar with question numbers
+    function initializeSidebar() {
+        const questionList = document.getElementById("question-list");
+        questionList.innerHTML = ''; // Clear existing list
+        questions.forEach((question, index) => {
+            const listItem = document.createElement("li");
+            listItem.innerText = "Question " + (index + 1); // Display as "Question 1", "Question 2", etc.
+            listItem.classList.add("question-link");
+            listItem.setAttribute("data-question-index", index);
+
+            // Determine if the exam is ongoing
+            if (examStarted && !examPaused) {
+                listItem.onclick = () => displayQuestion(index);
+                listItem.classList.remove('disabled');
+            } else {
+                // Remove onclick handler
+                listItem.onclick = null;
+                listItem.classList.add('disabled');
+            }
+
+            // Add checkmark icon if the question has been answered
+            const userResponse = userResponses[index];
+            const isAnswered = userResponse && (userResponse.selectedAnswer !== null || (userResponse.selectedAnswers && userResponse.selectedAnswers.length > 0));
+            if (isAnswered) {
+                const checkmarkIcon = document.createElement("span");
+                checkmarkIcon.classList.add("checkmark-icon");
+                checkmarkIcon.innerHTML = '&#10003;'; // Unicode checkmark
+                listItem.appendChild(checkmarkIcon);
+            }
+
+            // Add flag icon if the question is flagged
+            if (userResponses[index].flagged) {
+                const flagIcon = document.createElement("span");
+                flagIcon.classList.add("flag-icon");
+                listItem.appendChild(flagIcon);
+            }
+
+            // Highlight the current question in the sidebar
+            if (index === currentQuestion) {
+                listItem.classList.add("active");
+            }
+
+            questionList.appendChild(listItem);
+        });
+    }
+
+    function displayQuestion(index) {
+        currentQuestion = index;
+        saveExamState(); // Save current question index
+        const question = questions[index];
+        selectedAnswer = null; // Reset selected answer
+
+        document.getElementById("question-number").innerText = `Question ${index + 1}`;
+        document.getElementById("situation-text").innerText = question.Situation;
+        document.getElementById("question-text").innerText = question.Question;
+        
+        const optionsList = document.getElementById("options-list");
+        optionsList.innerHTML = '';
+
+        const userResponse = userResponses[index];
+
+        // Determine if the question allows multiple answers
+        const isMultiple = question.Is_Multiple || false;
+
+        // Enable or disable the submit button based on previous answer
+        const isAnswered = userResponse && (userResponse.selectedAnswer !== null || (userResponse.selectedAnswers && userResponse.selectedAnswers.length > 0));
+        document.getElementById("submit-btn").disabled = isAnswered;
+
+        Object.keys(question.Options).forEach(key => {
+            const option = document.createElement("li");
+            
+            // Custom checkbox or radio button
+            const inputCustom = document.createElement("span");
+            let inputElement;
+
+            if (isMultiple) {
+                inputCustom.classList.add("checkbox-custom");
+                inputElement = document.createElement("input");
+                inputElement.type = "checkbox";
+                inputElement.name = "option";
+                inputElement.value = key;
+            } else {
+                inputCustom.classList.add("radio-custom");
+                inputElement = document.createElement("input");
+                inputElement.type = "radio";
+                inputElement.name = "option";
+                inputElement.value = key;
+            }
+
+            const labelElement = document.createElement("label");
+            labelElement.style.display = "flex";
+            labelElement.style.alignItems = "center";
+            labelElement.style.width = "100%"; // Ensure the label fills the <li>
+
+            labelElement.appendChild(inputElement);
+            labelElement.insertAdjacentText('beforeend', question.Options[key]);
+
+            option.classList.add("option");
+            option.prepend(inputCustom); // Add custom input before the label
+            option.appendChild(labelElement);
+
+
+            if (isMultiple) {
+                // Pre-select user's answers for multiple-choice
+                if (userResponse && userResponse.selectedAnswers && userResponse.selectedAnswers.includes(key)) {
+                    inputElement.checked = true;
+                    option.classList.add("selected");
+                    inputCustom.classList.add("selected");
+                    if (!selectedAnswer) {
+                        selectedAnswer = [];
+                    }
+                    selectedAnswer.push(key);
+                }
+            } else {
+                // Pre-select the user's answer if it exists
+                if (userResponse && userResponse.selectedAnswer === key) {
+                    inputElement.checked = true;
+                    option.classList.add("selected");
+                    inputCustom.classList.add("selected");
+                    selectedAnswer = key;
+                }
+            }
+
+            // Add click listener to the entire <li> to select the option
+            option.addEventListener('click', function() {
+                if (isMultiple) {
+                    inputElement.checked = !inputElement.checked;
+                    selectOptionMultiple(key, inputElement);
+                } else {
+                    inputElement.checked = true;
+                    selectOption(key, inputElement);
+                }
+            });
+
+            optionsList.appendChild(option);
+        });
+
+        // Since timed mode does not display per-question feedback, we skip feedback handling here
+
+        // Update the flag button state
+        updateFlagButton();
+
+        // Highlight the current question in the sidebar
+        highlightCurrentQuestionInSidebar();
+
+        updateNavigationButtons();
+    }
+
+
+    // Highlight the current question in the sidebar
+    function highlightCurrentQuestionInSidebar() {
+        const questionLinks = document.querySelectorAll(".question-link");
+        questionLinks.forEach((link, index) => {
+            if (index === currentQuestion) {
+                link.classList.add("active");
+            } else {
+                link.classList.remove("active");
+            }
+        });
+    }
+
+    // Select an option for single-choice questions
+    function selectOption(answerKey, inputElement) {
+        selectedAnswer = answerKey;
+
+        // Enable the submit button
+        document.getElementById("submit-btn").disabled = false;
+
+        // Remove selected style from other options and highlight selected one
+        document.querySelectorAll("#options-list li").forEach(el => {
+            el.classList.remove("selected");
+            el.querySelector(".radio-custom").classList.remove("selected");
+        });
+        inputElement.parentElement.parentElement.classList.add("selected");
+        inputElement.parentElement.previousElementSibling.classList.add("selected");
+    }
+
+    // Select options for multiple-choice questions
+    function selectOptionMultiple(answerKey, inputElement) {
+        if (!selectedAnswer) {
+            selectedAnswer = [];
+        }
+
+        if (inputElement.checked) {
+            // Check if the answerKey is already in selectedAnswer to prevent duplicates
+            if (!selectedAnswer.includes(answerKey)) {
+                selectedAnswer.push(answerKey);
+            }
+        } else {
+            const index = selectedAnswer.indexOf(answerKey);
+            if (index > -1) {
+                selectedAnswer.splice(index, 1);
+            }
+        }
+
+        // Update the option's class based on selection
+        if (inputElement.checked) {
+            inputElement.parentElement.parentElement.classList.add("selected");
+            inputElement.parentElement.previousElementSibling.classList.add("selected");
+        } else {
+            inputElement.parentElement.parentElement.classList.remove("selected");
+            inputElement.parentElement.previousElementSibling.classList.remove("selected");
+        }
+
+        // Enable the submit button if at least one option is selected
+        document.getElementById("submit-btn").disabled = selectedAnswer.length === 0;
+    }
+    // Submit Answer Functionality
+    function submitAnswer() {
+        const question = questions[currentQuestion];
+        const isMultiple = question.Is_Multiple || false;
+
+        if (isMultiple) {
+            if (!selectedAnswer || selectedAnswer.length === 0) {
+                return alert("Please select at least one answer.");
+            }
+            // Correct answers should be an array of answer keys
+            const correctAnswers = question["Correct Answer"];
+
+            if (!Array.isArray(correctAnswers)) {
+                console.error("Correct Answer for multiple-choice question should be an array of correct answer keys.");
+                return;
+            }
+            let selectedAnswersList = [];
+            selectedAnswer.forEach(element => {
+                selectedAnswersList.push(question.Options[element]);
+            });
+
+            // Check if the selected answers match the correct answers
+            const isCorrect = arraysEqual(selectedAnswersList.sort(), correctAnswers.sort());
+
+            // Save the user's response
+            userResponses[currentQuestion] = {
+                ...userResponses[currentQuestion],
+                selectedAnswers: selectedAnswer,
+                isCorrect: isCorrect
+            };
+        } else {
+            if (selectedAnswer === null) return alert("Please select an answer.");
+
+            const isCorrect = question.Options[selectedAnswer] === question["Correct Answer"];
+
+            // Save the user's response without displaying feedback
+            userResponses[currentQuestion] = {
+                ...userResponses[currentQuestion],
+                selectedAnswer: selectedAnswer,
+                isCorrect: isCorrect
+            };
+        }
+
+        // Save to localStorage
+        saveResponses();
+
+        // Disable all inputs after submission
+        document.querySelectorAll("#options-list input[name='option']").forEach(input => {
+            input.disabled = true;
+        });
+
+        // Disable the submit button after submission
+        document.getElementById("submit-btn").disabled = true;
+
+        // Update the sidebar to reflect the answered question
+        initializeSidebar();
+    }
+
+    // Function to compare two arrays for equality
+    function arraysEqual(a1, a2) {
+        if (a1.length !== a2.length) {
+            return false;
+        }
+        a1 = a1.slice().sort();
+        a2 = a2.slice().sort();
+        for (let i = 0; i < a1.length; i++) {
+            if (a1[i] !== a2[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Toggle flag for the current question
+    function toggleFlag() {
+        const userResponse = userResponses[currentQuestion];
+        userResponse.flagged = !userResponse.flagged;
+
+        // Save to localStorage
+        saveResponses();
+
+        // Update the sidebar and question section indicators
+        initializeSidebar();
+        updateFlagButton();
+    }
+
+    // Update the flag button appearance
+    function updateFlagButton() {
+        const flagBtn = document.getElementById("flag-btn");
+        const userResponse = userResponses[currentQuestion];
+        if (userResponse.flagged) {
+            flagBtn.classList.add("flagged");
+        } else {
+            flagBtn.classList.remove("flagged");
+        }
+    }
+
+    // Navigation functions
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // Smooth scrolling effect
+        });
+    }
+
+    function prevQuestion() {
+        if (currentQuestion > 0) {
+            displayQuestion(currentQuestion - 1);
+            scrollToTop();
+        }
+    }
+
+    function nextQuestion() {
+        if (currentQuestion < questions.length - 1) {
+            displayQuestion(currentQuestion + 1);
+            scrollToTop();
+        }
+    }
+
+    function updateNavigationButtons() {
+        document.getElementById("prev-btn").disabled = currentQuestion === 0;
+        document.getElementById("next-btn").disabled = currentQuestion === questions.length - 1;
+    }
+
+    // Timer Functions
+    function startTimer() {
+        // Clear any existing timer
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+        updateTimerDisplay();
+        timerInterval = setInterval(() => {
+            if (!timeExceeded && !examPaused) {
+                timeRemaining--;
+                if (timeRemaining <= 0) {
+                    timeExceeded = true;
+                }
+                saveExamState(); // Save timeRemaining
+            }
+            updateTimerDisplay();
+
+            if (!timeExceeded && timeRemaining <= 0) {
+                // Time has just exceeded
+                finishExam(); // Auto-finish exam when time is up
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const timerText = document.getElementById("timer-text");
+        const timerElement = document.getElementById("timer");
+        const formattedTime = formatTime(Math.abs(timeRemaining));
+
+        if (timeExceeded) {
+            // Time exceeded
+            timerText.innerText = "Time Exceeded: "
+            timerElement.innerText = formattedTime;
+            timerText.style.color = "red";
+            timerElement.style.color = "red";
+        } else {
+            // Time remaining
+            timerElement.innerText = formattedTime;
+            timerElement.style.color = "#2b6777";
+        }
+    }
+
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${padZero(minutes)}:${padZero(secs)}`;
+    }
+
+    function padZero(number) {
+        return number < 10 ? '0' + number : number;
+    }
+
+    // Function to check if the exam has been finished
+    function checkIfExamFinished() {
+        const finishedKey = `examFinished_course_${courseId}_test_${testNumber}_mode_${mode}`;
+        const finishedData = localStorage.getItem(finishedKey);
+        if (finishedData) {
+            try {
+                const resultsData = JSON.parse(finishedData);
+                // Hide intro and question sections
+                document.getElementById("intro-section").classList.add("hidden");
+                document.getElementById("question-section").classList.add("hidden");
+
+                // Populate and display the results section
+                document.getElementById("results-summary").innerText = `You answered ${resultsData.correctAnswers} out of ${resultsData.totalQuestions} questions correctly.`;
+                document.getElementById("score-percentage").innerText = `Your score: ${resultsData.scorePercentage}%`;
+                document.getElementById("pass-status").innerText = resultsData.passed ? "Status: Passed" : "Status: Not Passed";
+                document.getElementById("results-section").classList.remove("hidden");
+
+                // Reset exam state
+                examPaused = false;
+                examStarted = false;
+                saveExamState();
+            } catch (error) {
+                console.error("Error parsing finished exam data:", error);
+                // If there's an error, consider the exam not finished
+            }
+        }
+    }
+
+    // Initialize sidebar and display the first question or results based on completion status
+    initializeSidebar();
+    checkIfExamFinished();
+
+    if (!document.getElementById("results-section").classList.contains("hidden")) {
+        // Exam is finished; no need to display the first question
+    } else if (examStarted) {
+        if (examPaused) {
+            // Display paused screen
+            showPausedScreen();
+        } else {
+            // Start the exam
+            // Show the question section
+            document.getElementById("intro-section").classList.add("hidden");
+            document.getElementById("question-section").classList.remove("hidden");
+            displayQuestion(currentQuestion);
+            startTimer();
+        }
+    } else {
+        // Show the intro screen
+        document.getElementById("intro-section").classList.remove("hidden");
+    }
+
+    function startExam() {
+        // Hide the introduction section
+        document.getElementById("intro-section").classList.add("hidden");
+
+        // Show the question section and initialize the first question
+        document.getElementById("question-section").classList.remove("hidden");
+        displayQuestion(currentQuestion);
+
+        // Set examStarted and examPaused
+        examStarted = true;
+        examPaused = false;
+        saveExamState();
+
+        // Start the timer
+        startTimer();
+
+        // Update the sidebar
+        initializeSidebar();
+    }
+
+    // Pause Exam Functionality
+    function pauseExam() {
+        examPaused = true;
+        saveExamState();
+        // Stop the timer
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+        // Hide the question section
+        document.getElementById("question-section").classList.add("hidden");
+        // Update paused screen with remaining time and unanswered questions
+        updatePausedScreen();
+        // Show the paused screen
+        document.getElementById("paused-screen").classList.remove("hidden");
+
+        initializeSidebar();
+    }
+
+    // Update the paused screen with remaining time and unanswered questions
+    function updatePausedScreen() {
+        const pausedTimeElement = document.getElementById("paused-time-remaining");
+        const pausedUnansweredElement = document.getElementById("paused-unanswered-questions");
+
+        // Update remaining time
+        const formattedTime = formatTime(timeRemaining);
+        pausedTimeElement.innerHTML = `<strong>Time Remaining:</strong> ${formattedTime}`;
+
+        // Calculate unanswered questions
+        const unansweredCount = userResponses.filter(response => (response.selectedAnswer === null && (!response.selectedAnswers || response.selectedAnswers.length === 0))).length;
+        pausedUnansweredElement.innerHTML = `<strong>Unanswered Questions:</strong> ${unansweredCount}`;
+    }
+
+    // Resume Exam Functionality
+    function resumeExam() {
+        examPaused = false;
+        saveExamState();
+        // Hide the paused screen
+        document.getElementById("paused-screen").classList.add("hidden");
+        // Show the question section
+        document.getElementById("question-section").classList.remove("hidden");
+        // Display the current question
+        displayQuestion(currentQuestion);
+        // Start the timer
+        startTimer();
+        initializeSidebar();
+    }
+
+    // Show Paused Screen
+    function showPausedScreen() {
+        // Hide intro and question sections
+        document.getElementById("intro-section").classList.add("hidden");
+        document.getElementById("question-section").classList.add("hidden");
+        // Update paused screen with remaining time and unanswered questions
+        updatePausedScreen();
+        // Show paused screen
+        document.getElementById("paused-screen").classList.remove("hidden");
+        // Stop the timer
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+    }
+
+    // Finish Exam Functionality
+    function finishExam() {
+        const unanswered = userResponses.filter(response => (response.selectedAnswer === null && (!response.selectedAnswers || response.selectedAnswers.length === 0))).length;
+        if (unanswered > 0) {
+            const confirmFinish = confirm(`You have ${unanswered} unanswered question(s). Are you sure you want to finish the exam?`);
+            if (!confirmFinish) {
+                return; // User chose to continue the exam
+            }
+        }
+        // Calculate results
+        const totalQuestions = questions.length;
+        const correctAnswers = userResponses.filter(response => response.isCorrect).length;
+        const scorePercentage = ((correctAnswers / totalQuestions) * 100).toFixed(2);
+        const passed = scorePercentage >= 70;
+
+        // Hide the question section and stop the timer
+        document.getElementById("question-section").classList.add("hidden");
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+
+        // Reset exam state
+        examPaused = false;
+        examStarted = false;
+        saveExamState();
+
+        // Display results in the results section
+        document.getElementById("results-summary").innerText = `You answered ${correctAnswers} out of ${totalQuestions} questions correctly.`;
+        document.getElementById("score-percentage").innerText = `Your score: ${scorePercentage}%`;
+        document.getElementById("pass-status").innerText = passed ? "Status: Passed" : "Status: Not Passed";
+
+        // Show the results section
+        document.getElementById("results-section").classList.remove("hidden");
+
+        // Set the "finished" flag in localStorage
+        const resultsData = {
+            totalQuestions,
+            correctAnswers,
+            scorePercentage,
+            passed
+        };
+        localStorage.setItem(`examFinished_course_${courseId}_test_${testNumber}_mode_${mode}`, JSON.stringify(resultsData));
+        updateUserProgress();
+        initializeSidebar();
+    }
+
+    function updateUserProgress() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '{% url "update_exam_progress" %}', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        // Include CSRF token
+        const csrftoken = getCookie('csrftoken'); // Implement getCookie() to retrieve the CSRF token
+        xhr.setRequestHeader('X-CSRFToken', csrftoken);
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    console.log('Progress updated successfully');
+                } else {
+                    console.error('Failed to update progress');
+                }
+            }
+        };
+
+        const params = `course_id=${encodeURIComponent(courseId)}&exam_number=${encodeURIComponent(testNumber)}&mode=${encodeURIComponent(mode)}`;
+
+        xhr.send(params);
+    }
+
+    // Utility function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Retake Exam Functionality
+    function retakeExam() {
+        // Confirm with the user
+        const confirmRetake = confirm("Are you sure you want to retake the exam? All your current progress will be lost.");
+        if (!confirmRetake) {
+            return;
+        }
+        // Remove the "finished" flag from localStorage
+        const finishedKey = `examFinished_course_${courseId}_test_${testNumber}_mode_${mode}`;
+        localStorage.removeItem(finishedKey);
+
+        // Reset user responses
+        userResponses = Array(questions.length).fill(null).map(() => ({
+            selectedAnswer: null,
+            selectedAnswers: [],
+            isCorrect: null,
+            flagged: false
+        }));
+
+        // Save the reset responses to localStorage
+        saveResponses();
+
+        // Reset exam state
+        examPaused = false;
+        examStarted = false;
+        currentQuestion = 0;
+        saveExamState();
+
+        // Reset UI elements
+        document.getElementById("results-section").classList.add("hidden");
+        document.getElementById("intro-section").classList.remove("hidden");
+
+        // Re-initialize sidebar
+        initializeSidebar();
+
+        // Reset timer
+        timeRemaining = totalTime;
+        timeExceeded = false;
+        updateTimerDisplay();
+    }
+
+    // Back Button Functionality
+    function goBack() {
+        window.location.href = "{% url 'exam_selection' exam.id %}";
+    }
+
+    // Enter Review Mode
+    function enterReviewMode() {
+        // Hide the results section
+        document.getElementById("results-section").classList.add("hidden");
+
+        examStarted = false;
+        saveExamState();
+
+        // Show the review section
+        document.getElementById("review-section").classList.remove("hidden");
+
+        // Populate the review section with all questions and feedback
+        populateReviewSection();
+        initializeSidebar();
+    }
+
+    // Exit Review Mode
+    function exitReviewMode() {
+        // Hide the review section
+        document.getElementById("review-section").classList.add("hidden");
+
+        // Show the results section
+        document.getElementById("results-section").classList.remove("hidden");
+        initializeSidebar();
+    }
+
+    // Populate Review Section with Questions and Feedback
+    function populateReviewSection() {
+        const reviewContainer = document.querySelector(".review-questions");
+        reviewContainer.innerHTML = ''; // Clear existing content
+
+        questions.forEach((question, index) => {
+            const userResponse = userResponses[index];
+            const isCorrect = userResponse.isCorrect;
+            const isMultiple = question.Is_Multiple || false;
+
+            // Create question card
+            const questionCard = document.createElement("div");
+            questionCard.classList.add("review-question-card");
+            const correctAnswerText = question["Correct Answer"]; // Correct answer text
+
+            // Question Header
+            const questionHeader = document.createElement("div");
+            questionHeader.classList.add("review-question-header");
+            questionHeader.innerHTML = 
+                `<h3>Question ${index + 1}</h3>
+                <span class="review-status ${isCorrect ? 'correct' : 'incorrect'}">
+                    ${isCorrect ? '✔️ Correct' : '❌ Incorrect'}
+                </span>`;
+
+            // Question Body
+            const questionBody = document.createElement("div");
+            questionBody.classList.add("review-question-body");
+            questionBody.innerHTML = 
+                `<p><strong>Situation:</strong> ${question.Situation}</p>
+                <p><strong>Question:</strong> ${question.Question}</p>
+                <ul class="review-options">
+                    ${Object.keys(question.Options).map(key => {
+                        const optionText = question.Options[key];
+                        let liClass = '';
+                        let label = '';
+
+                        if (isMultiple) {
+                            // Map correct answer texts to their keys
+                            const correctAnswers = [];
+                            for (const [optKey, optValue] of Object.entries(question.Options)) {
+                                if (question["Correct Answer"].includes(optValue)) {
+                                    correctAnswers.push(optKey);
+                                }
+                            }
+                            const userAnswers = userResponse.selectedAnswers || [];
+
+                            if (correctAnswers.includes(key) && userAnswers.includes(key)) {
+                                // User selected the correct answer
+                                liClass = 'correct-answer';
+                                label = '(Your Answer)';
+                            } else if (correctAnswers.includes(key)) {
+                                // Correct answer not selected by user
+                                liClass = 'correct-answer';
+                                label = '(Correct Answer)';
+                            } else if (userAnswers.includes(key)) {
+                                // User's selected incorrect answer
+                                liClass = 'incorrect-answer selected-answer';
+                                label = '(Your Answer)';
+                            }
+                        } else {
+                            const userAnswerKey = userResponse.selectedAnswer;
+                            let correctAnswerKey = null;
+                            for (const [optKey, optValue] of Object.entries(question.Options)) {
+                                if (optValue === question["Correct Answer"]) {
+                                    correctAnswerKey = optKey;
+                                    break;
+                                }
+                            }
+
+                            if (key === correctAnswerKey && key === userAnswerKey) {
+                                // User selected the correct answer
+                                liClass = 'correct-answer';
+                                label = '(Your Answer)';
+                            } else if (key === correctAnswerKey) {
+                                // Correct answer
+                                liClass = 'correct-answer';
+                                label = '(Correct Answer)';
+                            } else if (key === userAnswerKey) {
+                                // User's selected incorrect answer
+                                liClass = 'incorrect-answer selected-answer';
+                                label = '(Your Answer)';
+                            }
+                        }
+
+                        return `
+                            <li class="${liClass}">
+                                <strong>${key}.</strong> ${optionText} ${label ? '<span class="answer-label"> ' + label + '</span>' : ''}
+                            </li>
+                        `;
+                    }).join('')}
+                </ul>`;
+
+            // Feedback Section
+            const feedbackSection = document.createElement("div");
+            feedbackSection.classList.add("feedback", isCorrect ? "correct" : "incorrect");
+            feedbackSection.innerHTML = 
+                `
+                <p><strong>Correct Answer:</strong> ${correctAnswerText}</p>
+                <p><strong>Explanation:</strong> ${question.Explanation}</p>
+                <div class="other-options-section">
+                    <p class="other-options-heading">Other Options:</p>
+                    <ul id="other-options">
+                        ${question["Other Options"].map(optionText => `<li>${optionText}</li>`).join('')}
+                    </ul>
+                </div>`;
+
+            // Append all parts to the question card
+            questionCard.appendChild(questionHeader);
+            questionCard.appendChild(questionBody);
+            questionCard.appendChild(feedbackSection);
+
+            // Append the question card to the review container
+            reviewContainer.appendChild(questionCard);
+        });
+    }
+
+
+
+    // Event Listener for page unload to pause exam
+    window.addEventListener('beforeunload', function (e) {
+        if (examStarted && !examPaused) {
+            examPaused = true;
+            saveExamState();
+        }
+    });
+
+</script>
+{% endblock %}

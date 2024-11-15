@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Home - My Blog{% endblock %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="{% static 'blogs.css' %}">
+</head>
+<section class="blog-list">
+    <h1>Latest Posts</h1>
+    {% for post in posts %}
+    <article class="blog-post">
+        <img src="{% static 'cloud.png' %}" alt="Post Image" class="post-image">
+        <div class="post-content">
+            <div class="post-header">
+                <h2 class="post-title"><a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a></h2>
+                <span class="post-date">{{ post.created_at|date:"F j, Y" }}</span>
+            </div>
+            <hr class="title-separator">
+            <p class="post-excerpt">{{ post.excerpt }}</p>
+            <a href="{% url 'blog_detail' post.slug %}" class="read-more">Read More</a>
+        </div>
+    </article>
+    {% empty %}
+    <p>No blog posts available.</p>
+    {% endfor %}
+</section>
+{% endblock %}

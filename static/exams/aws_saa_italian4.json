@@ -1,0 +1,1267 @@
+[
+    {
+        "Question Number": "1",
+        "Situation": "Un'azienda deve concedere a un membro specifico del team l'accesso a un bucket Amazon S3, ma limitare l'accesso solo a determinati oggetti all'interno del bucket. L'amministratore IAM desidera mantenere basso il carico di gestione garantendo che il membro del team abbia solo le autorizzazioni necessarie.",
+        "Question": "Quale tipo di policy dovrebbe utilizzare l'amministratore e quale formato ARN delle risorse dovrebbe specificare per limitare l'accesso agli oggetti all'interno del bucket? (Scegli due.)",
+        "Options": {
+            "1": "Utilizzare una policy inline e specificare l'ARN come arn:aws:s3:::bucket-name/*",
+            "2": "Utilizzare una policy gestita dal cliente e specificare l'ARN come arn:aws:s3:::bucket-name",
+            "3": "Utilizzare una policy gestita da AWS e specificare l'ARN come arn:aws:s3:::bucket-name/*",
+            "4": "Utilizzare una policy inline e specificare l'ARN come arn:aws:s3:::bucket-name",
+            "5": "Utilizzare una policy del bucket e specificare l'ARN come arn:aws:s3:::bucket-name/specific-object-key"
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Utilizzare una policy inline e specificare l'ARN come arn:aws:s3:::bucket-name/*",
+            "Utilizzare una policy del bucket e specificare l'ARN come arn:aws:s3:::bucket-name/specific-object-key"
+        ],
+        "Explanation": "Una policy inline è una policy incorporata in un'unica identità IAM (un utente, un gruppo o un ruolo). Questo consentirebbe all'amministratore di concedere autorizzazioni specifiche a un singolo utente, che è il requisito in questo caso. L'ARN 'arn:aws:s3:::bucket-name/*' concederebbe accesso a tutti gli oggetti all'interno del bucket. Una policy del bucket è una policy basata sulle risorse – consente di creare una policy e allegarla direttamente al bucket S3. L'ARN 'arn:aws:s3:::bucket-name/specific-object-key' limiterebbe l'accesso a un oggetto specifico all'interno del bucket.",
+        "Other Options": [
+            "Utilizzare una policy gestita dal cliente e specificare l'ARN come 'arn:aws:s3:::bucket-name' non limiterebbe l'accesso a oggetti specifici all'interno del bucket. Invece, concederebbe accesso all'intero bucket.",
+            "Utilizzare una policy gestita da AWS e specificare l'ARN come 'arn:aws:s3:::bucket-name/*' non sarebbe ideale perché le policy gestite da AWS sono progettate per fornire autorizzazioni per casi d'uso comuni e sono gestite da AWS. Questo potrebbe non fornire il controllo granulare richiesto in questo scenario.",
+            "Utilizzare una policy inline e specificare l'ARN come 'arn:aws:s3:::bucket-name' non limiterebbe l'accesso a oggetti specifici all'interno del bucket. Invece, concederebbe accesso all'intero bucket."
+        ]
+    },
+    {
+        "Question Number": "2",
+        "Situation": "Un'azienda desidera gestire le autorizzazioni per un gran numero di utenti IAM provenienti da diversi team all'interno dell'organizzazione. Hanno bisogno di una struttura che consenta un'assegnazione facile delle autorizzazioni per ciascun team senza la necessità di assegnare policy individuali a ogni utente. Inoltre, vogliono impedire che un singolo utente venga referenziato direttamente nelle policy delle risorse.",
+        "Question": "Quale funzionalità IAM sarebbe la soluzione più efficace per soddisfare questi requisiti?",
+        "Options": {
+            "1": "Creare ruoli IAM individuali per ciascun utente con policy specifiche per il team allegate.",
+            "2": "Utilizzare gruppi IAM per organizzare gli utenti per team e allegare policy specifiche per il team a ciascun gruppo.",
+            "3": "Impostare un singolo ruolo IAM per tutti gli utenti e fare affidamento su AWS Organizations per gestire le autorizzazioni.",
+            "4": "Assegnare policy inline a ciascun utente in base alle autorizzazioni specifiche del loro team."
+        },
+        "Correct Answer": "Utilizzare gruppi IAM per organizzare gli utenti per team e allegare policy specifiche per il team a ciascun gruppo.",
+        "Explanation": "Utilizzare gruppi IAM è la soluzione più efficace perché consente all'azienda di gestire le autorizzazioni a livello di team piuttosto che individualmente. Creando gruppi per ciascun team, l'azienda può allegare policy che definiscono le autorizzazioni per tutti gli utenti in quel gruppo. Questo semplifica la gestione delle autorizzazioni, poiché eventuali modifiche alla policy si applicheranno automaticamente a tutti gli utenti nel gruppo. Inoltre, i gruppi IAM impediscono che utenti individuali vengano referenziati direttamente nelle policy delle risorse, allineandosi con il requisito dell'azienda.",
+        "Other Options": [
+            "Creare ruoli IAM individuali per ciascun utente con policy specifiche per il team allegate porterebbe a una struttura complessa e ingovernabile, specialmente con un gran numero di utenti. Questo approccio richiederebbe aggiornamenti costanti e gestione di ciascun ruolo, il che è inefficiente.",
+            "Impostare un singolo ruolo IAM per tutti gli utenti e fare affidamento su AWS Organizations per gestire le autorizzazioni non fornisce la granularità necessaria per le autorizzazioni specifiche per team. Questo comporterebbe che tutti gli utenti avrebbero le stesse autorizzazioni, il che non soddisfa il requisito di gestire le autorizzazioni per team.",
+            "Assegnare policy inline a ciascun utente in base alle autorizzazioni specifiche del loro team non è scalabile. Le policy inline sono allegate direttamente agli utenti, rendendo difficile gestire le autorizzazioni collettivamente per un team. Questo approccio porterebbe anche a ridondanza e un aumento del carico amministrativo."
+        ]
+    },
+    {
+        "Question Number": "3",
+        "Situation": "Un'azienda sta configurando una VPC in AWS con subnet sia private che pubbliche. Devono abilitare l'accesso a Internet per le istanze nella subnet pubblica mantenendo le istanze nella subnet privata isolate dall'accesso diretto a Internet.",
+        "Question": "Quali passaggi dovrebbe seguire l'azienda per configurare l'accesso a Internet per la subnet pubblica e garantire un routing sicuro all'interno della VPC?",
+        "Options": {
+            "1": "Collegare un Internet Gateway (IGW) alla VPC, associare una tabella di routing con la subnet pubblica che indirizza il traffico 0.0.0.0/0 all'IGW e assegnare indirizzi IPv4 pubblici alle istanze nella subnet pubblica.",
+            "2": "Configurare un NAT Gateway nella subnet privata, collegarlo alla VPC e creare una tabella di routing che indirizza il traffico 0.0.0.0/0 dalla subnet pubblica al NAT Gateway.",
+            "3": "Creare un Internet Gateway (IGW) e collegarlo a ciascuna istanza nella subnet pubblica individualmente per fornire accesso a Internet, utilizzando la tabella di routing predefinita per il routing.",
+            "4": "Utilizzare una connessione di VPC Peering tra le subnet private e pubbliche per instradare il traffico Internet e garantire che tutte le istanze in entrambe le subnet abbiano indirizzi IPv4 pubblici per la connettività."
+        },
+        "Correct Answer": "Collegare un Internet Gateway (IGW) alla VPC, associare una tabella di routing con la subnet pubblica che indirizza il traffico 0.0.0.0/0 all'IGW e assegnare indirizzi IPv4 pubblici alle istanze nella subnet pubblica.",
+        "Explanation": "Per abilitare l'accesso a Internet per le istanze nella subnet pubblica, l'azienda deve collegare un Internet Gateway (IGW) alla VPC. L'IGW consente la comunicazione tra le istanze nella subnet pubblica e Internet. Inoltre, deve essere associata una tabella di routing alla subnet pubblica che indirizza tutto il traffico in uscita (0.0.0.0/0) all'IGW. Infine, le istanze nella subnet pubblica devono avere indirizzi IPv4 pubblici per essere raggiungibili da Internet. Questa configurazione garantisce che le istanze possano inviare e ricevere traffico da Internet mantenendo la subnet privata isolata.",
+        "Other Options": [
+            "Configurare un NAT Gateway nella subnet privata è errato per fornire accesso a Internet alla subnet pubblica. Un NAT Gateway è utilizzato per consentire alle istanze in una subnet privata di avviare traffico in uscita verso Internet, impedendo il traffico in entrata da Internet, il che non si applica alla subnet pubblica.",
+            "Creare un Internet Gateway (IGW) e collegarlo a ciascuna istanza nella subnet pubblica individualmente è errato. Un IGW deve essere collegato alla VPC nel suo insieme, non a istanze individuali. Inoltre, la tabella di routing deve essere configurata per indirizzare il traffico all'IGW, piuttosto che fare affidamento sulla tabella di routing predefinita.",
+            "Utilizzare una connessione di VPC Peering tra le subnet private e pubbliche non è un metodo valido per instradare il traffico Internet. Il VPC Peering è utilizzato per collegare due VPC, non per abilitare l'accesso a Internet. Inoltre, le istanze nella subnet privata non dovrebbero avere indirizzi IPv4 pubblici se devono rimanere isolate dall'accesso diretto a Internet."
+        ]
+    },
+    {
+        "Question Number": "4",
+        "Situation": "Una multinazionale del commercio al dettaglio sta espandendo la propria presenza online in Europa e Asia. Vogliono garantire un accesso a bassa latenza al loro database clienti per gli utenti in queste nuove regioni, mantenendo al contempo i requisiti di sovranità dei dati.",
+        "Question": "Quale strategia architettonica AWS dovrebbe raccomandare l'architetto delle soluzioni per soddisfare questi requisiti? (Scegli due.)",
+        "Options": {
+            "1": "Distribuire un'unica istanza Amazon RDS nella regione AWS principale e utilizzare Amazon CloudFront per memorizzare nella cache le query del database a livello globale.",
+            "2": "Impostare Amazon Aurora Global Database con repliche di lettura secondarie nelle regioni europee e asiatiche.",
+            "3": "Utilizzare Amazon DynamoDB con tabelle globali abilitate per la replicazione automatica tra le regioni.",
+            "4": "Implementare una connessione VPN al data center on-premises in ciascuna nuova regione e replicare manualmente il database.",
+            "5": "Utilizzare AWS DataSync per automatizzare la replicazione dei dati tra le regioni."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Impostare Amazon Aurora Global Database con repliche di lettura secondarie nelle regioni europee e asiatiche.",
+            "Utilizzare Amazon DynamoDB con tabelle globali abilitate per la replicazione automatica tra le regioni."
+        ],
+        "Explanation": "Impostare Amazon Aurora Global Database con repliche di lettura secondarie nelle regioni europee e asiatiche è una risposta corretta perché consente letture a bassa latenza e recupero da disastri. I dati vengono replicati in più regioni, il che garantisce la sovranità dei dati e l'accesso a bassa latenza. Utilizzare Amazon DynamoDB con tabelle globali abilitate per la replicazione automatica tra le regioni è anch'esso corretto. Le tabelle globali replicano i tuoi dati in più regioni AWS per darti accesso rapido e locale ai dati per le tue applicazioni distribuite a livello globale, garantendo così accesso a bassa latenza e sovranità dei dati.",
+        "Other Options": [
+            "Distribuire un'unica istanza Amazon RDS nella regione AWS principale e utilizzare Amazon CloudFront per memorizzare nella cache le query del database a livello globale non è una soluzione praticabile perché CloudFront è una rete di distribuzione dei contenuti, non un servizio di memorizzazione nella cache delle query del database. Non è progettato per memorizzare nella cache le query del database.",
+            "Implementare una connessione VPN al data center on-premises in ciascuna nuova regione e replicare manualmente il database non è una soluzione efficiente. Richiederebbe un notevole sforzo manuale e non fornirebbe l'accesso a bassa latenza richiesto per gli utenti nelle nuove regioni.",
+            "Utilizzare AWS DataSync per automatizzare la replicazione dei dati tra le regioni non è la migliore soluzione perché DataSync è principalmente utilizzato per trasferire dati tra lo storage on-premises e AWS o tra i servizi di storage AWS. Non fornisce l'accesso a bassa latenza richiesto per gli utenti nelle nuove regioni."
+        ]
+    },
+    {
+        "Question Number": "5",
+        "Situation": "Una piattaforma di e-commerce globale sperimenta picchi di traffico elevati durante gli eventi di vendita, con milioni di utenti che accedono alla piattaforma simultaneamente da diverse regioni. Per garantire un'esperienza fluida per tutti gli utenti, la piattaforma deve gestire alti volumi di traffico senza compromettere la latenza o la disponibilità.",
+        "Question": "Quale delle seguenti strategie affronterebbe meglio questi requisiti?",
+        "Options": {
+            "1": "Utilizzare un singolo data center con server potenti",
+            "2": "Implementare un'architettura distribuita multi-regione per servire gli utenti dalla posizione più vicina",
+            "3": "Fare affidamento esclusivamente sulla memorizzazione nella cache dei dati a livello di database",
+            "4": "Aggiungere più CPU e memoria ai loro server applicativi principali"
+        },
+        "Correct Answer": "Implementare un'architettura distribuita multi-regione per servire gli utenti dalla posizione più vicina",
+        "Explanation": "Implementare un'architettura distribuita multi-regione consente alla piattaforma di e-commerce di gestire alti volumi di traffico distribuendo il carico su più server situati in diverse regioni geografiche. Questo approccio minimizza la latenza servendo gli utenti dal data center più vicino, migliorando i tempi di risposta e garantendo alta disponibilità. Fornisce anche ridondanza; se una regione presenta problemi, altre possono continuare a servire gli utenti, mantenendo così le prestazioni complessive della piattaforma durante i picchi di traffico.",
+        "Other Options": [
+            "Utilizzare un singolo data center con server potenti non gestirebbe efficacemente i picchi di traffico elevati, poiché crea un singolo punto di guasto e può portare a un aumento della latenza per gli utenti situati lontano da quel data center. Questo approccio limita la scalabilità e non fornisce ridondanza.",
+            "Fare affidamento esclusivamente sulla memorizzazione nella cache dei dati a livello di database può migliorare le prestazioni ma non affronta il problema dell'alto volume di traffico in diverse regioni. La memorizzazione nella cache può ridurre il carico sul database, ma se i server applicativi o l'infrastruttura di rete non possono gestire il traffico in arrivo, gli utenti potrebbero comunque sperimentare ritardi o interruzioni.",
+            "Aggiungere più CPU e memoria ai loro server applicativi principali può fornire un aumento temporaneo delle prestazioni, ma non risolve il problema sottostante della scalabilità e della latenza per gli utenti situati lontano dal server. Questo approccio può portare a rendimenti decrescenti e non fornisce la necessaria distribuzione geografica per gestire efficacemente i picchi di traffico globali."
+        ]
+    },
+    {
+        "Question Number": "6",
+        "Situation": "Un'azienda sta implementando un'applicazione mission-critical su AWS e desidera garantire alta disponibilità e un rapido recupero in caso di guasti dell'infrastruttura. Stanno considerando diverse strategie di failover per ridurre al minimo i tempi di inattività durante le interruzioni.",
+        "Question": "Quale delle seguenti strategie di failover è più adatta per mantenere la disponibilità del servizio con tempi di inattività minimi? (Scegli due.)",
+        "Options": {
+            "1": "Utilizzare una strategia di failover attivo-attivo attraverso più Availability Zones per garantire che il traffico venga instradato automaticamente verso risorse sane.",
+            "2": "Utilizzare una strategia di backup e ripristino che esegue periodicamente il backup dello stato dell'applicazione e lo ripristina quando si verifica un guasto.",
+            "3": "Utilizzare una strategia di failover in standby caldo, in cui solo una piccola parte delle risorse è attiva in una regione di backup, e la capacità totale viene aumentata quando necessario.",
+            "4": "Utilizzare una strategia di failover a luce pilota con infrastruttura minima in esecuzione nella regione secondaria, aumentando le risorse solo quando si verifica un guasto.",
+            "5": "Implementare una strategia di failover in standby freddo in cui nessuna risorsa è attiva nella regione di backup fino a quando non si verifica un guasto, quindi distribuire completamente le risorse."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Utilizzare una strategia di failover attivo-attivo attraverso più Availability Zones per garantire che il traffico venga instradato automaticamente verso risorse sane.",
+            "Utilizzare una strategia di failover in standby caldo, in cui solo una piccola parte delle risorse è attiva in una regione di backup, e la capacità totale viene aumentata quando necessario."
+        ],
+        "Explanation": "Una strategia di failover attivo-attivo è un metodo altamente efficace per mantenere la disponibilità del servizio con tempi di inattività minimi. Comporta l'esecuzione di istanze dell'applicazione in più Availability Zones contemporaneamente. Se un'istanza fallisce, il traffico viene automaticamente reindirizzato alle altre istanze attive, garantendo la disponibilità continua del servizio. Una strategia di failover in standby caldo aiuta anche a ridurre al minimo i tempi di inattività. In questa strategia, una versione ridotta dell'applicazione è sempre attiva nella regione di standby. In caso di guasto, il sistema può rapidamente aumentare la capacità per gestire il carico completo, riducendo i tempi di inattività subiti dagli utenti.",
+        "Other Options": [
+            "Una strategia di backup e ripristino, sebbene utile per il recupero dei dati, non è la migliore opzione per mantenere la disponibilità del servizio con tempi di inattività minimi. Il ripristino da un backup può essere un processo lungo, portando a periodi prolungati di inattività.",
+            "Una strategia di failover a luce pilota comporta il mantenimento di una versione minima dell'ambiente attiva nella regione secondaria. Sebbene questa strategia possa essere efficace, potrebbe non essere così rapida nell'aumentare la capacità totale come la strategia di standby caldo, portando potenzialmente a periodi più lunghi di inattività.",
+            "Una strategia di standby freddo comporta che nessuna risorsa sia attiva nella regione di backup fino a quando non si verifica un guasto. Questa strategia può portare ai periodi di inattività più lunghi, poiché le risorse devono essere completamente distribuite dopo un guasto, il che può richiedere un tempo significativo."
+        ]
+    },
+    {
+        "Question Number": "7",
+        "Situation": "Una startup sta sviluppando un sistema di offerta in tempo reale per pubblicità online che richiede latenza estremamente bassa e alta capacità di elaborazione delle offerte. Il sistema deve anche essere altamente disponibile e scalabile senza intervento manuale.",
+        "Question": "Quale soluzione di database AWS dovrebbe raccomandare l'architetto delle soluzioni per soddisfare questi requisiti?",
+        "Options": {
+            "1": "Amazon RDS per MySQL con IOPS provisionati",
+            "2": "Amazon DynamoDB con modalità di capacità on-demand",
+            "3": "Amazon ElastiCache per Redis in una configurazione cluster",
+            "4": "Amazon Aurora Serverless con ottimizzazione in-memory"
+        },
+        "Correct Answer": "Amazon DynamoDB con modalità di capacità on-demand",
+        "Explanation": "Amazon DynamoDB è un servizio di database NoSQL completamente gestito che fornisce tempi di risposta nell'ordine dei millisecondi, rendendolo ideale per applicazioni che richiedono latenza estremamente bassa. La sua modalità di capacità on-demand consente al database di scalare automaticamente in base al traffico, garantendo alta capacità di elaborazione senza intervento manuale. Questo è particolarmente vantaggioso per un sistema di offerta in tempo reale in cui il numero di offerte può fluttuare significativamente. Inoltre, DynamoDB è progettato per alta disponibilità e durabilità, il che si allinea perfettamente con i requisiti del sistema della startup.",
+        "Other Options": [
+            "Amazon RDS per MySQL con IOPS provisionati è un servizio di database relazionale che può fornire alte prestazioni, ma potrebbe non raggiungere la stessa latenza bassa di DynamoDB per carichi di lavoro ad alta velocità. Inoltre, RDS richiede una gestione maggiore per scalabilità e disponibilità rispetto a DynamoDB.",
+            "Amazon ElastiCache per Redis in una configurazione cluster è un archivio dati in-memory che può fornire bassa latenza, ma è principalmente utilizzato per la cache piuttosto che come database primario. Non fornisce intrinsecamente le funzionalità di durabilità e persistenza richieste per un sistema di offerte.",
+            "Amazon Aurora Serverless con ottimizzazione in-memory è un database relazionale che può scalare automaticamente, ma potrebbe non fornire lo stesso livello di latenza bassa e alta capacità di elaborazione di DynamoDB, specialmente sotto carichi di lavoro imprevedibili tipici negli scenari di offerta in tempo reale."
+        ]
+    },
+    {
+        "Question Number": "8",
+        "Situation": "Un'azienda sta sviluppando un'applicazione serverless utilizzando funzioni AWS Lambda. L'applicazione deve elaborare immagini caricate dagli utenti e memorizzare i risultati in un database. L'architettura deve garantire che ogni immagine venga elaborata esattamente una volta, anche se la stessa immagine viene caricata più volte.",
+        "Question": "Quale combinazione di servizi AWS dovrebbe utilizzare l'architetto delle soluzioni per raggiungere questo requisito? (Scegli DUE.)",
+        "Options": {
+            "1": "Amazon S3",
+            "2": "Amazon DynamoDB con scritture condizionali",
+            "3": "Amazon Simple Queue Service (SQS)",
+            "4": "Amazon Simple Notification Service (SNS)",
+            "5": "AWS Step Functions"
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Amazon S3",
+            "Amazon DynamoDB con scritture condizionali"
+        ],
+        "Explanation": "Amazon S3 può essere utilizzato per memorizzare le immagini caricate dagli utenti. Può anche attivare funzioni AWS Lambda quando viene caricata una nuova immagine, che può quindi elaborare l'immagine. Amazon DynamoDB con scritture condizionali può essere utilizzato per memorizzare i risultati dell'elaborazione delle immagini. Le scritture condizionali garantiscono che un elemento venga scritto nella tabella solo se la condizione specificata è soddisfatta. In questo caso, la condizione potrebbe essere che l'immagine non sia stata elaborata in precedenza, garantendo che ogni immagine venga elaborata esattamente una volta.",
+        "Other Options": [
+            "Amazon Simple Queue Service (SQS) è un servizio di messaggistica completamente gestito che consente di disaccoppiare e scalare microservizi, sistemi distribuiti e applicazioni serverless. Tuttavia, non impedisce intrinsecamente che lo stesso messaggio venga elaborato più di una volta.",
+            "Amazon Simple Notification Service (SNS) è un servizio di messaggistica completamente gestito per la comunicazione tra applicazioni (A2A) e tra applicazioni e persone (A2P). Tuttavia, non impedisce intrinsecamente che lo stesso messaggio venga elaborato più di una volta.",
+            "AWS Step Functions è un servizio di workflow serverless che consente di coordinare più servizi AWS in workflow serverless. Sebbene possa essere utilizzato per orchestrare funzioni AWS Lambda, non impedisce intrinsecamente che la stessa funzione venga eseguita più di una volta per lo stesso input."
+        ]
+    },
+    {
+        "Question Number": "9",
+        "Situation": "Un'azienda sta configurando un gruppo di Auto Scaling per le proprie istanze EC2 e desidera garantire di poter aggiornare le configurazioni senza dover ricreare l'intero setup.",
+        "Question": "Quale opzione dovrebbero scegliere e perché?",
+        "Options": {
+            "1": "Utilizzare le Configurazioni di Avvio, poiché supportano il versioning e consentono aggiornamenti senza ricreazione.",
+            "2": "Utilizzare i Modelli di Avvio, poiché supportano il versioning, consentendo aggiornamenti delle configurazioni senza creare un nuovo modello.",
+            "3": "Utilizzare le Configurazioni di Avvio, poiché sono più facili da gestire e hanno funzionalità di versioning integrate.",
+            "4": "Utilizzare i Modelli di Avvio, poiché supportano aggiornamenti live direttamente all'interno del gruppo di Auto Scaling senza controllo delle versioni."
+        },
+        "Correct Answer": "Utilizzare i Modelli di Avvio, poiché supportano il versioning, consentendo aggiornamenti delle configurazioni senza creare un nuovo modello.",
+        "Explanation": "I Modelli di Avvio sono l'opzione raccomandata per impostare gruppi di Auto Scaling in AWS perché supportano il versioning. Questo significa che quando è necessario aggiornare le configurazioni, è possibile creare una nuova versione del Modello di Avvio senza dover ricreare l'intero setup. Questa funzionalità consente maggiore flessibilità e una gestione più semplice delle configurazioni nel tempo, rendendola ideale per ambienti che richiedono aggiornamenti o modifiche frequenti.",
+        "Other Options": [
+            "Utilizzare le Configurazioni di Avvio, poiché supportano il versioning e consentono aggiornamenti senza ricreazione. - Questa opzione è errata perché le Configurazioni di Avvio non supportano il versioning. Una volta creata una Configurazione di Avvio, non può essere modificata; eventuali aggiornamenti richiedono la creazione di una nuova Configurazione di Avvio.",
+            "Utilizzare le Configurazioni di Avvio, poiché sono più facili da gestire e hanno funzionalità di versioning integrate. - Questa opzione è errata perché le Configurazioni di Avvio non hanno funzionalità di versioning integrate. Sono meno flessibili rispetto ai Modelli di Avvio, il che può portare a un maggiore carico di gestione quando sono necessari aggiornamenti.",
+            "Utilizzare i Modelli di Avvio, poiché supportano aggiornamenti live direttamente all'interno del gruppo di Auto Scaling senza controllo delle versioni. - Questa opzione è fuorviante perché, sebbene i Modelli di Avvio supportino il versioning, non supportano aggiornamenti live direttamente all'interno del gruppo di Auto Scaling. Gli aggiornamenti richiedono la creazione di una nuova versione del modello, che viene poi utilizzata per le nuove istanze."
+        ]
+    },
+    {
+        "Question Number": "10",
+        "Situation": "Un'applicazione sanitaria deve gestire milioni di richieste al secondo, distribuendo il traffico in entrata su più istanze Amazon EC2 per un'elaborazione efficiente. A causa dei requisiti di conformità, l'applicazione deve anche supportare la crittografia end-to-end per un trasferimento sicuro dei dati. Inoltre, l'applicazione deve operare con latenza ultra-bassa mentre elabora dati medici sensibili al tempo.",
+        "Question": "Quale soluzione di bilanciamento del carico AWS soddisferebbe meglio questi requisiti?",
+        "Options": {
+            "1": "Application Load Balancer (ALB) con terminazione SSL",
+            "2": "Network Load Balancer (NLB) con listener TCP e TLS",
+            "3": "Classic Load Balancer con listener HTTP e HTTPS",
+            "4": "Amazon CloudFront con caching HTTPS"
+        },
+        "Correct Answer": "Network Load Balancer (NLB) con listener TCP e TLS",
+        "Explanation": "Il Network Load Balancer (NLB) è progettato per gestire milioni di richieste al secondo mantenendo una latenza ultra-bassa, rendendolo ideale per l'elaborazione di dati medici sensibili al tempo. Opera al livello di trasporto (Layer 4) e può distribuire in modo efficiente il traffico TCP su più istanze EC2. Inoltre, NLB supporta listener TLS, che consente la crittografia end-to-end, soddisfacendo i requisiti di conformità per un trasferimento sicuro dei dati. Questa combinazione di alta capacità di elaborazione, bassa latenza e supporto per la crittografia rende NLB la scelta migliore per questa applicazione sanitaria.",
+        "Other Options": [
+            "Application Load Balancer (ALB) con terminazione SSL è principalmente progettato per traffico HTTP/HTTPS e opera al Layer 7. Sebbene supporti la terminazione SSL, potrebbe introdurre latenza aggiuntiva a causa del suo processamento al livello dell'applicazione, il che non è ideale per requisiti di latenza ultra-bassa.",
+            "Classic Load Balancer con listener HTTP e HTTPS è un'opzione più vecchia che non fornisce lo stesso livello di prestazioni e scalabilità del NLB. Opera sia al Layer 4 che al Layer 7, ma manca delle funzionalità avanzate e delle ottimizzazioni presenti nel NLB, rendendolo meno adatto a gestire milioni di richieste al secondo in modo efficiente.",
+            "Amazon CloudFront con caching HTTPS è una rete di distribuzione dei contenuti (CDN) che può memorizzare contenuti in cache presso le posizioni edge, il che è vantaggioso per la distribuzione di contenuti statici. Tuttavia, non è un bilanciatore di carico e non distribuisce direttamente il traffico su istanze EC2, rendendolo inadatto per il requisito di distribuire il traffico in entrata per l'elaborazione dei dati medici."
+        ]
+    },
+    {
+        "Question Number": "11",
+        "Situation": "Un'azienda globale di e-commerce vuole garantire alta disponibilità e tolleranza ai guasti per il proprio sito web indirizzando il traffico verso più regioni. Vogliono passare automaticamente a una regione di backup se la regione primaria diventa non disponibile.",
+        "Question": "Quale configurazione di Amazon Route 53 dovrebbe utilizzare l'azienda per ottenere un failover DNS resiliente e quale funzionalità abilita questa funzionalità?",
+        "Options": {
+            "1": "Utilizzare Route 53 Weighted Routing per distribuire il traffico tra le regioni in base ai pesi definiti e impostare controlli di salute per il failover.",
+            "2": "Utilizzare Route 53 Latency-Based Routing per indirizzare gli utenti verso la regione con la latenza più bassa, con controlli di salute per il failover a un'altra regione se necessario.",
+            "3": "Utilizzare Route 53 Geolocation Routing per indirizzare il traffico in base alla posizione dell'utente e impostare controlli di salute per reindirizzare gli utenti se una regione fallisce.",
+            "4": "Utilizzare Route 53 Failover Routing per indirizzare il traffico a una regione primaria e reindirizzare automaticamente a una regione secondaria in caso di guasto, utilizzando controlli di salute per monitorare la disponibilità della regione primaria."
+        },
+        "Correct Answer": "Utilizzare Route 53 Failover Routing per indirizzare il traffico a una regione primaria e reindirizzare automaticamente a una regione secondaria in caso di guasto, utilizzando controlli di salute per monitorare la disponibilità della regione primaria.",
+        "Explanation": "Route 53 Failover Routing è specificamente progettato per scenari in cui l'alta disponibilità è critica. Consente di designare una risorsa primaria (in questo caso, la regione primaria) e una risorsa secondaria (la regione di backup). Se i controlli di salute determinano che la regione primaria non è disponibile, Route 53 reindirizza automaticamente il traffico alla regione secondaria. Questa configurazione garantisce che gli utenti subiscano interruzioni minime e che il sito web rimanga accessibile anche se una regione fallisce.",
+        "Other Options": [
+            "Utilizzare Route 53 Weighted Routing distribuisce il traffico in base ai pesi definiti, ma non fornisce intrinsecamente un failover automatico. Anche se possono essere impostati controlli di salute, questa opzione non è specificamente progettata per scenari di failover, rendendola meno adatta alle esigenze dell'azienda.",
+            "Route 53 Latency-Based Routing indirizza gli utenti verso la regione con la latenza più bassa, il che è vantaggioso per le prestazioni ma non fornisce un meccanismo di failover diretto. Anche se possono essere implementati controlli di salute, questa opzione è principalmente focalizzata sull'ottimizzazione dell'esperienza utente piuttosto che sull'assicurare disponibilità durante i guasti.",
+            "Route 53 Geolocation Routing indirizza il traffico in base alla posizione dell'utente, il che è utile per mirare a regioni specifiche ma non fornisce capacità di failover automatico. Anche se possono essere impostati controlli di salute, questo metodo di routing non dà priorità alla disponibilità nello stesso modo in cui lo fa il Failover Routing."
+        ]
+    },
+    {
+        "Question Number": "12",
+        "Situation": "Un'azienda sta progettando un'applicazione serverless per elaborare i caricamenti degli utenti e trasformarli in un formato specifico. L'applicazione deve scalare automaticamente per adattarsi al traffico fluttuante e gestire più caricamenti di file contemporaneamente. L'azienda vuole evitare di gestire server e infrastrutture garantendo al contempo che i processi di trasformazione vengano completati rapidamente e in modo affidabile.",
+        "Question": "Quali servizi AWS dovrebbe utilizzare l'azienda per implementare questa soluzione? (Scegli due.)",
+        "Options": {
+            "1": "Utilizzare AWS Lambda per attivare le funzioni di elaborazione quando un file viene caricato su Amazon S3, e utilizzare Amazon SQS per mettere in coda i compiti di trasformazione.",
+            "2": "Utilizzare AWS Fargate per eseguire lavori di elaborazione containerizzati, consentendo la scalabilità automatica in base al numero di caricamenti.",
+            "3": "Utilizzare Amazon EC2 per gestire l'infrastruttura e elaborare i file manualmente.",
+            "4": "Utilizzare le notifiche di eventi di Amazon S3 per attivare le funzioni AWS Lambda per elaborare ciascun file caricato.",
+            "5": "Utilizzare Amazon S3 per elaborare direttamente i caricamenti, senza la necessità di attivare funzioni o servizi aggiuntivi."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Utilizzare AWS Lambda per attivare le funzioni di elaborazione quando un file viene caricato su Amazon S3, e utilizzare Amazon SQS per mettere in coda i compiti di trasformazione.",
+            "Utilizzare le notifiche di eventi di Amazon S3 per attivare le funzioni AWS Lambda per elaborare ciascun file caricato."
+        ],
+        "Explanation": "AWS Lambda è un servizio di calcolo serverless che esegue il tuo codice in risposta a eventi, come modifiche ai dati in un bucket Amazon S3. Questo lo rende una scelta adatta per il requisito dell'azienda di elaborare i caricamenti degli utenti e trasformarli in un formato specifico senza gestire server. Amazon SQS è un servizio di messaggistica completamente gestito che consente di disaccoppiare e scalare microservizi, sistemi distribuiti e applicazioni serverless. SQS elimina la complessità e il sovraccarico associati alla gestione e all'operazione di middleware orientato ai messaggi, e consente agli sviluppatori di concentrarsi su lavori differenziati. Utilizzare le notifiche di eventi di Amazon S3 insieme a AWS Lambda consente all'azienda di attivare le funzioni di elaborazione immediatamente dopo il caricamento di un file, soddisfacendo il requisito di trasformazioni rapide e affidabili.",
+        "Other Options": [
+            "AWS Fargate è un motore di calcolo serverless per container. Anche se consente la scalabilità automatica, è più complesso e meno diretto rispetto all'utilizzo di AWS Lambda per questo caso d'uso specifico. Richiederebbe anche all'azienda di gestire applicazioni containerizzate, cosa che vogliono evitare.",
+            "Amazon EC2 è un servizio web che fornisce capacità di calcolo ridimensionabile nel cloud. È progettato per semplificare il calcolo cloud su scala web, ma richiede la gestione manuale dell'infrastruttura, cosa che l'azienda vuole evitare.",
+            "Amazon S3 è un servizio di archiviazione, non ha la capacità di elaborare direttamente i caricamenti o trasformarli in un formato specifico. Può memorizzare e recuperare qualsiasi quantità di dati, ma non può eseguire calcoli o trasformazioni su quei dati."
+        ]
+    },
+    {
+        "Question Number": "13",
+        "Situation": "Un'azienda sta sviluppando un'applicazione di e-commerce e ha bisogno di implementare un'architettura basata su eventi per gestire ordini dei clienti, elaborazione dei pagamenti e aggiornamenti dell'inventario. Vogliono garantire che il sistema sia altamente disponibile, scalabile e disaccoppiato.",
+        "Question": "Quale delle seguenti architetture dovrebbe utilizzare l'azienda per raggiungere questi obiettivi?",
+        "Options": {
+            "1": "Utilizzare Amazon SQS per disaccoppiare i servizi e garantire l'elaborazione asincrona degli eventi. Utilizzare AWS Lambda per elaborare gli eventi e Amazon SNS per trasmettere eventi a più abbonati per notifiche efficienti.",
+            "2": "Utilizzare istanze Amazon EC2 con una coda di messaggi, dove ciascuna istanza EC2 elabora gli eventi e invia aggiornamenti a un database Amazon RDS.",
+            "3": "Utilizzare Amazon DynamoDB Streams per catturare i dati degli eventi e configurare AWS Step Functions per orchestrare i flussi di lavoro per l'elaborazione degli eventi.",
+            "4": "Utilizzare Amazon S3 per memorizzare i dati degli eventi e impostare un'istanza EC2 per controllare il bucket S3 per nuovi eventi da elaborare."
+        },
+        "Correct Answer": "Utilizzare Amazon SQS per disaccoppiare i servizi e garantire l'elaborazione asincrona degli eventi. Utilizzare AWS Lambda per elaborare gli eventi e Amazon SNS per trasmettere eventi a più abbonati per notifiche efficienti.",
+        "Explanation": "Questa opzione implementa efficacemente un'architettura basata su eventi che è altamente disponibile, scalabile e disaccoppiata. Amazon SQS (Simple Queue Service) consente la comunicazione asincrona tra i servizi, il che aiuta a disaccoppiarli. AWS Lambda può elaborare eventi senza la necessità di gestire server, consentendo la scalabilità automatica in base al numero di eventi in arrivo. Inoltre, Amazon SNS (Simple Notification Service) può trasmettere messaggi a più abbonati, garantendo che vari componenti dell'applicazione possano reagire agli eventi in modo efficiente. Questa combinazione fornisce una soluzione robusta per gestire ordini dei clienti, elaborazione dei pagamenti e aggiornamenti dell'inventario in modo scalabile.",
+        "Other Options": [
+            "Utilizzare istanze Amazon EC2 con una coda di messaggi introduce maggiore complessità e sovraccarico di gestione. Le istanze EC2 richiedono provisioning, scalabilità e manutenzione, il che contraddice l'obiettivo di avere un'architettura altamente disponibile e scalabile. Inoltre, questa opzione non sfrutta le capacità serverless, il che può portare a inefficienze nell'utilizzo delle risorse.",
+            "Utilizzare Amazon DynamoDB Streams e AWS Step Functions è un'opzione valida ma potrebbe non essere così diretta come la prima opzione. Anche se DynamoDB Streams può catturare le modifiche nel database, richiede configurazione e gestione aggiuntive. AWS Step Functions sono utili per orchestrare flussi di lavoro ma possono aggiungere complessità non necessaria per compiti di elaborazione eventi semplici rispetto all'approccio diretto basato su eventi utilizzando SQS e Lambda.",
+            "Utilizzare Amazon S3 per memorizzare i dati degli eventi e controllare un'istanza EC2 per nuovi eventi non è una soluzione ideale per un'architettura basata su eventi. Il polling introduce latenza e può portare a inefficienze, poiché il sistema sarebbe in attesa che gli eventi vengano elaborati piuttosto che reagire ad essi in tempo reale. Questo approccio manca anche dei benefici di disaccoppiamento e scalabilità forniti da code di messaggi e funzioni serverless."
+        ]
+    },
+    {
+        "Question Number": "14",
+        "Situation": "Una grande piattaforma di e-commerce sperimenta un alto traffico, specialmente durante eventi di vendita, portando a un significativo aumento nel numero di connessioni al database. Per ottimizzare le prestazioni del database e prevenire sovraccarichi, decidono di utilizzare un servizio proxy per gestire efficientemente queste connessioni.",
+        "Question": "Quale servizio AWS dovrebbero implementare per gestire efficientemente le connessioni al database e quali vantaggi offre in termini di scalabilità e failover?",
+        "Options": {
+            "1": "Amazon RDS Proxy, poiché pool e condivide le connessioni al database, riducendo il sovraccarico sul database e migliorando la scalabilità dell'applicazione.",
+            "2": "AWS App Mesh, che gestisce la comunicazione da servizio a servizio ma non si specializza nella gestione delle connessioni al database.",
+            "3": "Amazon API Gateway, poiché fornisce un proxy per le richieste API, ma è principalmente progettato per API RESTful, non per connessioni al database.",
+            "4": "AWS Direct Connect, che fornisce una connessione di rete dedicata ma non gestisce né pool di connessioni al database."
+        },
+        "Correct Answer": "Amazon RDS Proxy, poiché pool e condivide le connessioni al database, riducendo il sovraccarico sul database e migliorando la scalabilità dell'applicazione.",
+        "Explanation": "Amazon RDS Proxy è specificamente progettato per gestire le connessioni al database in modo efficiente. Pool e condivide le connessioni al database, riducendo il numero di connessioni aperte e il sovraccarico associato al server del database. Questo è particolarmente vantaggioso durante i periodi di alto traffico, come gli eventi di vendita, poiché consente all'applicazione di scalare più efficacemente senza sovraccaricare il database. Inoltre, RDS Proxy fornisce capacità di failover, consentendo alle applicazioni di riconnettersi automaticamente a un database di standby in caso di guasto, migliorando così disponibilità e affidabilità.",
+        "Other Options": [
+            "AWS App Mesh è un service mesh che gestisce la comunicazione da servizio a servizio, ma non si specializza nella gestione delle connessioni al database. Si concentra sulla comunicazione tra microservizi piuttosto che sul pooling o sulla gestione delle connessioni al database.",
+            "Amazon API Gateway è progettato per creare, pubblicare, mantenere, monitorare e proteggere API su qualsiasi scala. Anche se funge da proxy per le richieste API, non è destinato a gestire le connessioni al database, che è il requisito principale in questo scenario.",
+            "AWS Direct Connect fornisce una connessione di rete dedicata dalle tue strutture a AWS, il che può migliorare la larghezza di banda e ridurre la latenza. Tuttavia, non gestisce né pool di connessioni al database, rendendolo inadatto per la specifica necessità di ottimizzare le prestazioni del database durante il traffico elevato."
+        ]
+    },
+    {
+        "Question Number": "15",
+        "Situation": "Un'azienda biotech esegue carichi di lavoro intensivi di calcolo per il sequenziamento del DNA, che richiede risorse di calcolo solo per alcune ore al giorno. Vogliono minimizzare i costi ma garantire che i loro lavori possano essere completati durante queste finestre temporali.",
+        "Question": "Quale opzione di acquisto ottimizzerebbe meglio i costi per questo carico di lavoro?",
+        "Options": {
+            "1": "Istanze riservate con un impegno di 1 anno",
+            "2": "Piani di risparmio con un impegno di 3 anni",
+            "3": "Istanze Spot con allocazione ottimizzata per la capacità",
+            "4": "Istanze On-Demand con auto-scaling programmato"
+        },
+        "Correct Answer": "Istanze Spot con allocazione ottimizzata per la capacità",
+        "Explanation": "Le istanze Spot consentono agli utenti di sfruttare la capacità di calcolo inutilizzata a prezzi significativamente inferiori rispetto alle istanze On-Demand o riservate. Poiché l'azienda biotech richiede risorse di calcolo solo per alcune ore al giorno, utilizzare le istanze Spot può ridurre drasticamente i costi, specialmente se possono tollerare interruzioni. L'allocazione ottimizzata per la capacità garantisce che le istanze Spot siano più probabilmente disponibili quando necessario, rendendola una scelta adatta per i loro carichi di lavoro intensivi di calcolo che hanno finestre temporali specifiche.",
+        "Other Options": [
+            "Le istanze riservate con un impegno di 1 anno non sarebbero convenienti per carichi di lavoro necessari solo per alcune ore al giorno, poiché richiedono un impegno a pagare per la capacità indipendentemente dall'uso.",
+            "I piani di risparmio con un impegno di 3 anni comportano anche un impegno finanziario a lungo termine che potrebbe non allinearsi con la natura sporadica del carico di lavoro, portando potenzialmente a risorse e costi sprecati.",
+            "Le istanze On-Demand con auto-scaling programmato fornirebbero flessibilità, ma sono generalmente più costose delle istanze Spot e non offrono lo stesso livello di risparmio sui costi, specialmente per carichi di lavoro che possono essere eseguiti in modo intermittente."
+        ]
+    },
+    {
+        "Question Number": "16",
+        "Situation": "Una società di servizi finanziari sta implementando una nuova applicazione che richiede una crittografia continua e senza interruzioni tra i dispositivi dei clienti e i server di backend. Inoltre, l'applicazione deve utilizzare un indirizzo IP statico per facilitare il whitelisting degli IP per una maggiore sicurezza.",
+        "Question": "Quale tipo di bilanciatore di carico AWS dovrebbe implementare l'azienda per soddisfare questi requisiti, e quali sono le ragioni principali per questa scelta?",
+        "Options": {
+            "1": "Application Load Balancer (ALB) per la sua capacità di eseguire il routing basato sui contenuti e gestire la terminazione SSL.",
+            "2": "Network Load Balancer (NLB) a causa del suo funzionamento al Livello 4, supporto per indirizzi IP statici e capacità di mantenere la crittografia end-to-end tramite il forwarding TCP.",
+            "3": "Classic Load Balancer (CLB) perché supporta HTTPS e può gestire sessioni sticky per connessioni sicure.",
+            "4": "Application Load Balancer (ALB) poiché offre indirizzi IP statici e garantisce un'elevata capacità di throughput."
+        },
+        "Correct Answer": "Network Load Balancer (NLB) a causa del suo funzionamento al Livello 4, supporto per indirizzi IP statici e capacità di mantenere la crittografia end-to-end tramite il forwarding TCP.",
+        "Explanation": "Il Network Load Balancer (NLB) è la scelta migliore per questo scenario perché opera al Livello 4 del modello OSI, il che gli consente di gestire il traffico TCP in modo efficiente. Supporta indirizzi IP statici, che sono essenziali per il requisito dell'azienda di whitelisting degli IP. Inoltre, l'NLB può mantenere la crittografia end-to-end inoltrando il traffico TCP senza decrittografarlo, garantendo che i dati rimangano sicuri tra i dispositivi dei clienti e i server di backend. Questo si allinea perfettamente con la necessità di una crittografia continua e senza interruzioni.",
+        "Other Options": [
+            "L'Application Load Balancer (ALB) è progettato principalmente per il traffico al Livello 7 (livello applicativo) ed eccelle nel routing basato sui contenuti e nella terminazione SSL. Tuttavia, non supporta nativamente indirizzi IP statici, che è un requisito critico in questo caso.",
+            "Il Classic Load Balancer (CLB) supporta HTTPS e può gestire sessioni sticky, ma opera sia al Livello 4 che al Livello 7. Non ha la capacità di fornire indirizzi IP statici ed è generalmente considerato meno efficiente dell'NLB per scenari ad alto throughput, rendendolo meno adatto ai requisiti delineati.",
+            "L'Application Load Balancer (ALB) non offre indirizzi IP statici direttamente, che è un requisito chiave per il whitelisting degli IP. Sebbene fornisca un elevato throughput e capacità di routing avanzate, non soddisfa la necessità di mantenere la crittografia end-to-end in modo efficace come l'NLB."
+        ]
+    },
+    {
+        "Question Number": "17",
+        "Situation": "Un fornitore di servizi sanitari sta progettando un'applicazione per garantire un servizio ininterrotto e proteggere i dati critici dei pazienti. L'applicazione dovrebbe rimanere operativa nonostante eventuali guasti dei componenti, ma in caso di disastro, il fornitore desidera anche una strategia per recuperare dati vitali.",
+        "Question": "Quale delle seguenti strategie soddisfa meglio questi requisiti? (Scegli due.)",
+        "Options": {
+            "1": "Implementare l'Alta Disponibilità distribuendo risorse su più Availability Zone, garantendo un minimo di inattività durante i guasti dei componenti e un recupero più rapido.",
+            "2": "Concentrarsi sulla Tolleranza ai Guasti configurando risorse in modalità attiva-attiva su più server, in modo che l'applicazione continui senza interruzioni anche se un componente fallisce.",
+            "3": "Sviluppare un piano di Disaster Recovery (DR) programmando backup periodici e stabilendo server di riserva in una regione separata, consentendo il ripristino dell'applicazione in caso di disastro regionale.",
+            "4": "Combinare Alta Disponibilità e Disaster Recovery distribuendo su più Availability Zone e programmando backup regolari, per mantenere l'uptime e proteggere i dati durante eventuali guasti o disastri.",
+            "5": "Utilizzare una distribuzione in una Singola Availability Zone con snapshot automatizzati per garantire il recupero dei dati in caso di guasto del server."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Implementare l'Alta Disponibilità distribuendo risorse su più Availability Zone, garantendo un minimo di inattività durante i guasti dei componenti e un recupero più rapido.",
+            "Combinare Alta Disponibilità e Disaster Recovery distribuendo su più Availability Zone e programmando backup regolari, per mantenere l'uptime e proteggere i dati durante eventuali guasti o disastri."
+        ],
+        "Explanation": "La prima risposta corretta riguarda l'implementazione dell'Alta Disponibilità. Questo approccio garantisce che l'applicazione rimanga operativa anche se uno o più componenti falliscono. Distribuendo risorse su più Availability Zone, l'applicazione può continuare a funzionare con un minimo di inattività durante i guasti dei componenti e recuperare più rapidamente. La seconda risposta corretta combina Alta Disponibilità e Disaster Recovery. Questo approccio non solo garantisce l'uptime dell'applicazione durante i guasti dei componenti, ma protegge anche i dati critici dei pazienti programmando backup regolari. In caso di disastro, i dati possono essere recuperati, garantendo la continuità dell'applicazione.",
+        "Other Options": [
+            "Concentrarsi sulla Tolleranza ai Guasti configurando risorse in modalità attiva-attiva su più server non è sufficiente. Sebbene garantisca che l'applicazione continui senza interruzioni anche se un componente fallisce, non fornisce una strategia per il recupero dei dati in caso di disastro.",
+            "Sviluppare un piano di Disaster Recovery (DR) programmando backup periodici e stabilendo server di riserva in una regione separata è una buona strategia per il recupero dei dati. Tuttavia, non garantisce il servizio ininterrotto dell'applicazione in caso di guasti dei componenti.",
+            "Utilizzare una distribuzione in una Singola Availability Zone con snapshot automatizzati può garantire il recupero dei dati in caso di guasto del server. Tuttavia, non fornisce alta disponibilità o tolleranza ai guasti, poiché un guasto nella singola Availability Zone potrebbe portare a inattività dell'applicazione."
+        ]
+    },
+    {
+        "Question Number": "18",
+        "Situation": "Una piattaforma di trading finanziario è ospitata su istanze Amazon EC2 e richiede un volume EBS che possa supportare un numero estremamente elevato di IOPS (operazioni di input/output al secondo) per un database ad alta frequenza sensibile alla latenza. La piattaforma ha bisogno di fino a 250.000 IOPS e di un elevato throughput per prestazioni ottimali.",
+        "Question": "Quale tipo di volume EBS soddisferebbe meglio questi requisiti?",
+        "Options": {
+            "1": "General Purpose SSD (gp3)",
+            "2": "Provisioned IOPS SSD (io2)",
+            "3": "Throughput Optimized HDD (st1)",
+            "4": "Cold HDD (sc1)"
+        },
+        "Correct Answer": "Provisioned IOPS SSD (io2)",
+        "Explanation": "Il tipo di volume Provisioned IOPS SSD (io2) è specificamente progettato per applicazioni intensive in I/O che richiedono elevate prestazioni e bassa latenza. Può supportare fino a 256.000 IOPS per volume, rendendolo adatto per il requisito della piattaforma di trading finanziario di fino a 250.000 IOPS. Inoltre, i volumi io2 offrono un elevato throughput e sono ottimizzati per carichi di lavoro sensibili alla latenza, rendendoli la scelta migliore per un database ad alta frequenza.",
+        "Other Options": [
+            "I volumi General Purpose SSD (gp3) possono fornire fino a 16.000 IOPS e sono adatti per una varietà di carichi di lavoro, ma non soddisfano il requisito di 250.000 IOPS necessario per questa specifica applicazione.",
+            "I volumi Throughput Optimized HDD (st1) sono progettati per carichi di lavoro che richiedono un elevato throughput piuttosto che un elevato numero di IOPS. Non sono adatti per applicazioni sensibili alla latenza come un database ad alta frequenza, poiché possono fornire solo un massimo di 500 IOPS per volume.",
+            "I volumi Cold HDD (sc1) sono destinati a dati accessibili raramente e forniscono le prestazioni più basse tra i tipi di volume EBS, con un massimo di 250 IOPS per volume. Questo li rende inadatti per applicazioni ad alte prestazioni e sensibili alla latenza."
+        ]
+    },
+    {
+        "Question Number": "19",
+        "Situation": "Un'istituzione finanziaria gestisce applicazioni mission-critical che richiedono connettività stabile, ad alta larghezza di banda e a bassa latenza tra i suoi data center on-premises e AWS per supportare l'elaborazione dei dati in tempo reale e le attività di trading. Vogliono garantire che tutti i trasferimenti di dati avvengano tramite una connessione sicura e privata che bypassi Internet pubblico, proteggendo contro potenziali rischi di sicurezza e variabilità delle prestazioni.",
+        "Question": "Quali opzioni soddisferebbero meglio i loro requisiti? (Scegli due.)",
+        "Options": {
+            "1": "Utilizzare una linea affittata ad alta velocità da un fornitore di telecomunicazioni direttamente in AWS",
+            "2": "Stabilire un AWS Site-to-Site VPN tramite Internet pubblico",
+            "3": "Implementare AWS Direct Connect per una connessione di rete privata e dedicata",
+            "4": "Impostare un protocollo di trasferimento file crittografato (FTP) per sincronizzazioni periodiche dei dati",
+            "5": "Implementare AWS Transit Gateway con Direct Connect Gateway per connettività multi-regione"
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Utilizzare una linea affittata ad alta velocità da un fornitore di telecomunicazioni direttamente in AWS",
+            "Implementare AWS Direct Connect per una connessione di rete privata e dedicata"
+        ],
+        "Explanation": "Utilizzare una linea affittata ad alta velocità da un fornitore di telecomunicazioni direttamente in AWS e implementare AWS Direct Connect per una connessione di rete privata e dedicata sono le migliori opzioni per questa istituzione finanziaria. Queste opzioni forniscono una connessione stabile, ad alta larghezza di banda e a bassa latenza che bypassa Internet pubblico, il che è cruciale per l'elaborazione dei dati in tempo reale e le attività di trading dell'istituzione. AWS Direct Connect, in particolare, fornisce una connessione di rete dedicata dai data center on-premises dell'istituzione a AWS, garantendo una connessione sicura e affidabile.",
+        "Other Options": [
+            "Stabilire un AWS Site-to-Site VPN tramite Internet pubblico non è la migliore opzione perché utilizza comunque Internet pubblico, il che può portare a variabilità delle prestazioni e potenziali rischi di sicurezza.",
+            "Impostare un protocollo di trasferimento file crittografato (FTP) per sincronizzazioni periodiche dei dati non soddisfa il requisito per l'elaborazione dei dati in tempo reale e le attività di trading, poiché è progettato per trasferimenti di dati periodici, non in tempo reale.",
+            "Implementare AWS Transit Gateway con Direct Connect Gateway per connettività multi-regione non è necessariamente richiesto per le esigenze dell'istituzione. Sebbene fornisca connettività multi-regione, non fornisce intrinsecamente la connessione ad alta larghezza di banda e bassa latenza richiesta per l'elaborazione dei dati in tempo reale e le attività di trading."
+        ]
+    },
+    {
+        "Question Number": "20",
+        "Situation": "Immagina di gestire un'applicazione che elabora file video per la transcodifica e ha una domanda fluttuante. Per garantire un'elaborazione resiliente ed efficiente, utilizzi Amazon SQS per la coda dei messaggi e i Gruppi di Auto Scaling (ASG) per il tuo pool di lavoratori. Tuttavia, alcuni messaggi occasionalmente falliscono e necessitano di una gestione speciale per evitare sovraccarichi del sistema.",
+        "Question": "Quale approccio dovresti implementare per migliorare la resilienza e garantire che i messaggi falliti siano gestiti in modo efficace?",
+        "Options": {
+            "1": "Utilizzare una Dead-Letter Queue (DLQ) all'interno di SQS per catturare messaggi problematici che falliscono l'elaborazione più volte.",
+            "2": "Configurare le politiche di scaling dell'ASG per aggiungere istanze solo quando l'utilizzo della CPU supera l'80%.",
+            "3": "Utilizzare Amazon RDS per memorizzare e riprovare messaggi falliti fino a quando non vengono elaborati con successo.",
+            "4": "Impostare allarmi CloudWatch per notificarti ogni volta che un messaggio fallisce, in modo da poterlo rielaborare manualmente."
+        },
+        "Correct Answer": "Utilizzare una Dead-Letter Queue (DLQ) all'interno di SQS per catturare messaggi problematici che falliscono l'elaborazione più volte.",
+        "Explanation": "Una Dead-Letter Queue (DLQ) è specificamente progettata per gestire i messaggi che non possono essere elaborati con successo dopo un numero specificato di tentativi. Utilizzando una DLQ, puoi isolare questi messaggi problematici per ulteriori indagini senza influenzare l'elaborazione di altri messaggi nella coda. Questo approccio migliora la resilienza della tua applicazione prevenendo che i fallimenti nell'elaborazione dei messaggi sovraccarichino il tuo sistema e consente una gestione e un debug più semplici dei messaggi falliti.",
+        "Other Options": [
+            "Configurare le politiche di scaling dell'ASG per aggiungere istanze solo quando l'utilizzo della CPU supera l'80% non affronta direttamente il problema dell'elaborazione dei messaggi falliti. Sebbene possa aiutare a gestire l'allocazione delle risorse, non fornisce un meccanismo per gestire i messaggi che non riescono a essere elaborati, che è il problema centrale in questo scenario.",
+            "Utilizzare Amazon RDS per memorizzare e riprovare messaggi falliti fino a quando non vengono elaborati con successo non è una soluzione ottimale. RDS è un servizio di database relazionale e non è progettato per la coda dei messaggi. Questo approccio introdurrebbe complessità e latenza non necessarie, poiché richiederebbe logica aggiuntiva per gestire lo stato dei messaggi e i loro tentativi.",
+            "Impostare allarmi CloudWatch per notificarti ogni volta che un messaggio fallisce creerebbe un approccio reattivo piuttosto che proattivo. Sebbene possa aiutarti a monitorare i fallimenti, non fornisce un modo automatizzato per gestire i messaggi falliti, che è essenziale per mantenere la resilienza e l'efficienza del sistema."
+        ]
+    },
+    {
+        "Question Number": "21",
+        "Situation": "Un'azienda di servizi finanziari sta implementando un'applicazione che richiede una crittografia veloce e continua tra i clienti e le istanze backend, e la possibilità di utilizzare un IP statico per la whitelist.",
+        "Question": "Quale tipo di bilanciatore di carico AWS è più adatto per questo scenario, e perché?",
+        "Options": {
+            "1": "Application Load Balancer (ALB), perché consente il routing basato sui contenuti e fornisce la terminazione SSL.",
+            "2": "Network Load Balancer (NLB), perché opera al Livello 4, supporta IP statici e consente una crittografia continua con il forwarding TCP.",
+            "3": "Classic Load Balancer (CLB), perché è compatibile con HTTPS e supporta sessioni sticky per connessioni sicure.",
+            "4": "Application Load Balancer (ALB), perché supporta indirizzi IP statici e fornisce un'elevata capacità di throughput."
+        },
+        "Correct Answer": "Network Load Balancer (NLB), perché opera al Livello 4, supporta IP statici e consente una crittografia continua con il forwarding TCP.",
+        "Explanation": "Il Network Load Balancer (NLB) è la scelta più adatta per questo scenario perché opera al Livello 4 (Livello di Trasporto) del modello OSI, il che gli consente di gestire direttamente il traffico TCP. Questa capacità gli permette di mantenere una crittografia continua tra i clienti e le istanze backend, poiché può inoltrare pacchetti TCP senza decrittarli. Inoltre, NLB supporta indirizzi IP statici, essenziali per scopi di whitelist. Questa combinazione di caratteristiche rende NLB ideale per applicazioni che richiedono connessioni veloci e sicure con IP statici.",
+        "Other Options": [
+            "Application Load Balancer (ALB) non è adatto perché, sebbene fornisca la terminazione SSL e il routing basato sui contenuti, opera al Livello 7 (Livello Applicazione), il che significa che decrittarebbe il traffico, potenzialmente violando il requisito di crittografia continua.",
+            "Classic Load Balancer (CLB) non è la scelta migliore perché, sebbene supporti HTTPS, è una tecnologia più vecchia che non offre lo stesso livello di prestazioni e funzionalità di NLB. Inoltre, non supporta IP statici nello stesso modo in cui fa NLB.",
+            "Application Load Balancer (ALB) è erroneamente dichiarato come supporto per indirizzi IP statici; non fornisce IP statici direttamente. Invece, utilizza IP dinamici e richiede configurazioni aggiuntive (come l'uso di un NLB davanti) per ottenere funzionalità di IP statico."
+        ]
+    },
+    {
+        "Question Number": "22",
+        "Situation": "Un'azienda ha un bucket S3 chiamato \"secretcatproject\" che contiene dati sensibili. L'azienda deve consentire l'accesso a questo bucket da parte di utenti specifici in un account partner, garantendo al contempo che i dati rimangano sicuri da accessi pubblici.",
+        "Question": "Quale metodo dovrebbe utilizzare l'azienda per concedere l'accesso necessario prevenendo accessi non autorizzati da parte di utenti anonimi?",
+        "Options": {
+            "1": "Impostare la policy del bucket per consentire l'accesso pubblico a tutti gli utenti per semplificare la gestione degli accessi.",
+            "2": "Utilizzare una policy del bucket S3 che specifica i ruoli IAM dell'account partner come principali con permesso di accesso al bucket.",
+            "3": "Abilitare \"Block Public Access\" sul bucket e utilizzare liste di controllo degli accessi (ACL) per gestire l'accesso per l'account partner.",
+            "4": "Allegare una policy IAM direttamente al bucket per controllare l'accesso per gli utenti dell'account partner."
+        },
+        "Correct Answer": "Utilizzare una policy del bucket S3 che specifica i ruoli IAM dell'account partner come principali con permesso di accesso al bucket.",
+        "Explanation": "Utilizzare una policy del bucket S3 per specificare i ruoli IAM dell'account partner come principali consente un controllo dettagliato su chi può accedere al bucket. Questo metodo garantisce che solo gli utenti designati dell'account partner possano accedere ai dati sensibili, prevenendo anche qualsiasi accesso pubblico. Le policy dei bucket sono strumenti potenti per gestire le autorizzazioni e possono essere personalizzate per soddisfare requisiti di sicurezza specifici, rendendo questo il metodo più sicuro e appropriato per la situazione descritta.",
+        "Other Options": [
+            "Impostare la policy del bucket per consentire l'accesso pubblico a tutti gli utenti esporrebbe i dati sensibili a chiunque su Internet, il che è contrario al requisito di mantenere i dati sicuri da accessi pubblici.",
+            "Abilitare 'Block Public Access' sul bucket e utilizzare liste di controllo degli accessi (ACL) non è la migliore pratica per gestire l'accesso. Sebbene prevenga l'accesso pubblico, le ACL possono essere complesse e meno gestibili rispetto alle policy dei bucket, specialmente quando si tratta di accesso tra account. Le policy dei bucket sono generalmente preferite per questo scopo.",
+            "Allegare una policy IAM direttamente al bucket non è possibile, poiché le policy IAM sono collegate a utenti, gruppi o ruoli IAM, non direttamente ai bucket S3. Il controllo degli accessi per i bucket S3 è gestito tramite policy dei bucket o ACL, rendendo questa opzione errata."
+        ]
+    },
+    {
+        "Question Number": "23",
+        "Situation": "Un'azienda sanitaria deve eseguire il backup dei dati dei pazienti su AWS per scopi di disaster recovery. Per ridurre i costi, richiedono una soluzione che minimizzi i costi di archiviazione garantendo al contempo la conservazione a lungo termine dei backup. Vogliono anche la possibilità di recuperare i dati entro poche ore se necessario.",
+        "Question": "Quali strategie di backup soddisferebbero meglio questi requisiti? (Scegli due.)",
+        "Options": {
+            "1": "Archiviare i backup in Amazon S3 Standard",
+            "2": "Utilizzare Amazon S3 Glacier Flexible Retrieval per l'archiviazione",
+            "3": "Archiviare i backup in Amazon S3 Standard-IA",
+            "4": "Utilizzare snapshot Amazon EBS archiviati nella stessa regione",
+            "5": "Implementare AWS Backup con policy di ciclo di vita per trasferire i backup a classi di archiviazione a costo inferiore"
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Utilizzare Amazon S3 Glacier Flexible Retrieval per l'archiviazione",
+            "Implementare AWS Backup con policy di ciclo di vita per trasferire i backup a classi di archiviazione a costo inferiore"
+        ],
+        "Explanation": "Amazon S3 Glacier Flexible Retrieval è una soluzione economica per l'archiviazione a lungo termine dei dati e consente il recupero dei dati entro poche ore, il che si allinea con i requisiti dell'azienda. AWS Backup con policy di ciclo di vita consente la transizione automatica dei backup a classi di archiviazione a costo inferiore dopo un certo periodo, il che può ridurre significativamente i costi di archiviazione nel tempo.",
+        "Other Options": [
+            "Archiviare i backup in Amazon S3 Standard non è la soluzione più economica per la conservazione a lungo termine dei dati. Sebbene fornisca un'elevata durabilità, disponibilità e prestazioni, il suo costo è più elevato rispetto ad altre classi di archiviazione come S3 Glacier o S3 Standard-IA.",
+            "Archiviare i backup in Amazon S3 Standard-IA (Infrequent Access) potrebbe essere una soluzione economica per i dati che vengono acceduti meno frequentemente, ma potrebbe non fornire lo stesso livello di risparmio sui costi per l'archiviazione a lungo termine come S3 Glacier o AWS Backup con policy di ciclo di vita.",
+            "Utilizzare snapshot Amazon EBS archiviati nella stessa regione non minimizza necessariamente i costi di archiviazione, specialmente per la conservazione a lungo termine. Inoltre, archiviare i backup nella stessa regione non fornisce la ridondanza geografica che è spesso desiderata per scopi di disaster recovery."
+        ]
+    },
+    {
+        "Question Number": "24",
+        "Situation": "Un sito di notizie archivia file multimediali in Amazon S3. Questi file vengono frequentemente accessi nei primi 7 giorni dopo essere stati caricati, ma vedono pochissimo accesso dopo quel periodo. Il sito desidera ridurre i costi di archiviazione in base a questi modelli di accesso.",
+        "Question": "Quale configurazione di archiviazione ottimizzerebbe meglio i costi?",
+        "Options": {
+            "1": "Archiviare tutti i file in S3 Standard",
+            "2": "Archiviare i file in S3 Intelligent-Tiering",
+            "3": "Spostare i file in S3 Standard-IA dopo 7 giorni",
+            "4": "Utilizzare S3 Glacier per tutti i file multimediali"
+        },
+        "Correct Answer": "Spostare i file in S3 Standard-IA dopo 7 giorni",
+        "Explanation": "Spostare i file in S3 Standard-IA (Infrequent Access) dopo 7 giorni è l'opzione migliore perché è progettata per dati che vengono acceduti meno frequentemente ma richiedono un accesso rapido quando necessario. Poiché i file multimediali vengono frequentemente accessi nei primi 7 giorni e vedono poco accesso dopo, la transizione a Standard-IA dopo questo periodo ridurrà significativamente i costi di archiviazione pur consentendo un accesso rapido quando necessario. S3 Standard-IA offre costi di archiviazione inferiori rispetto a S3 Standard, rendendola una soluzione economica per il modello di accesso descritto.",
+        "Other Options": [
+            "Archiviare tutti i file in S3 Standard non ottimizzerebbe i costi poiché S3 Standard è più costoso di S3 Standard-IA per dati a cui si accede raramente. Questa opzione non sfrutta i costi inferiori disponibili per i dati che non vengono acceduti frequentemente dopo i primi 7 giorni.",
+            "Archiviare i file in S3 Intelligent-Tiering potrebbe essere un'opzione valida, ma comporta costi aggiuntivi a causa del monitoraggio e del passaggio automatico tra le classi. Poiché il modello di accesso è prevedibile (accesso frequente nei primi 7 giorni e raro dopo), spostare manualmente i file in Standard-IA dopo 7 giorni è più economico rispetto all'uso di Intelligent-Tiering.",
+            "Utilizzare S3 Glacier per tutti i file multimediali non è adatto perché Glacier è progettato per l'archiviazione e ha tempi di recupero che possono variare da minuti a ore. Questo non soddisferebbe il requisito di accesso rapido ai file che potrebbero ancora essere necessari subito dopo il caricamento iniziale."
+        ]
+    },
+    {
+        "Question Number": "25",
+        "Situation": "Un'azienda ha recentemente creato un nuovo account AWS, e il fondatore sta attualmente utilizzando l'utente root per gestire le risorse all'interno dell'account. L'utente root ha il controllo totale e illimitato su tutte le risorse nell'account, e per impostazione predefinita, nessun altro utente ha autorizzazioni fino a quando non vengono esplicitamente concesse. Per una maggiore sicurezza, il fondatore desidera delegare responsabilità ad altri membri del team creando utenti IAM con autorizzazioni specifiche invece di utilizzare l'account root per attività quotidiane.",
+        "Question": "Quali delle seguenti azioni dovrebbe intraprendere il fondatore per garantire che l'account AWS rimanga sicuro mentre gestisce l'accesso in modo efficace? (Scegli due.)",
+        "Options": {
+            "1": "Continuare a utilizzare l'utente root per tutte le attività amministrative quotidiane e creare utenti IAM con accesso in sola lettura per i membri del team.",
+            "2": "Abilitare l'autenticazione a più fattori (MFA) sull'account root, creare utenti IAM per ogni membro del team con le autorizzazioni necessarie e evitare di utilizzare l'account root per attività regolari.",
+            "3": "Condividere le credenziali dell'account root con i membri del team e impostare gruppi IAM per organizzare le autorizzazioni.",
+            "4": "Creare un utente root separato per ogni membro del team per dare loro accesso diretto all'account AWS.",
+            "5": "Ruotare regolarmente le chiavi di accesso root e limitare l'uso dell'account root a compiti essenziali."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Abilitare l'autenticazione a più fattori (MFA) sull'account root, creare utenti IAM per ogni membro del team con le autorizzazioni necessarie e evitare di utilizzare l'account root per attività regolari.",
+            "Ruotare regolarmente le chiavi di accesso root e limitare l'uso dell'account root a compiti essenziali."
+        ],
+        "Explanation": "Abilitare l'autenticazione a più fattori (MFA) sull'account root aggiunge un ulteriore livello di sicurezza richiedendo due forme di identificazione per accedere. Creare utenti IAM per ogni membro del team consente al fondatore di delegare responsabilità e gestire l'accesso in modo efficace concedendo autorizzazioni specifiche a ciascun utente. In questo modo, l'account root, che ha il controllo totale su tutte le risorse, non viene utilizzato per attività regolari, riducendo il rischio di modifiche accidentali o violazioni della sicurezza. Ruotare regolarmente le chiavi di accesso root è un'altra buona pratica per mantenere la sicurezza. Garantisce che anche se una chiave viene compromessa, sarà valida solo per un periodo limitato. Limitare l'uso dell'account root a compiti essenziali riduce anche il rischio di modifiche accidentali o violazioni della sicurezza.",
+        "Other Options": [
+            "Continuare a utilizzare l'utente root per tutte le attività amministrative quotidiane non è una buona pratica poiché aumenta il rischio di modifiche accidentali o violazioni della sicurezza. Creare utenti IAM con accesso in sola lettura per i membri del team limita la loro capacità di svolgere compiti necessari.",
+            "Condividere le credenziali dell'account root con i membri del team è un grave rischio per la sicurezza. Questo darebbe loro il controllo totale e illimitato su tutte le risorse nell'account. Impostare gruppi IAM per organizzare le autorizzazioni è una buona pratica, ma dovrebbe essere fatto con utenti IAM, non con l'account root.",
+            "Creare un utente root separato per ogni membro del team non è possibile. AWS consente solo un utente root per account. Inoltre, dare accesso diretto all'account AWS ai membri del team è un grave rischio per la sicurezza."
+        ]
+    },
+    {
+        "Question Number": "26",
+        "Situation": "Un'azienda vuole costruire un'applicazione di servizio clienti che possa analizzare il feedback dei clienti per identificare temi e sentimenti chiave, e poi convertire l'analisi in un riepilogo audio per l'accessibilità.",
+        "Question": "Quale combinazione di servizi gestiti AWS sarebbe più appropriata per questi compiti, e perché? (Scegli due.)",
+        "Options": {
+            "1": "Amazon SageMaker e Amazon Rekognition, perché consentono modelli di machine learning avanzati e capacità di riconoscimento delle immagini.",
+            "2": "Amazon Comprehend e Amazon Polly, poiché Comprehend può analizzare il testo per temi e sentimenti, mentre Polly può convertire il testo in discorsi naturali.",
+            "3": "AWS Glue e Amazon Athena, per elaborare i dati dal feedback e eseguire query complesse su dati strutturati.",
+            "4": "Amazon Translate e Amazon Lex, per tradurre il feedback dei clienti in diverse lingue e costruire interfacce conversazionali.",
+            "5": "Amazon Transcribe e Amazon Translate, per trascrivere il feedback parlato e tradurlo in più lingue."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Amazon SageMaker e Amazon Rekognition, perché consentono modelli di machine learning avanzati e capacità di riconoscimento delle immagini.",
+            "Amazon Comprehend e Amazon Polly, poiché Comprehend può analizzare il testo per temi e sentimenti, mentre Polly può convertire il testo in discorsi naturali."
+        ],
+        "Explanation": "Amazon SageMaker è un servizio completamente gestito che fornisce a ogni sviluppatore e scienziato dei dati la possibilità di costruire, addestrare e distribuire modelli di machine learning (ML) rapidamente. SageMaker rimuove il lavoro pesante da ogni fase del processo di machine learning per facilitare lo sviluppo di modelli di alta qualità. Amazon Rekognition rende facile aggiungere analisi di immagini e video alle tue applicazioni utilizzando una tecnologia di deep learning collaudata e altamente scalabile che non richiede competenze di machine learning per essere utilizzata. Amazon Comprehend utilizza il machine learning per trovare intuizioni e relazioni nel testo. Può identificare la lingua del testo; estrarre frasi chiave, luoghi, persone, marchi o eventi; comprendere quanto sia positivo o negativo il testo; analizzare il testo utilizzando la tokenizzazione e le parti del discorso; e organizzare automaticamente una raccolta di file di testo per argomento. Amazon Polly è un servizio che trasforma il testo in discorsi realistici, consentendo di creare applicazioni che parlano e costruire categorie completamente nuove di prodotti abilitati al parlato.",
+        "Other Options": [
+            "AWS Glue e Amazon Athena sono utilizzati per lavori ETL (Extract, Transform, Load) e per interrogare i dati, non per l'analisi del sentiment o la conversione testo-in-voce.",
+            "Amazon Translate e Amazon Lex sono utilizzati per la traduzione linguistica e la costruzione di interfacce conversazionali, non per l'analisi del sentiment o la conversione testo-in-voce.",
+            "Amazon Transcribe e Amazon Translate sono utilizzati per trascrivere il feedback parlato e tradurlo in più lingue, non per l'analisi del sentiment o la conversione testo-in-voce."
+        ]
+    },
+    {
+        "Question Number": "27",
+        "Situation": "Il tuo team sta progettando un'applicazione altamente resiliente che si basa su un database backend per un rapido recupero dei dati e durabilità.",
+        "Question": "Quale funzionalità di Amazon DynamoDB migliorerebbe al meglio la resilienza e garantirebbe la disponibilità dei dati in caso di guasti regionali?",
+        "Options": {
+            "1": "DynamoDB Streams, che consente la replicazione in tempo reale delle modifiche ad altri servizi AWS.",
+            "2": "DynamoDB Global Tables, che abilitano la replicazione multi-regione per il failover automatico e la resilienza tra regioni.",
+            "3": "DynamoDB Accelerator (DAX), che fornisce caching in memoria per velocizzare i tempi di lettura durante i carichi di picco.",
+            "4": "DynamoDB Auto Scaling, che regola dinamicamente la capacità di lettura e scrittura per adattarsi ai picchi di domanda."
+        },
+        "Correct Answer": "DynamoDB Global Tables, che abilitano la replicazione multi-regione per il failover automatico e la resilienza tra regioni.",
+        "Explanation": "DynamoDB Global Tables forniscono una soluzione completamente gestita per distribuire database completamente replicati in più regioni. Questa funzionalità garantisce che la tua applicazione possa continuare a funzionare anche in caso di guasto regionale, poiché replica automaticamente i dati in più regioni AWS. Questa replicazione consente il failover automatico, il che significa che se una regione diventa non disponibile, l'applicazione può passare senza problemi a un'altra regione in cui i dati sono ancora accessibili, migliorando così la resilienza e garantendo la disponibilità dei dati.",
+        "Other Options": [
+            "DynamoDB Streams consente la replicazione in tempo reale delle modifiche ad altri servizi AWS, ma non fornisce replicazione multi-regione o capacità di failover automatico. È più adatto per architetture basate su eventi piuttosto che per garantire resilienza contro guasti regionali.",
+            "DynamoDB Accelerator (DAX) è progettato per migliorare le prestazioni di lettura fornendo caching in memoria, che può aiutare durante i carichi di picco ma non affronta il problema della disponibilità dei dati in caso di guasti regionali.",
+            "DynamoDB Auto Scaling regola la capacità di lettura e scrittura in base ai picchi di domanda, il che è vantaggioso per le prestazioni e la gestione dei costi, ma non migliora la resilienza né garantisce la disponibilità dei dati tra le regioni in caso di guasti."
+        ]
+    },
+    {
+        "Question Number": "28",
+        "Situation": "Un'azienda deve garantire che i dati sensibili memorizzati in Amazon S3 siano crittografati a riposo utilizzando chiavi gestite dal cliente.",
+        "Question": "Quale servizio dovrebbe utilizzare l'azienda per gestire le chiavi di crittografia?",
+        "Options": {
+            "1": "AWS Certificate Manager (ACM)",
+            "2": "AWS Key Management Service (AWS KMS)",
+            "3": "Amazon S3 Server-Side Encryption con AES-256",
+            "4": "AWS Secrets Manager"
+        },
+        "Correct Answer": "AWS Key Management Service (AWS KMS)",
+        "Explanation": "AWS Key Management Service (AWS KMS) è specificamente progettato per gestire le chiavi di crittografia e fornisce un modo centralizzato per creare, gestire e controllare l'uso delle chiavi crittografiche attraverso i servizi AWS. Utilizzando AWS KMS, puoi creare chiavi gestite dal cliente (CMK) che possono essere utilizzate per crittografare i dati memorizzati in Amazon S3. Questo consente un controllo dettagliato su chi può utilizzare le chiavi e come possono essere utilizzate, garantendo che i dati sensibili siano crittografati a riposo secondo i requisiti di sicurezza dell'azienda.",
+        "Other Options": [
+            "AWS Certificate Manager (ACM) è principalmente utilizzato per gestire certificati SSL/TLS per la sicurezza di siti web e applicazioni. Non fornisce funzionalità per gestire chiavi di crittografia per dati a riposo in servizi come Amazon S3.",
+            "Amazon S3 Server-Side Encryption con AES-256 offre crittografia a riposo, ma utilizza chiavi gestite da AWS per impostazione predefinita. Anche se può utilizzare chiavi gestite dal cliente, non fornisce le capacità di gestione delle chiavi che offre AWS KMS, rendendo AWS KMS la scelta più appropriata per gestire le chiavi di crittografia.",
+            "AWS Secrets Manager è progettato per gestire segreti come chiavi API, credenziali di database e altre informazioni sensibili. Non è destinato a gestire chiavi di crittografia per dati a riposo in Amazon S3."
+        ]
+    },
+    {
+        "Question Number": "29",
+        "Situation": "Un'app di social media ha un database MySQL che riceve frequenti richieste di lettura per contenuti popolari. Per ridurre i costi del database e migliorare i tempi di risposta, vogliono implementare uno strato di caching per alleggerire le letture dal database.",
+        "Question": "Quale strategia di caching sarebbe la più conveniente per questo scenario?",
+        "Options": {
+            "1": "Utilizzare Amazon S3 per il caching di contenuti frequentemente accessibili",
+            "2": "Implementare caching in memoria con un cache gestita come Amazon ElastiCache",
+            "3": "Creare più repliche di lettura del database MySQL",
+            "4": "Utilizzare un sistema di elaborazione batch per precomputare query popolari"
+        },
+        "Correct Answer": "Implementare caching in memoria con un cache gestita come Amazon ElastiCache",
+        "Explanation": "Implementare caching in memoria con un servizio gestito come Amazon ElastiCache è la strategia più conveniente per questo scenario perché consente un accesso rapido ai dati frequentemente richiesti, riducendo significativamente il carico sul database MySQL. I cache in memoria memorizzano i dati nella RAM, il che fornisce tempi di lettura molto più rapidi rispetto alle soluzioni di archiviazione basate su disco. Questo approccio può gestire efficacemente un alto traffico di lettura e può essere scalato secondo necessità, rendendolo ideale per applicazioni con frequenti richieste di lettura per contenuti popolari.",
+        "Other Options": [
+            "Utilizzare Amazon S3 per il caching di contenuti frequentemente accessibili non è adatto perché S3 è principalmente un servizio di archiviazione oggetti, ottimizzato per durabilità e disponibilità piuttosto che per velocità. Accedere ai dati da S3 comporta una latenza più alta rispetto al caching in memoria, rendendolo meno efficace per ridurre i tempi di risposta in uno scenario ad alta lettura.",
+            "Creare più repliche di lettura del database MySQL può migliorare le prestazioni di lettura distribuendo il carico su più repliche, ma non affronta l'efficacia dei costi altrettanto bene quanto il caching. Ogni replica comporta costi aggiuntivi per archiviazione e manutenzione, e mentre può aiutare con la scalabilità delle letture, non fornisce gli stessi vantaggi di velocità di un cache in memoria.",
+            "Utilizzare un sistema di elaborazione batch per precomputare query popolari non è una soluzione di caching diretta e potrebbe non fornire accesso in tempo reale a contenuti frequentemente accessibili. Anche se può ridurre il carico sul database precomputando i risultati, non offre i tempi di risposta immediati che un cache in memoria fornirebbe per richieste di contenuti dinamici."
+        ]
+    },
+    {
+        "Question Number": "30",
+        "Situation": "Un'azienda sta costruendo una piattaforma di supporto clienti e vuole utilizzare i servizi AWS per analizzare il feedback dei clienti e generare risposte vocali automatiche. Vogliono estrarre intuizioni chiave dai dati testuali e convertire le risposte testuali in parlato.",
+        "Question": "Quali servizi AWS dovrebbe utilizzare l'azienda per raggiungere questi obiettivi?",
+        "Options": {
+            "1": "Utilizzare Amazon Polly per convertire il testo in parlato e Amazon Comprehend per analizzare il sentiment dei clienti ed estrarre frasi chiave dal feedback.",
+            "2": "Utilizzare Amazon Lex per costruire un chatbot conversazionale e Amazon Polly per la conversione da testo a voce.",
+            "3": "Utilizzare Amazon S3 per memorizzare il feedback e AWS Lambda per analizzare il testo e generare parlato.",
+            "4": "Utilizzare Amazon Transcribe per convertire il parlato in testo e Amazon Rekognition per l'analisi del sentiment."
+        },
+        "Correct Answer": "Utilizzare Amazon Polly per convertire il testo in parlato e Amazon Comprehend per analizzare il sentiment dei clienti ed estrarre frasi chiave dal feedback.",
+        "Explanation": "Questa opzione è corretta perché Amazon Polly è specificamente progettato per convertire il testo in parlato realistico, il che si allinea con l'obiettivo dell'azienda di generare risposte vocali automatiche. Inoltre, Amazon Comprehend è un servizio di elaborazione del linguaggio naturale (NLP) che può analizzare i dati testuali per estrarre intuizioni come il sentiment e le frasi chiave, rendendolo ideale per analizzare il feedback dei clienti.",
+        "Other Options": [
+            "Questa opzione è scorretta perché Amazon Lex è utilizzato per costruire interfacce conversazionali (chatbot) e non è principalmente focalizzato sull'analisi dei dati testuali per il sentiment o sull'estrazione di frasi chiave. Anche se Amazon Polly è incluso per la conversione del parlato, non affronta l'analisi del feedback dei clienti.",
+            "Questa opzione è scorretta perché Amazon S3 è un servizio di archiviazione e non fornisce alcuna capacità di analisi. AWS Lambda può essere utilizzato per il computing serverless ma richiederebbe servizi aggiuntivi per l'analisi del testo e la generazione del parlato, rendendolo meno efficiente rispetto alla risposta corretta.",
+            "Questa opzione è scorretta perché Amazon Transcribe è utilizzato per convertire il parlato in testo, il che non è rilevante per l'obiettivo dell'azienda di analizzare il feedback testuale. Inoltre, Amazon Rekognition è un servizio di analisi di immagini e video, non adatto per l'analisi del sentiment dei dati testuali."
+        ]
+    },
+    {
+        "Question Number": "31",
+        "Situation": "Un'azienda desidera archiviare dati sensibili in Amazon S3 e deve garantire che AWS non abbia accesso ai dati in chiaro. Vuole anche avere il pieno controllo sulla gestione delle chiavi e sul processo di crittografia.",
+        "Question": "Quale metodo di crittografia dovrebbe utilizzare l'azienda per soddisfare questi requisiti?",
+        "Options": {
+            "1": "Crittografia lato server con chiavi gestite da S3 (SSE-S3)",
+            "2": "Crittografia lato server con chiavi gestite da AWS KMS (SSE-KMS)",
+            "3": "Crittografia lato client",
+            "4": "Crittografia lato server con chiavi fornite dal cliente (SSE-C)"
+        },
+        "Correct Answer": "Crittografia lato client",
+        "Explanation": "La crittografia lato client consente all'azienda di crittografare i dati prima di inviarli ad Amazon S3, garantendo che AWS non abbia accesso ai dati in chiaro. Questo metodo offre all'azienda il pieno controllo sul processo di crittografia e sulla gestione delle chiavi, poiché possono utilizzare le proprie chiavi e algoritmi di crittografia per proteggere i dati prima di caricarli su S3. Questo soddisfa il requisito di garantire che AWS non abbia accesso ai dati in chiaro.",
+        "Other Options": [
+            "La crittografia lato server con chiavi gestite da S3 (SSE-S3) utilizza le chiavi di Amazon per gestire la crittografia, il che significa che AWS ha accesso ai dati in chiaro, non soddisfacendo quindi il requisito dell'azienda.",
+            "La crittografia lato server con chiavi gestite da AWS KMS (SSE-KMS) consente un maggiore controllo sulla gestione delle chiavi rispetto a SSE-S3, ma AWS ha comunque accesso ai dati in chiaro poiché i processi di crittografia e decrittografia avvengono lato server.",
+            "La crittografia lato server con chiavi fornite dal cliente (SSE-C) consente ai clienti di fornire le proprie chiavi per la crittografia, ma AWS gestisce comunque i processi di crittografia e decrittografia, il che significa che AWS potrebbe potenzialmente accedere ai dati in chiaro, il che non soddisfa il requisito dell'azienda."
+        ]
+    },
+    {
+        "Question Number": "32",
+        "Situation": "Un sito web di notizie globale con milioni di lettori in tutto il mondo utilizza Amazon CloudFront per consegnare contenuti in modo efficiente con bassa latenza. Il team del sito web desidera aggiungere funzionalità che personalizzino i contenuti in base al paese dell'utente, come i punti salienti delle notizie locali, e ha anche bisogno di implementare test A/B per provare diversi layout per gli articoli. La soluzione dovrebbe operare in posizioni edge per garantire un'esperienza fluida e a bassa latenza per gli utenti in tutto il mondo.",
+        "Question": "Quale servizio AWS e configurazione dovrebbe raccomandare l'architetto delle soluzioni?",
+        "Options": {
+            "1": "Distribuire AWS Lambda in una VPC con regole di instradamento basate sul paese per la personalizzazione dei contenuti",
+            "2": "Utilizzare funzioni Lambda@Edge, attivate da eventi di richiesta dell'utente CloudFront e di richiesta di origine, per personalizzare i contenuti in base al paese e eseguire test A/B in posizioni edge",
+            "3": "Avviare istanze Amazon EC2 in più regioni con contenuti specifici per paese memorizzati localmente su ciascuna istanza",
+            "4": "Configurare Amazon CloudFront con comportamenti di cache specifici per ciascun paese per servire contenuti personalizzati per paese"
+        },
+        "Correct Answer": "Utilizzare funzioni Lambda@Edge, attivate da eventi di richiesta dell'utente CloudFront e di richiesta di origine, per personalizzare i contenuti in base al paese e eseguire test A/B in posizioni edge",
+        "Explanation": "Utilizzare Lambda@Edge consente al sito web di eseguire codice più vicino agli utenti nelle posizioni edge di CloudFront, il che riduce la latenza e migliora l'esperienza dell'utente. Attivando funzioni sugli eventi di richiesta dell'utente e di richiesta di origine, il sito web può personalizzare dinamicamente i contenuti in base al paese dell'utente e implementare test A/B per diversi layout. Questa soluzione è efficiente e sfrutta le capacità di CloudFront per fornire contenuti personalizzati in modo rapido ed efficace.",
+        "Other Options": [
+            "Distribuire AWS Lambda in una VPC con regole di instradamento basate sul paese non sarebbe ottimale poiché introdurrebbe latenza richiedendo che il traffico venga instradato attraverso la VPC anziché direttamente nelle posizioni edge. Questa configurazione non sfrutta efficacemente i benefici di bassa latenza di CloudFront.",
+            "Sebbene l'utilizzo di funzioni Lambda@Edge sia l'approccio corretto, questa opzione non specifica l'uso degli eventi di CloudFront, che sono essenziali per attivare le funzioni nei momenti giusti. Pertanto, manca del dettaglio necessario per una soluzione completa.",
+            "Avviare istanze Amazon EC2 in più regioni sarebbe inefficiente e costoso. Richiederebbe la gestione di più istanze e la sincronizzazione dei contenuti tra di esse, il che complicherebbe l'architettura e non sfrutterebbe i benefici del calcolo edge per la consegna di contenuti a bassa latenza."
+        ]
+    },
+    {
+        "Question Number": "33",
+        "Situation": "Un'azienda di streaming video ha bisogno di connettere i suoi servizi di consegna dei contenuti, ospitati su AWS, con la rete della sua sede in un'altra città. L'azienda richiede una connessione ad alta capacità per trasferire grandi file video e bassa latenza per prevenire problemi di buffering durante la riproduzione video. Vuole anche che la connessione sia privata per garantire che i contenuti video sensibili non siano esposti a Internet pubblico e sta cercando una soluzione economica per raggiungere questi obiettivi.",
+        "Question": "Quale approccio soddisferebbe meglio le loro esigenze?",
+        "Options": {
+            "1": "AWS PrivateLink per creare un collegamento privato per i contenuti video direttamente alla loro sede",
+            "2": "AWS Direct Connect per stabilire una connessione privata ad alta larghezza di banda tra AWS e la loro rete on-premises",
+            "3": "Un circuito MPLS punto-punto da un fornitore di telecomunicazioni per creare una connessione privata a AWS",
+            "4": "Utilizzare un servizio Internet gestito con VPN dedicate per un trasferimento dati sicuro"
+        },
+        "Correct Answer": "AWS Direct Connect per stabilire una connessione privata ad alta larghezza di banda tra AWS e la loro rete on-premises",
+        "Explanation": "AWS Direct Connect fornisce una connessione di rete dedicata dalla sede dell'azienda ad AWS, ideale per requisiti di alta capacità e bassa latenza. Questo servizio consente una connessione privata che non attraversa Internet pubblico, garantendo che i contenuti video sensibili rimangano sicuri. Direct Connect può gestire trasferimenti di grandi dati in modo efficiente, rendendolo una soluzione economica per trasferire grandi file video senza il rischio di buffering durante la riproduzione.",
+        "Other Options": [
+            "AWS PrivateLink è progettato per connettere i servizi in modo sicuro all'interno di AWS e non fornisce una connessione diretta alle reti on-premises. È più adatto per accedere ai servizi AWS in modo privato piuttosto che per trasferire grandi file tra AWS e una rete esterna.",
+            "Un circuito MPLS punto-punto da un fornitore di telecomunicazioni può fornire una connessione privata, ma potrebbe non essere così economico o flessibile come AWS Direct Connect. Inoltre, la configurazione e la gestione dei circuiti MPLS possono essere più complesse e potrebbero non garantire lo stesso livello di prestazioni di Direct Connect.",
+            "Utilizzare un servizio Internet gestito con VPN dedicate può fornire una connessione sicura, ma tipicamente non offre lo stesso livello di capacità e bassa latenza di AWS Direct Connect. Le VPN su Internet possono anche introdurre variabilità nelle prestazioni, il che potrebbe portare a problemi di buffering durante la riproduzione video."
+        ]
+    },
+    {
+        "Question Number": "34",
+        "Situation": "Un'azienda manifatturiera raccoglie dati da sensori presso le proprie strutture on-premises e ha bisogno di archiviare i dati in AWS per lo stoccaggio a lungo termine e l'analisi. Vuole minimizzare i costi ma richiede un modo fluido per trasferire i dati nel cloud con il minimo sforzo manuale.",
+        "Question": "Quale opzione di archiviazione ibrida soddisferebbe meglio questi requisiti?",
+        "Options": {
+            "1": "AWS Direct Connect",
+            "2": "AWS Storage Gateway",
+            "3": "Amazon S3 con Transfer Acceleration",
+            "4": "AWS DataSync"
+        },
+        "Correct Answer": "AWS Storage Gateway",
+        "Explanation": "AWS Storage Gateway è progettato specificamente per soluzioni di archiviazione cloud ibride, consentendo alle applicazioni on-premises di utilizzare l'archiviazione cloud in modo fluido. Fornisce un modo per trasferire i dati in AWS con il minimo sforzo manuale, rendendolo ideale per l'archiviazione dei dati dei sensori. Supporta varie configurazioni, come gateway file, volume e nastro, che possono aiutare a minimizzare i costi garantendo che i dati siano prontamente disponibili per l'analisi nel cloud.",
+        "Other Options": [
+            "AWS Direct Connect fornisce una connessione di rete dedicata da on-premises ad AWS, che può migliorare la larghezza di banda e ridurre i costi per il trasferimento dei dati. Tuttavia, non fornisce un modo fluido per gestire e trasferire i dati automaticamente, poiché richiede configurazioni e gestione aggiuntive.",
+            "Amazon S3 con Transfer Acceleration accelera il trasferimento di file verso S3 su lunghe distanze, ma non fornisce una soluzione di archiviazione ibrida. È più adatto per il trasferimento di file piuttosto che per integrare i dati on-premises con l'archiviazione cloud in modo fluido.",
+            "AWS DataSync è un servizio che automatizza il trasferimento di dati tra l'archiviazione on-premises e i servizi di archiviazione AWS. Sebbene sia efficace per trasferire grandi quantità di dati, potrebbe richiedere una configurazione e una gestione più manuali rispetto a AWS Storage Gateway, che è più integrato nei flussi di lavoro esistenti."
+        ]
+    },
+    {
+        "Question Number": "35",
+        "Situation": "Un'azienda media sta archiviando grandi file video in Amazon S3. I video vengono frequentemente accessi poco dopo il caricamento, ma raramente vengono accessi dopo un mese. L'azienda desidera ottimizzare i costi di archiviazione senza compromettere le prestazioni di accesso per i video recentemente caricati.",
+        "Question": "Quale classe di archiviazione S3 dovrebbe raccomandare l'architetto delle soluzioni?",
+        "Options": {
+            "1": "S3 Standard",
+            "2": "S3 Intelligent-Tiering",
+            "3": "S3 Standard-Infrequent Access (S3 Standard-IA)",
+            "4": "S3 One Zone-Infrequent Access (S3 One Zone-IA)"
+        },
+        "Correct Answer": "S3 Intelligent-Tiering",
+        "Explanation": "S3 Intelligent-Tiering è l'opzione migliore per questo scenario perché sposta automaticamente i dati tra due livelli di accesso (frequenti e infrequenti) in base ai modelli di accesso che cambiano. Poiché i video vengono frequentemente accessi poco dopo il caricamento ma raramente accessi dopo un mese, questa classe di archiviazione ottimizzerà i costi spostando i dati nel livello di accesso infrequente dopo il periodo di accesso iniziale, senza compromettere le prestazioni di accesso per i video recentemente caricati.",
+        "Other Options": [
+            "S3 Standard non è l'opzione più economica per questo caso d'uso perché è progettata per dati frequentemente accessi e non offre risparmi sui costi per i dati che diventano infrequenti dopo un breve periodo.",
+            "S3 Standard-Infrequent Access (S3 Standard-IA) non è ideale perché, sebbene sia più economica per i dati infrequentemente accessi, comporta costi di recupero ed è ottimizzata per dati che vengono accessi raramente.",
+            "S3 One Zone-Infrequent Access (S3 One Zone-IA) non è adatta perché memorizza i dati in una singola zona di disponibilità, il che comporta un rischio di perdita di dati in caso di guasto della zona di disponibilità. Inoltre, è progettata per dati infrequentemente accessi, il che non si allinea con la necessità di accesso rapido subito dopo il caricamento."
+        ]
+    },
+    {
+        "Question Number": "36",
+        "Situation": "Un'azienda di sviluppo software sta implementando un'applicazione basata su microservizi utilizzando contenitori Docker. L'applicazione richiede distribuzione automatizzata, scalabilità e gestione dei contenitori su un cluster di istanze EC2.",
+        "Question": "Quali servizi AWS dovrebbe raccomandare l'architetto delle soluzioni per orchestrare l'applicazione containerizzata? (Scegli due.)",
+        "Options": {
+            "1": "Amazon Elastic Container Service (ECS)",
+            "2": "AWS Lambda",
+            "3": "Amazon EC2 Auto Scaling",
+            "4": "AWS Batch",
+            "5": "Amazon Elastic Kubernetes Service (EKS)"
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Amazon Elastic Container Service (ECS)",
+            "Amazon Elastic Kubernetes Service (EKS)"
+        ],
+        "Explanation": "Amazon Elastic Container Service (ECS) e Amazon Elastic Kubernetes Service (EKS) sono entrambi servizi AWS progettati specificamente per orchestrare applicazioni containerizzate. ECS è un servizio ad alte prestazioni e altamente scalabile che consente di eseguire e gestire applicazioni abilitate per Docker su un cluster di istanze Amazon EC2. EKS, d'altra parte, è un servizio gestito che semplifica l'esecuzione di Kubernetes su AWS senza la necessità di installare, gestire e mantenere il proprio piano di controllo o nodi Kubernetes. Entrambi i servizi forniscono distribuzione automatizzata, scalabilità e gestione dei contenitori, che è esattamente ciò che richiede lo scenario della domanda.",
+        "Other Options": [
+            "AWS Lambda è un servizio di calcolo serverless che consente di eseguire il codice senza dover provisionare o gestire server. Sebbene possa essere utilizzato in combinazione con applicazioni containerizzate, non è un servizio progettato specificamente per orchestrare contenitori.",
+            "Amazon EC2 Auto Scaling è un servizio che aiuta a mantenere la disponibilità dell'applicazione e consente di aggiungere o rimuovere automaticamente istanze EC2 in base alle condizioni definite. Sebbene possa essere utilizzato per scalare le istanze EC2 sottostanti, non fornisce capacità di orchestrazione dei contenitori.",
+            "AWS Batch è un servizio che consente ai professionisti IT di pianificare ed eseguire lavori di elaborazione batch. Sebbene possa eseguire lavori containerizzati, non è progettato specificamente per orchestrare applicazioni containerizzate."
+        ]
+    },
+    {
+        "Question Number": "37",
+        "Situation": "Un sito web di e-commerce ha bisogno di un modo economico per instradare il traffico verso diverse applicazioni in base ai nomi di dominio e desidera evitare costi aggiuntivi per instradamenti complessi.",
+        "Question": "Quale servizio di rete AWS soddisferebbe meglio questo requisito?",
+        "Options": {
+            "1": "Utilizzare AWS Global Accelerator per l'instradamento globale",
+            "2": "Distribuire Amazon Route 53 per l'instradamento basato su DNS",
+            "3": "Utilizzare un Application Load Balancer con instradamento basato su percorso",
+            "4": "Configurare VPC Peering per l'instradamento diretto del traffico"
+        },
+        "Correct Answer": "Distribuire Amazon Route 53 per l'instradamento basato su DNS",
+        "Explanation": "Amazon Route 53 è un servizio web di Domain Name System (DNS) scalabile e altamente disponibile che può instradare il traffico in base ai nomi di dominio. Consente un instradamento basato su DNS economico, ideale per indirizzare gli utenti verso diverse applicazioni in base al dominio a cui accedono. Questo servizio può gestire politiche di instradamento come instradamento semplice, instradamento ponderato, instradamento basato su latenza e altro, senza incorrere in costi aggiuntivi per configurazioni di instradamento complesse. È progettato specificamente per questo scopo, rendendolo la scelta migliore per le esigenze del sito web di e-commerce.",
+        "Other Options": [
+            "AWS Global Accelerator è progettato per migliorare la disponibilità e le prestazioni delle applicazioni indirizzando il traffico verso endpoint ottimali in base alla salute, alla geografia e alle politiche di instradamento. Tuttavia, comporta costi aggiuntivi ed è più adatto per applicazioni globali piuttosto che per un semplice instradamento basato su dominio.",
+            "Un Application Load Balancer con instradamento basato su percorso è utilizzato principalmente per distribuire il traffico delle applicazioni in entrata su più destinazioni, come le istanze EC2, in base al percorso della richiesta. Sebbene possa instradare il traffico in modo efficace, non è la soluzione più economica per l'instradamento basato su nomi di dominio, poiché comporta configurazioni aggiuntive e potenziali costi.",
+            "VPC Peering consente l'instradamento diretto del traffico di rete tra due VPC (Cloud Privati Virtuali) ma non gestisce l'instradamento basato su nomi di dominio. È più adatto per la comunicazione interna della rete piuttosto che per indirizzare il traffico esterno in base ai nomi di dominio, rendendolo una scelta inadeguata per i requisiti del sito web di e-commerce."
+        ]
+    },
+    {
+        "Question Number": "38",
+        "Situation": "Una startup è preoccupata per le spese del suo database e desidera monitorare i costi nel tempo. Vuole impostare avvisi sui costi per rimanere entro il budget e analizzare le tendenze di spesa per identificare potenziali risparmi.",
+        "Question": "Quale combinazione di strumenti di gestione dei costi AWS dovrebbero utilizzare? (Scegli due.)",
+        "Options": {
+            "1": "AWS Trusted Advisor e AWS Cost Explorer",
+            "2": "AWS Budgets e AWS Cost Explorer",
+            "3": "AWS Cost and Usage Report e AWS Support",
+            "4": "AWS Trusted Advisor e AWS Budgets",
+            "5": "AWS Cost Anomaly Detection e AWS Budgets"
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "AWS Budgets e AWS Cost Explorer",
+            "AWS Cost Anomaly Detection e AWS Budgets"
+        ],
+        "Explanation": "AWS Budgets consente agli utenti di impostare budget personalizzati per costi e utilizzo che li avvisano quando i loro costi o utilizzo superano (o si prevede che superino) l'importo budgetato. Questo aiuterebbe la startup a monitorare i costi e rimanere entro il budget. AWS Cost Explorer consente agli utenti di visualizzare, comprendere e gestire i propri costi e utilizzo AWS nel tempo. Questo aiuterebbe la startup ad analizzare le tendenze di spesa e identificare potenziali risparmi. AWS Cost Anomaly Detection analizza automaticamente i dati sui costi e sull'utilizzo per rilevare modelli di spesa insoliti, fornendo un ulteriore livello di gestione dei costi.",
+        "Other Options": [
+            "AWS Trusted Advisor e AWS Cost Explorer: Sebbene AWS Cost Explorer sia uno strumento corretto, AWS Trusted Advisor fornisce principalmente indicazioni in tempo reale per aiutare a provisionare risorse seguendo le migliori pratiche AWS, non specificamente per la gestione dei costi.",
+            "AWS Cost and Usage Report e AWS Support: AWS Cost and Usage Report fornisce dati completi sui costi, ma non offre la funzionalità di avviso di cui la startup ha bisogno. AWS Support è un servizio di supporto tecnico e non aiuta direttamente con la gestione dei costi.",
+            "AWS Trusted Advisor e AWS Budgets: Sebbene AWS Budgets sia uno strumento corretto, AWS Trusted Advisor fornisce principalmente indicazioni in tempo reale per aiutare a provisionare risorse seguendo le migliori pratiche AWS, non specificamente per la gestione dei costi."
+        ]
+    },
+    {
+        "Question Number": "39",
+        "Situation": "Un'applicazione aziendale richiede accesso a bassa latenza ai dati memorizzati in Amazon S3. I dati sono accessibili da utenti provenienti da varie località geografiche in tutto il mondo. L'azienda desidera migliorare la velocità di accesso ai dati per gli utenti memorizzando nella cache i dati frequentemente accessibili più vicino a loro.",
+        "Question": "Quale servizio AWS dovrebbe utilizzare l'architetto delle soluzioni per soddisfare questo requisito?",
+        "Options": {
+            "1": "Amazon CloudFront",
+            "2": "AWS Global Accelerator",
+            "3": "Amazon Route 53",
+            "4": "AWS Direct Connect"
+        },
+        "Correct Answer": "Amazon CloudFront",
+        "Explanation": "Amazon CloudFront è un servizio di rete di distribuzione dei contenuti (CDN) che memorizza nella cache i contenuti in posizioni edge in tutto il mondo. Utilizzando CloudFront, i dati frequentemente accessibili memorizzati in Amazon S3 possono essere memorizzati nella cache più vicino agli utenti, riducendo significativamente la latenza e migliorando la velocità di accesso. Quando un utente richiede dati, CloudFront li fornisce dalla posizione edge più vicina, migliorando le prestazioni per gli utenti situati in varie regioni geografiche.",
+        "Other Options": [
+            "AWS Global Accelerator migliora la disponibilità e le prestazioni delle applicazioni indirizzando il traffico verso endpoint ottimali, ma non memorizza nella cache i contenuti. È più adatto per migliorare le prestazioni delle applicazioni TCP e UDP piuttosto che per memorizzare nella cache contenuti statici da S3.",
+            "Amazon Route 53 è un servizio web di Domain Name System (DNS) scalabile che fornisce registrazione di dominio, instradamento DNS e controllo della salute. Sebbene aiuti a indirizzare gli utenti verso le risorse più vicine, non memorizza nella cache i dati né migliora direttamente la velocità di accesso ai dati.",
+            "AWS Direct Connect fornisce una connessione di rete dedicata dalle proprie strutture ad AWS, il che può migliorare la larghezza di banda e ridurre la latenza per il trasferimento dei dati. Tuttavia, non memorizza nella cache i dati né fornisce un meccanismo di distribuzione dei contenuti, rendendolo inadeguato per il requisito di memorizzare nella cache i dati frequentemente accessibili."
+        ]
+    },
+    {
+        "Question Number": "40",
+        "Situation": "Un'azienda sta progettando un'applicazione web multi-tier che verrà eseguita su AWS. L'applicazione è composta da un livello web front-end, un livello di logica aziendale e un livello di database. L'azienda richiede alta disponibilità e tolleranza ai guasti per l'applicazione.",
+        "Question": "Quale architettura dovrebbe raccomandare l'architetto delle soluzioni?",
+        "Options": {
+            "1": "Distribuire tutti i livelli in una singola Availability Zone con Auto Scaling e bilanciamento del carico.",
+            "2": "Distribuire i livelli web e di logica aziendale in più Availability Zone e il livello di database in una singola Availability Zone con Multi-AZ RDS.",
+            "3": "Distribuire il livello web in più Availability Zone, il livello di logica aziendale in una singola Availability Zone e il livello di database utilizzando Amazon DynamoDB.",
+            "4": "Distribuire tutti i livelli in più regioni AWS per garantire disponibilità globale."
+        },
+        "Correct Answer": "Distribuire i livelli web e di logica aziendale in più Availability Zone e il livello di database in una singola Availability Zone con Multi-AZ RDS.",
+        "Explanation": "Questa opzione fornisce alta disponibilità e tolleranza ai guasti distribuendo i livelli web e di logica aziendale su più Availability Zone (AZ). Questo garantisce che se un'AZ va giù, l'applicazione possa comunque funzionare utilizzando le risorse nelle altre AZ. Inoltre, utilizzare Multi-AZ per il livello di database con Amazon RDS migliora la disponibilità e la durabilità replicando automaticamente il database su un'istanza di standby in un'altra AZ, consentendo il failover in caso di interruzione. Questa architettura bilancia efficacemente la necessità di alta disponibilità gestendo costi e complessità.",
+        "Other Options": [
+            "Distribuire tutti i livelli in una singola Availability Zone con Auto Scaling e bilanciamento del carico non fornisce alta disponibilità o tolleranza ai guasti, poiché un guasto in quell'AZ porterebbe a un'interruzione dell'intera applicazione.",
+            "Distribuire i livelli web e di logica aziendale in più Availability Zone e il livello di database in una singola Availability Zone con Multi-AZ RDS è parzialmente corretto, ma non sfrutta appieno i benefici dell'alta disponibilità per il livello di database poiché è solo in un'AZ. Il database dovrebbe essere anche in più AZ per una tolleranza ai guasti completa.",
+            "Distribuire il livello web in più Availability Zone, il livello di logica aziendale in una singola Availability Zone e il livello di database utilizzando Amazon DynamoDB non fornisce tolleranza ai guasti per il livello di logica aziendale, che è critico per l'applicazione. Sebbene DynamoDB sia altamente disponibile, l'architettura nel suo insieme manca di ridondanza nel livello di logica aziendale."
+        ]
+    },
+    {
+        "Question Number": "41",
+        "Situation": "Un team di sviluppo sta distribuendo nuove versioni della propria API e desidera testarle in produzione con un impatto minimo sugli utenti finali. Decidono di utilizzare i canary deployments per instradare una piccola percentuale del traffico di produzione verso la nuova versione prima di un rilascio completo.",
+        "Question": "Quale strategia di distribuzione supporterebbe meglio questo approccio di test e come?",
+        "Options": {
+            "1": "Edge-Optimized Endpoint, perché instrada il traffico attraverso CloudFront e fornisce una latenza inferiore per un pubblico globale.",
+            "2": "Regional Endpoint, poiché consente al traffico di rimanere all'interno della stessa regione AWS per applicazioni specifiche della regione.",
+            "3": "Private Endpoint, garantendo che l'API sia accessibile solo all'interno di una VPC per test interni.",
+            "4": "Stage Deployment con Canary Release, abilitando un rollout controllato della nuova versione dell'API mentre si aumenta gradualmente il traffico verso di essa."
+        },
+        "Correct Answer": "Stage Deployment con Canary Release, abilitando un rollout controllato della nuova versione dell'API mentre si aumenta gradualmente il traffico verso di essa.",
+        "Explanation": "Uno Stage Deployment con Canary Release è specificamente progettato per scenari in cui le nuove versioni di un'applicazione o API devono essere testate in produzione con un rischio minimo. Questa strategia consente al team di sviluppo di instradare una piccola percentuale di traffico verso la nuova versione, monitorarne le prestazioni e aumentare gradualmente il traffico se la nuova versione funziona bene. Questo rollout controllato minimizza l'impatto sugli utenti finali e consente un rapido rollback in caso di problemi.",
+        "Other Options": [
+            "L'Edge-Optimized Endpoint è principalmente focalizzato sulla riduzione della latenza per gli utenti globali instradando il traffico attraverso CloudFront. Sebbene migliori le prestazioni, non supporta intrinsecamente la strategia di canary deployment, che richiede un meccanismo per controllare la distribuzione del traffico tra le versioni.",
+            "Il Regional Endpoint è adatto per applicazioni che devono mantenere il traffico all'interno di una specifica regione AWS. Tuttavia, non fornisce la funzionalità necessaria per i canary deployments, che richiedono la capacità di spostare gradualmente il traffico tra diverse versioni di un'API.",
+            "Il Private Endpoint limita l'accesso all'API all'interno di una Virtual Private Cloud (VPC), rendendolo adatto per test interni. Tuttavia, non facilita la strategia di canary deployment, che implica l'esposizione della nuova versione a un sottoinsieme di utenti esterni per raccogliere feedback e monitorare le prestazioni."
+        ]
+    },
+    {
+        "Question Number": "42",
+        "Situation": "Un'organizzazione di ricerca genomica sta eseguendo analisi di sequenze di DNA su larga scala su AWS. I carichi di lavoro richiedono un'elevata potenza computazionale e devono scalare rapidamente per gestire intense richieste di elaborazione. Il team deve garantire che l'applicazione possa scalare dinamicamente per soddisfare le esigenze di prestazioni di picco, mantenendo al contempo i costi operativi ottimizzati durante i periodi di bassa domanda.",
+        "Question": "Quale approccio soddisferebbe meglio questi requisiti di alta prestazione ed efficienza dei costi?",
+        "Options": {
+            "1": "Provisionare istanze EC2 con il massimo vCPU e memoria per i carichi di lavoro di picco e scalare manualmente.",
+            "2": "Utilizzare un gruppo di Auto Scaling con istanze EC2 ottimizzate per il calcolo e configurare una politica di scaling basata sull'utilizzo della CPU.",
+            "3": "Impostare funzioni Amazon Lambda per gestire tutti i compiti computazionali in modo serverless.",
+            "4": "Eseguire un'unica istanza EC2 con un'alta quantità di storage e allocare manualmente le risorse secondo necessità."
+        },
+        "Correct Answer": "Utilizzare un gruppo di Auto Scaling con istanze EC2 ottimizzate per il calcolo e configurare una politica di scaling basata sull'utilizzo della CPU.",
+        "Explanation": "Utilizzare un gruppo di Auto Scaling con istanze EC2 ottimizzate per il calcolo consente all'organizzazione di regolare automaticamente il numero di istanze in base al carico di lavoro. Questo approccio garantisce che durante le esigenze di prestazioni di picco, possano essere provisionate istanze aggiuntive per gestire le richieste computazionali aumentate, mentre durante i periodi di bassa domanda, le istanze possono essere terminate per ottimizzare i costi. La politica di scaling basata sull'utilizzo della CPU è efficace perché correla direttamente le azioni di scaling con l'uso effettivo delle risorse, garantendo che l'applicazione possa rispondere dinamicamente ai cambiamenti nel carico di lavoro in modo efficiente.",
+        "Other Options": [
+            "Provisionare istanze EC2 con il massimo vCPU e memoria per i carichi di lavoro di picco e scalare manualmente non è efficiente. Questo approccio porta a un sovraprovisionamento durante i periodi di bassa domanda, risultando in costi non necessari. Lo scaling manuale è anche soggetto a errori umani e potrebbe non rispondere abbastanza rapidamente ai cambiamenti del carico di lavoro.",
+            "Impostare funzioni Amazon Lambda per gestire tutti i compiti computazionali in modo serverless potrebbe non essere adatto per analisi di sequenze di DNA ad alte prestazioni che richiedono una significativa potenza computazionale e memoria. Lambda ha limitazioni sul tempo di esecuzione e sull'allocazione delle risorse, che potrebbero non soddisfare le esigenze di carichi di lavoro genomici intensivi.",
+            "Eseguire un'unica istanza EC2 con un'alta quantità di storage e allocare manualmente le risorse secondo necessità non è una soluzione scalabile. Questo approccio non consente uno scaling dinamico, che è cruciale per gestire in modo efficiente carichi di lavoro variabili. Inoltre, fare affidamento su un'unica istanza crea un singolo punto di guasto e può portare a colli di bottiglia nelle prestazioni."
+        ]
+    },
+    {
+        "Question Number": "43",
+        "Situation": "Un'azienda di servizi finanziari genera e memorizza grandi volumi di dati dei clienti in loco ogni giorno. A causa di rigorosi requisiti normativi e di conformità, devono mantenere questi dati localmente ma vogliono scaricare i dati più vecchi e raramente accessibili su AWS per risparmiare sui costi di archiviazione. Hanno bisogno di una soluzione che possa estendere senza problemi la loro attuale infrastruttura di archiviazione su AWS, consentendo l'accesso ai dati archiviati senza interrompere le loro applicazioni o flussi di lavoro esistenti.",
+        "Question": "Quale servizio AWS soddisferebbe meglio i requisiti dell'azienda?",
+        "Options": {
+            "1": "Amazon S3 con politiche di ciclo di vita",
+            "2": "AWS Direct Connect",
+            "3": "AWS Storage Gateway",
+            "4": "Amazon EBS Snapshot Export"
+        },
+        "Correct Answer": "AWS Storage Gateway",
+        "Explanation": "AWS Storage Gateway è progettato per integrarsi senza problemi con ambienti on-premises e archiviazione cloud. Fornisce una soluzione di archiviazione ibrida che consente alle aziende di mantenere i propri dati localmente mentre estendono anche le loro capacità di archiviazione su AWS. In questo scenario, l'azienda di servizi finanziari può utilizzare lo Storage Gateway per scaricare i dati più vecchi e raramente accessibili su AWS, garantendo la conformità ai requisiti normativi mentre risparmia sui costi di archiviazione. Il servizio consente un facile accesso ai dati archiviati senza interrompere le applicazioni o i flussi di lavoro esistenti, rendendolo la soluzione migliore per le esigenze dell'azienda.",
+        "Other Options": [
+            "Amazon S3 con politiche di ciclo di vita è un servizio di archiviazione che consente agli utenti di gestire il ciclo di vita dei propri dati, ma non fornisce l'integrazione senza soluzione di continuità con l'infrastruttura on-premises di cui l'azienda ha bisogno. Richiederebbe passaggi aggiuntivi per spostare i dati da on-premises a S3, il che potrebbe interrompere i flussi di lavoro esistenti.",
+            "AWS Direct Connect è un servizio che fornisce una connessione di rete dedicata da on-premises a AWS. Sebbene possa migliorare la larghezza di banda e ridurre la latenza per il trasferimento dei dati, non affronta direttamente la necessità di una soluzione di archiviazione ibrida che consenta un accesso senza soluzione di continuità ai dati archiviati.",
+            "Amazon EBS Snapshot Export consente agli utenti di esportare snapshot EBS su S3, ma è principalmente focalizzato sul backup e il ripristino dei volumi EBS piuttosto che fornire una soluzione di archiviazione ibrida. Non facilita l'accesso continuo ai dati archiviati nel modo in cui fa AWS Storage Gateway."
+        ]
+    },
+    {
+        "Question Number": "44",
+        "Situation": "Un'azienda ha sia una connessione VPN che un link AWS Direct Connect stabiliti tra il proprio ambiente on-premises e il proprio VPC AWS. Per una trasmissione dei dati altamente sicura, vogliono garantire che tutto il traffico rimanga crittografato mentre attraversa la rete.",
+        "Question": "Quale approccio garantirebbe meglio la comunicazione crittografata per tutti i dati scambiati tra il loro data center e AWS?",
+        "Options": {
+            "1": "Fare affidamento esclusivamente su AWS Direct Connect poiché fornisce un link privato e dedicato, eliminando la necessità di crittografia aggiuntiva.",
+            "2": "Configurare una VPN su AWS Direct Connect per crittografare i dati su una connessione privata, garantendo la crittografia end-to-end.",
+            "3": "Utilizzare un Internet Gateway (IGW) con HTTPS per proteggere i dati mentre viaggiano su Internet.",
+            "4": "Abilitare AWS Shield su Direct Connect per crittografare il traffico e prevenire accessi non autorizzati."
+        },
+        "Correct Answer": "Configurare una VPN su AWS Direct Connect per crittografare i dati su una connessione privata, garantendo la crittografia end-to-end.",
+        "Explanation": "Sebbene AWS Direct Connect fornisca un link privato e dedicato tra l'ambiente on-premises e AWS, non crittografa intrinsecamente i dati trasmessi. Per garantire che tutti i dati scambiati rimangano crittografati, configurare una VPN sul link Direct Connect è il miglior approccio. Questa configurazione consente una comunicazione sicura e crittografata, sfruttando al contempo la larghezza di banda dedicata e la latenza ridotta di Direct Connect. La VPN aggiunge un ulteriore livello di sicurezza crittografando i pacchetti di dati, garantendo che anche se il link privato venisse compromesso, i dati rimarrebbero sicuri.",
+        "Other Options": [
+            "Fare affidamento esclusivamente su AWS Direct Connect non è sufficiente per garantire la crittografia. Sebbene fornisca una connessione privata, non crittografa i dati in transito, lasciandoli vulnerabili all'intercettazione.",
+            "Questa opzione è in realtà la risposta corretta. Configurare una VPN su AWS Direct Connect è il miglior approccio per garantire comunicazioni crittografate.",
+            "Utilizzare un Internet Gateway (IGW) con HTTPS non è applicabile in questo scenario poiché la domanda specifica un desiderio di connessione privata tra il data center e AWS. Un IGW è utilizzato per l'accesso a Internet pubblico e, sebbene HTTPS fornisca crittografia, non soddisfa il requisito di una connessione privata e sicura."
+        ]
+    },
+    {
+        "Question Number": "45",
+        "Situation": "Un'azienda desidera migliorare la sicurezza del proprio ambiente AWS rilevando attività insolite e non autorizzate attraverso più account. Stanno considerando Amazon GuardDuty per monitorare e identificare potenziali minacce utilizzando AI/ML e intelligence sulle minacce.",
+        "Question": "Come aiuta Amazon GuardDuty a rilevare minacce alla sicurezza e come vengono gestiti i risultati?",
+        "Options": {
+            "1": "GuardDuty analizza i log DNS, VPC flow e CloudTrail, inviando i risultati direttamente all'utente root per una revisione manuale.",
+            "2": "GuardDuty utilizza AI/ML sui log DNS, VPC flow e CloudTrail, creando risultati che possono attivare risposte automatiche tramite CloudWatch Events, come notifiche SNS o invocazioni Lambda per azioni di rimedio.",
+            "3": "GuardDuty monitora solo il traffico di un singolo account, richiedendo agli utenti di rivedere manualmente i log per minacce tra account.",
+            "4": "GuardDuty utilizza regole statiche per rilevare attività e notifica solo per anomalie di rete nei log VPC flow."
+        },
+        "Correct Answer": "GuardDuty utilizza AI/ML sui log DNS, VPC flow e CloudTrail, creando risultati che possono attivare risposte automatiche tramite CloudWatch Events, come notifiche SNS o invocazioni Lambda per azioni di rimedio.",
+        "Explanation": "Amazon GuardDuty sfrutta l'intelligenza artificiale (AI) e l'apprendimento automatico (ML) per analizzare varie fonti di dati, inclusi i log DNS, i log VPC flow e i log CloudTrail. Questa analisi aiuta a identificare schemi insoliti e potenziali minacce alla sicurezza. Quando GuardDuty rileva una minaccia, genera risultati che possono essere integrati con i servizi AWS come CloudWatch Events. Questa integrazione consente risposte automatiche, come l'invio di notifiche tramite Amazon SNS o l'invocazione di funzioni AWS Lambda per azioni di rimedio, migliorando così la postura di sicurezza dell'ambiente AWS.",
+        "Other Options": [
+            "Sebbene GuardDuty analizzi i log DNS, VPC flow e CloudTrail, non invia i risultati direttamente all'utente root per una revisione manuale. Invece, i risultati vengono generati automaticamente e possono essere integrati con altri servizi AWS per risposte automatiche.",
+            "GuardDuty può monitorare più account tramite AWS Organizations, consentendo una rilevazione centralizzata delle minacce in tutta l'organizzazione piuttosto che solo in un singolo account. Non richiede agli utenti di rivedere manualmente i log per minacce tra account.",
+            "GuardDuty non si basa esclusivamente su regole statiche; utilizza AI e ML per rilevare una vasta gamma di attività, non solo anomalie di rete nei log VPC flow. Analizza vari tipi di log per identificare potenziali minacce in modo completo."
+        ]
+    },
+    {
+        "Question Number": "46",
+        "Situation": "Un'azienda di servizi finanziari sta passando da un'architettura monolitica a microservizi per gestire meglio le transazioni dei clienti. L'azienda desidera implementare microservizi senza stato per garantire alta disponibilità, scalabilità e tolleranza ai guasti.",
+        "Question": "Quale approccio di design dovrebbe adottare l'azienda per garantire microservizi resilienti e disaccoppiati?",
+        "Options": {
+            "1": "Progettare ogni microservizio per essere senza stato, il che significa che non conserva alcuna informazione di sessione tra le richieste, e memorizzare lo stato in una cache distribuita come Amazon ElastiCache per prestazioni e durabilità.",
+            "2": "Progettare ogni microservizio per mantenere lo stato della sessione all'interno del servizio stesso, in modo che lo stato possa essere facilmente accessibile da altri servizi senza sistemi esterni.",
+            "3": "Implementare un database monolitico che memorizza tutti i dati di sessione per i microservizi, in modo che il sistema possa accedervi centralmente per mantenere lo stato tra i servizi.",
+            "4": "Utilizzare Amazon RDS con distribuzione multi-AZ per gestire lo stato della sessione per ogni microservizio, garantendo coerenza e disponibilità dei dati."
+        },
+        "Correct Answer": "Progettare ogni microservizio per essere senza stato, il che significa che non conserva alcuna informazione di sessione tra le richieste, e memorizzare lo stato in una cache distribuita come Amazon ElastiCache per prestazioni e durabilità.",
+        "Explanation": "Progettare ogni microservizio per essere senza stato è cruciale per raggiungere alta disponibilità, scalabilità e tolleranza ai guasti. I microservizi senza stato non conservano informazioni di sessione, il che consente loro di essere facilmente replicati e scalati orizzontalmente. Memorizzando lo stato in una cache distribuita come Amazon ElastiCache, l'azienda può garantire che i dati siano accessibili e durevoli senza accoppiare i servizi a un sistema di gestione dello stato specifico. Questo approccio promuove un disaccoppiamento tra i servizi, poiché possono operare indipendentemente senza fare affidamento su uno stato condiviso.",
+        "Other Options": [
+            "Progettare ogni microservizio per mantenere lo stato della sessione all'interno del servizio stesso contraddice il principio di assenza di stato. Questo approccio può portare a un forte accoppiamento tra i servizi, rendendo difficile scalare e gestirli in modo indipendente, e può anche creare sfide nella tolleranza ai guasti e nel recupero.",
+            "Implementare un database monolitico per memorizzare tutti i dati di sessione centralizza la gestione dello stato, il che va contro l'obiettivo di decentralizzazione dell'architettura a microservizi. Questo può creare un singolo punto di guasto e limitare la scalabilità e la resilienza del sistema, poiché tutti i servizi dipenderebbero dalla disponibilità del database monolitico.",
+            "Utilizzare Amazon RDS con distribuzione multi-AZ per la gestione dello stato della sessione introduce una dipendenza da un database relazionale, che può portare a colli di bottiglia e ridurre le prestazioni. Sebbene fornisca coerenza e disponibilità dei dati, non si allinea con il principio di design senza stato che i microservizi dovrebbero seguire, aumentando così l'accoppiamento tra i servizi."
+        ]
+    },
+    {
+        "Question Number": "47",
+        "Situation": "Un'organizzazione richiede che le chiavi di crittografia utilizzate per proteggere i dati sensibili vengano ruotate automaticamente ogni anno.",
+        "Question": "Quale funzionalità di AWS può utilizzare l'organizzazione per soddisfare questo requisito?",
+        "Options": {
+            "1": "Configurare una policy di ciclo di vita in Amazon S3",
+            "2": "Abilitare la rotazione automatica delle chiavi in AWS KMS",
+            "3": "Utilizzare Amazon GuardDuty per monitorare l'uso delle chiavi",
+            "4": "Abilitare la crittografia in transito utilizzando AWS Certificate Manager (ACM)"
+        },
+        "Correct Answer": "Abilitare la rotazione automatica delle chiavi in AWS KMS",
+        "Explanation": "AWS Key Management Service (KMS) offre la possibilità di ruotare automaticamente le chiavi di crittografia. Abilitando la rotazione automatica delle chiavi, l'organizzazione può garantire che le chiavi utilizzate per crittografare i dati sensibili vengano ruotate ogni anno senza intervento manuale. Questa funzionalità aiuta a mantenere le migliori pratiche di sicurezza cambiando regolarmente le chiavi di crittografia, riducendo così il rischio di compromissione delle chiavi.",
+        "Other Options": [
+            "Configurare una policy di ciclo di vita in Amazon S3 è correlato alla gestione del ciclo di vita di archiviazione degli oggetti in S3, come il passaggio degli oggetti a diverse classi di archiviazione o la loro eliminazione dopo un certo periodo. Non riguarda la rotazione automatica delle chiavi di crittografia.",
+            "Utilizzare Amazon GuardDuty per monitorare l'uso delle chiavi è focalizzato sulla rilevazione delle minacce e sul monitoraggio di attività malevole negli account AWS. Sebbene possa aiutare a identificare accessi non autorizzati o anomalie nell'uso delle chiavi, non fornisce un meccanismo per la rotazione delle chiavi.",
+            "Abilitare la crittografia in transito utilizzando AWS Certificate Manager (ACM) riguarda la protezione dei dati mentre viaggiano attraverso la rete. Questo è importante per proteggere i dati in transito, ma non affronta il requisito per la rotazione automatica delle chiavi di crittografia."
+        ]
+    },
+    {
+        "Question Number": "48",
+        "Situation": "Un'azienda sta progettando una VPC personalizzata nella regione us-east-1 con un'architettura a tre livelli, inclusi un livello web, un livello applicativo e un livello database. Richiedono che ogni livello sia isolato attraverso tre zone di disponibilità (AZ) e necessitano di accesso controllato sia per le risorse pubbliche che per quelle private. L'azienda desidera anche abilitare il supporto DNS per la risoluzione dei nomi host interni all'interno della VPC.",
+        "Question": "Quale configurazione dovrebbe implementare l'azienda per soddisfare questi requisiti garantendo accesso pubblico controllato e funzionalità DNS interne?",
+        "Options": {
+            "1": "Assegnare un blocco CIDR /16 alla VPC, utilizzare subnet private per ogni livello in ogni AZ, configurare un NAT Gateway in ogni AZ per l'accesso a Internet in uscita dalle subnet private e abilitare enableDnsHostnames e enableDnsSupport per la funzionalità DNS.",
+            "2": "Utilizzare un blocco CIDR /24 per la VPC, creare una subnet pubblica in ogni AZ per il livello web, distribuire un Internet Gateway per l'accesso pubblico diretto e disabilitare enableDnsSupport per prevenire la risoluzione dei nomi host interni.",
+            "3": "Assegnare un blocco CIDR /28 alla VPC, configurare subnet pubbliche solo per tutti i livelli, utilizzare un Bastion Host per l'accesso a Internet e disabilitare enableDnsHostnames per limitare la funzionalità DNS solo agli IP privati.",
+            "4": "Configurare la VPC con un blocco CIDR /20, impostare subnet private in ogni AZ per il livello web, utilizzare istanze NAT per il traffico in uscita e disabilitare enableDnsHostnames per una maggiore sicurezza."
+        },
+        "Correct Answer": "Assegnare un blocco CIDR /16 alla VPC, utilizzare subnet private per ogni livello in ogni AZ, configurare un NAT Gateway in ogni AZ per l'accesso a Internet in uscita dalle subnet private e abilitare enableDnsHostnames e enableDnsSupport per la funzionalità DNS.",
+        "Explanation": "Questa opzione soddisfa tutti i requisiti delineati nello scenario. Assegnando un blocco CIDR /16, l'azienda garantisce un ampio spazio di indirizzi IP per la propria architettura a tre livelli. Utilizzare subnet private per ogni livello in ogni AZ fornisce l'isolamento e la sicurezza necessari. Il NAT Gateway consente alle istanze nelle subnet private di accedere a Internet per aggiornamenti o servizi esterni mantenendole inaccessibili da Internet pubblico. Abilitare sia enableDnsHostnames che enableDnsSupport garantisce che le risorse interne possano risolvere i nomi host, facilitando la comunicazione all'interno della VPC.",
+        "Other Options": [
+            "Utilizzare un blocco CIDR /24 per la VPC è insufficiente per un'architettura a tre livelli che si estende su più AZ, poiché limita il numero di indirizzi IP disponibili. Creare subnet pubbliche per il livello web esporrebbe direttamente a Internet, il che non si allinea con il requisito di accesso controllato. Disabilitare enableDnsSupport impedirebbe la risoluzione dei nomi host interni, che è un requisito critico.",
+            "Assegnare un blocco CIDR /28 è troppo piccolo per una VPC che deve supportare più livelli attraverso tre AZ, il che porterebbe all'esaurimento degli IP. Configurare subnet pubbliche per tutti i livelli contraddice il requisito di isolamento e accesso controllato. Inoltre, disabilitare enableDnsHostnames limiterebbe la funzionalità DNS, impedendo la risoluzione dei nomi host interni.",
+            "Configurare la VPC con un blocco CIDR /20 fornisce più indirizzi IP rispetto a un /28, ma non è ancora ottimale per un'architettura a tre livelli. Configurare subnet private solo per il livello web non fornisce l'isolamento necessario per i livelli applicativo e database. Utilizzare istanze NAT invece di NAT Gateways potrebbe portare a problemi di prestazioni e sovraccarico di gestione. Disabilitare enableDnsHostnames limiterebbe nuovamente la funzionalità DNS, il che non è accettabile date le esigenze."
+        ]
+    },
+    {
+        "Question Number": "49",
+        "Situation": "Una startup sta monitorando attentamente le proprie spese mensili su AWS per evitare sforamenti di budget e ha impostato avvisi se la spesa supera i limiti previsti. Inoltre, la startup desidera analizzare le tendenze nei modelli di spesa nel tempo per identificare potenziali opportunità di risparmio e ottimizzare il proprio utilizzo di AWS.",
+        "Question": "Quale combinazione di strumenti di gestione dei costi AWS soddisferebbe meglio questi requisiti?",
+        "Options": {
+            "1": "Utilizzare AWS Budgets per impostare avvisi di spesa e AWS Cost Explorer per analizzare i modelli di spesa e le tendenze nel tempo",
+            "2": "Implementare AWS Trusted Advisor per identificare raccomandazioni di risparmio e utilizzare il rapporto sui costi e sull'uso di AWS per un tracciamento dettagliato dei costi",
+            "3": "Abilitare il rapporto sui costi e sull'uso di AWS per un tracciamento completo e iscriversi a AWS Support per ulteriori approfondimenti sulla gestione dei costi",
+            "4": "Utilizzare AWS Cost Explorer per visualizzare le tendenze dei costi e AWS Trusted Advisor per ricevere raccomandazioni regolari sull'ottimizzazione dei costi"
+        },
+        "Correct Answer": "Utilizzare AWS Budgets per impostare avvisi di spesa e AWS Cost Explorer per analizzare i modelli di spesa e le tendenze nel tempo",
+        "Explanation": "Questa opzione affronta direttamente i requisiti della startup consentendo loro di impostare avvisi per i limiti di spesa utilizzando AWS Budgets, il che aiuta a prevenire sforamenti di budget. Inoltre, AWS Cost Explorer fornisce strumenti potenti per analizzare i modelli di spesa e le tendenze nel tempo, consentendo alla startup di identificare opportunità di risparmio e ottimizzare efficacemente il proprio utilizzo di AWS.",
+        "Other Options": [
+            "Implementare AWS Trusted Advisor per raccomandazioni di risparmio è utile, ma non fornisce la capacità di impostare avvisi di spesa. Il rapporto sui costi e sull'uso di AWS è dettagliato ma è più focalizzato sui dati grezzi piuttosto che sull'analisi delle tendenze, rendendo questa combinazione meno efficace per le esigenze della startup.",
+            "Abilitare il rapporto sui costi e sull'uso di AWS è vantaggioso per il tracciamento completo dei costi, ma iscriversi a AWS Support non fornisce direttamente approfondimenti sulla gestione dei costi. Questa opzione manca della funzionalità di avviso proattivo che offre AWS Budgets, che è cruciale per monitorare le spese.",
+            "Utilizzare AWS Cost Explorer per visualizzare le tendenze è una buona scelta, ma fare affidamento esclusivamente su AWS Trusted Advisor per le raccomandazioni non fornisce il necessario meccanismo di avviso per la gestione del budget. Questa combinazione non soddisfa completamente il requisito della startup per il monitoraggio e l'avviso sui limiti di spesa."
+        ]
+    },
+    {
+        "Question Number": "50",
+        "Situation": "Un'azienda sta configurando una VPC sicura in AWS e ha bisogno di abilitare l'accesso a Internet in uscita per le istanze in una subnet privata. Stanno considerando di utilizzare un'istanza NAT o un NAT gateway.",
+        "Question": "Quale delle seguenti descrizioni riassume correttamente le principali differenze tra le istanze NAT e i NAT gateway, in particolare riguardo alle configurazioni di sicurezza e alla manutenzione?",
+        "Options": {
+            "1": "Le istanze NAT supportano l'uso di Security Groups e sono altamente disponibili, mentre i NAT gateway non supportano Security Groups e si basano su Network ACL per il filtraggio del traffico.",
+            "2": "I NAT gateway offrono maggiore disponibilità, larghezza di banda e richiedono minore manutenzione rispetto alle istanze NAT, ma supportano solo Network ACL per il filtraggio del traffico, non Security Groups.",
+            "3": "Le istanze NAT forniscono scalabilità automatica e alta disponibilità all'interno di una zona di disponibilità, rendendole ideali per i carichi di lavoro di produzione.",
+            "4": "I NAT gateway consentono un uso multipurpose, come agire come bastion host, il che non è possibile con le istanze NAT a causa delle restrizioni di gestione di AWS."
+        },
+        "Correct Answer": "I NAT gateway offrono maggiore disponibilità, larghezza di banda e richiedono minore manutenzione rispetto alle istanze NAT, ma supportano solo Network ACL per il filtraggio del traffico, non Security Groups.",
+        "Explanation": "I NAT gateway sono progettati per fornire una soluzione gestita e altamente disponibile per abilitare l'accesso a Internet in uscita per le istanze in una subnet privata. Si scalano automaticamente per soddisfare le esigenze di larghezza di banda del traffico, il che li rende adatti per carichi di lavoro di produzione. Inoltre, i NAT gateway richiedono una manutenzione minima poiché sono gestiti da AWS, a differenza delle istanze NAT, che richiedono configurazione, scalabilità e manutenzione manuali. Sebbene i NAT gateway non supportino Security Groups, possono essere controllati utilizzando Network ACL, che è una differenza chiave rispetto alle istanze NAT che supportano i Security Groups.",
+        "Other Options": [
+            "Le istanze NAT supportano l'uso di Security Groups e sono altamente disponibili, mentre i NAT gateway non supportano Security Groups e si basano su Network ACL per il filtraggio del traffico. Questa affermazione è errata perché mentre le istanze NAT supportano i Security Groups, i NAT gateway non supportano affatto i Security Groups, facendo affidamento esclusivamente su Network ACL per il filtraggio del traffico. Inoltre, i NAT gateway sono progettati per alta disponibilità.",
+            "Le istanze NAT forniscono scalabilità automatica e alta disponibilità all'interno di una zona di disponibilità, rendendole ideali per i carichi di lavoro di produzione. Questa affermazione è errata perché le istanze NAT non forniscono scalabilità automatica; richiedono intervento manuale per scalare e non sono intrinsecamente altamente disponibili a meno che non siano configurate con più istanze attraverso le zone di disponibilità.",
+            "I NAT gateway consentono un uso multipurpose, come agire come bastion host, il che non è possibile con le istanze NAT a causa delle restrizioni di gestione di AWS. Questa affermazione è errata perché i NAT gateway non possono agire come bastion host; sono specificamente progettati per la funzionalità NAT. I bastion host sono tipicamente istanze EC2 configurate per consentire accesso sicuro alle istanze nelle subnet private."
+        ]
+    },
+    {
+        "Question Number": "51",
+        "Situation": "Un'azienda di vendita al dettaglio, ShopSmart, memorizza i dati dei clienti, inclusi i PII, nei bucket Amazon S3. Per conformarsi alle normative sulla privacy dei dati, hanno bisogno di una soluzione che possa identificare e classificare automaticamente le informazioni sensibili. Inoltre, vogliono avere la possibilità di creare regole personalizzate per rilevare schemi di dati unici specifici per la loro attività. ShopSmart sta considerando Amazon Macie per soddisfare queste esigenze.",
+        "Question": "In che modo Amazon Macie aiuta a garantire la sicurezza e la privacy dei dati per le informazioni sensibili nei bucket S3, e quali opzioni sono disponibili per la creazione di identificatori di dati?",
+        "Options": {
+            "1": "Amazon Macie fornisce solo identificatori di dati predefiniti, limitando il suo utilizzo a tipi di dati specifici, come informazioni finanziarie e registri sanitari, senza opzioni di personalizzazione per altri schemi di dati sensibili.",
+            "2": "Amazon Macie utilizza l'apprendimento automatico e identificatori di dati gestiti per la scoperta e la classificazione automatizzate dei dati sensibili, inclusi i PII e le informazioni finanziarie. Consente anche la creazione di identificatori di dati personalizzati utilizzando espressioni regolari e prossimità delle parole chiave, consentendo un'identificazione dei dati più granulare in base alle esigenze organizzative uniche.",
+            "3": "Amazon Macie si concentra principalmente sul monitoraggio del traffico di rete per schemi insoliti, fornendo avvisi sul movimento dei dati ma non identificando direttamente le informazioni sensibili memorizzate nei bucket S3.",
+            "4": "Amazon Macie si basa esclusivamente su AWS Security Hub per la scoperta e la classificazione dei dati, richiedendo agli utenti di impostare regole personalizzate di EventBridge per rilevare e classificare i dati in base a criteri predefiniti."
+        },
+        "Correct Answer": "Amazon Macie utilizza l'apprendimento automatico e identificatori di dati gestiti per la scoperta e la classificazione automatizzate dei dati sensibili, inclusi i PII e le informazioni finanziarie. Consente anche la creazione di identificatori di dati personalizzati utilizzando espressioni regolari e prossimità delle parole chiave, consentendo un'identificazione dei dati più granulare in base alle esigenze organizzative uniche.",
+        "Explanation": "Amazon Macie è progettato per aiutare le organizzazioni a scoprire, classificare e proteggere automaticamente i dati sensibili memorizzati in Amazon S3. Utilizza algoritmi di apprendimento automatico per identificare e classificare informazioni sensibili, inclusi i dati personali identificabili (PII) e i dati finanziari. Inoltre, Macie offre la flessibilità di creare identificatori di dati personalizzati, che possono essere adattati per soddisfare requisiti aziendali specifici. Questo avviene attraverso l'uso di espressioni regolari e prossimità delle parole chiave, consentendo alle organizzazioni di definire schemi unici rilevanti per le loro operazioni, migliorando così i loro sforzi di sicurezza dei dati e conformità.",
+        "Other Options": [
+            "Amazon Macie non limita la sua funzionalità solo agli identificatori di dati predefiniti. Offre sia identificatori di dati gestiti che la possibilità di creare identificatori personalizzati, consentendo un'ampia gamma di rilevamento di dati sensibili.",
+            "Amazon Macie non si concentra principalmente sul monitoraggio del traffico di rete. Invece, la sua funzione principale è identificare e classificare i dati sensibili all'interno dei bucket S3, rendendolo uno strumento chiave per la privacy e la sicurezza dei dati.",
+            "Amazon Macie opera in modo indipendente in termini di scoperta e classificazione dei dati. Sebbene possa integrarsi con AWS Security Hub per una gestione della sicurezza più ampia, non si basa esclusivamente su di esso per le sue funzionalità principali."
+        ]
+    },
+    {
+        "Question Number": "52",
+        "Situation": "Un'azienda di giochi online ha utenti in tutto il mondo e vuole ridurre al minimo la latenza distribuendo la propria applicazione più vicino agli utenti finali. Inoltre, vogliono ottimizzare i costi evitando le spese di trasferimento dati tra regioni quando gli utenti in diverse regioni accedono all'applicazione.",
+        "Question": "Quale approccio li aiuterebbe meglio a soddisfare questi requisiti?",
+        "Options": {
+            "1": "Distribuire tutte le risorse in una singola regione AWS e utilizzare CloudFront per la cache",
+            "2": "Distribuire risorse in più zone di disponibilità in una regione AWS",
+            "3": "Distribuire l'applicazione in più regioni AWS in base alle posizioni degli utenti",
+            "4": "Utilizzare una singola zona di disponibilità e fare affidamento sul routing DNS globale"
+        },
+        "Correct Answer": "Distribuire l'applicazione in più regioni AWS in base alle posizioni degli utenti",
+        "Explanation": "Distribuire l'applicazione in più regioni AWS consente all'azienda di giochi di posizionare le proprie risorse più vicino agli utenti finali, riducendo significativamente la latenza. Avere istanze in varie regioni consente agli utenti di connettersi al server più vicino, minimizzando il tempo necessario per il trasferimento dei dati. Inoltre, questo approccio aiuta a evitare le spese di trasferimento dati tra regioni, poiché gli utenti che accedono all'applicazione dalla propria regione locale non incorreranno in costi associati al trasferimento dei dati tra regioni.",
+        "Other Options": [
+            "Distribuire tutte le risorse in una singola regione AWS e utilizzare CloudFront per la cache può aiutare con la latenza fino a un certo punto, ma non affronta il problema delle spese di trasferimento dati tra regioni quando gli utenti di diverse regioni accedono all'applicazione. CloudFront può memorizzare nella cache i contenuti, ma potrebbe non mitigare completamente la latenza per tutti gli utenti in tutto il mondo.",
+            "Distribuire risorse in più zone di disponibilità in una regione AWS migliora la disponibilità e la tolleranza ai guasti, ma non riduce significativamente la latenza per gli utenti situati lontano da quella regione. Non aiuta nemmeno con i costi di trasferimento dati tra regioni, poiché tutti gli utenti accederebbero comunque alla stessa regione.",
+            "Utilizzare una singola zona di disponibilità e fare affidamento sul routing DNS globale non ridurrebbe efficacemente la latenza per gli utenti situati lontano da quella zona. Sebbene il routing DNS possa indirizzare gli utenti al punto finale più vicino, non risolve il problema dell'alta latenza per gli utenti geograficamente distanti dalla singola zona di disponibilità, né affronta le spese di trasferimento dati tra regioni."
+        ]
+    },
+    {
+        "Question Number": "53",
+        "Situation": "Un'azienda di analisi dei dati esegue lavori di elaborazione su larga scala per i propri clienti, ma la domanda varia significativamente durante la settimana. L'azienda desidera una soluzione di calcolo economica che consenta di gestire questi carichi di lavoro riducendo al minimo i costi durante i periodi di bassa domanda.",
+        "Question": "Quale approccio ottimizzerebbe meglio i costi per questo carico di lavoro? (Scegli due.)",
+        "Options": {
+            "1": "Utilizzare istanze EC2 On-Demand e avviare manualmente le istanze secondo necessità",
+            "2": "Utilizzare istanze riservate per un numero fisso di istanze EC2",
+            "3": "Distribuire un gruppo di Auto Scaling con Spot Instances per i lavori di elaborazione",
+            "4": "Utilizzare AWS Lambda per eseguire tutti i lavori di elaborazione su richiesta",
+            "5": "Implementare EC2 Savings Plans per ridurre i costi per carichi di lavoro prevedibili"
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Distribuire un gruppo di Auto Scaling con Spot Instances per i lavori di elaborazione",
+            "Utilizzare AWS Lambda per eseguire tutti i lavori di elaborazione su richiesta"
+        ],
+        "Explanation": "Distribuire un gruppo di Auto Scaling con Spot Instances per i lavori di elaborazione è una soluzione economica per carichi di lavoro variabili. Le Spot Instances sono disponibili con uno sconto fino al 90% rispetto ai prezzi On-Demand e sono ideali per applicazioni con orari di inizio e fine flessibili, o che possono sopportare interruzioni. L'Auto Scaling garantisce che l'azienda abbia la giusta quantità di capacità per gestire il carico in qualsiasi momento, ottimizzando così i costi. Utilizzare AWS Lambda per eseguire tutti i lavori di elaborazione su richiesta è anche una buona opzione poiché consente all'azienda di eseguire codice senza dover provisionare o gestire server e si paga solo per il tempo di calcolo consumato, il che può essere molto economico per carichi di lavoro sporadici.",
+        "Other Options": [
+            "Utilizzare istanze EC2 On-Demand e avviare manualmente le istanze secondo necessità non è la soluzione più economica per carichi di lavoro variabili. Sebbene fornisca flessibilità, non sfrutta i risparmi sui costi delle Spot Instances o di AWS Lambda.",
+            "Utilizzare istanze riservate per un numero fisso di istanze EC2 non è ideale per carichi di lavoro variabili poiché non fornisce la flessibilità di scalare su o giù in base alla domanda. Le istanze riservate offrono uno sconto significativo rispetto ai prezzi On-Demand, ma richiedono un impegno di uno o tre anni, il che potrebbe non essere adatto per carichi di lavoro variabili.",
+            "Implementare EC2 Savings Plans per ridurre i costi per carichi di lavoro prevedibili non è la migliore opzione per questo scenario. I Savings Plans offrono uno sconto sull'utilizzo di calcolo AWS, ma richiedono un impegno a un importo costante di utilizzo (misurato in $/ora) per 1 o 3 anni, il che potrebbe non essere adatto per carichi di lavoro variabili."
+        ]
+    },
+    {
+        "Question Number": "54",
+        "Situation": "Un'applicazione di reporting utilizzata da un team di analisi deve gestire un alto volume di query di lettura per generare rapidamente e in modo efficiente informazioni. Sebbene il database abbia una singola fonte per le operazioni di scrittura, deve supportare un alto traffico di lettura con bassa latenza, anche quando l'istanza principale sta elaborando un carico pesante. Il team desidera una configurazione che possa bilanciare il carico di lettura e fornire accesso ininterrotto al database per le query analitiche.",
+        "Question": "Quale strategia di replica del database raggiungerebbe meglio questo obiettivo?",
+        "Options": {
+            "1": "Abilitare il deployment Multi-AZ per il database principale, consentendo il failover automatico a un'istanza di standby per una maggiore disponibilità",
+            "2": "Utilizzare repliche di lettura per alleggerire il traffico di lettura dal database principale, distribuendo il carico di lavoro e riducendo la latenza delle richieste di lettura",
+            "3": "Distribuire una configurazione attiva-attiva multi-regione per supportare l'alta disponibilità e bilanciare il traffico di lettura e scrittura tra diverse regioni",
+            "4": "Configurare il database per la replica sincrona solo per garantire la coerenza dei dati durante i periodi di alto traffico di lettura"
+        },
+        "Correct Answer": "Utilizzare repliche di lettura per alleggerire il traffico di lettura dal database principale, distribuendo il carico di lavoro e riducendo la latenza delle richieste di lettura",
+        "Explanation": "Utilizzare repliche di lettura è la strategia più efficace per gestire alti volumi di query di lettura in questo scenario. Le repliche di lettura consentono al database principale di concentrarsi sulle operazioni di scrittura mentre distribuiscono le richieste di lettura su più repliche. Questa configurazione non solo bilancia il carico di lettura, ma riduce anche la latenza, poiché le query di lettura possono essere elaborate da repliche ottimizzate per le operazioni di lettura. Inoltre, se l'istanza principale è sotto carico pesante, le repliche di lettura possono comunque fornire accesso ininterrotto ai dati, garantendo che le query analitiche possano essere eseguite rapidamente ed efficientemente.",
+        "Other Options": [
+            "Abilitare il deployment Multi-AZ migliora principalmente la disponibilità e le capacità di failover, ma non affronta specificamente la necessità di gestire un alto traffico di lettura. Fornisce un'istanza di standby per il failover, ma non distribuisce il carico di lettura, che è cruciale per i requisiti del team di analisi.",
+            "Distribuire una configurazione attiva-attiva multi-regione può fornire alta disponibilità e bilanciamento del carico, ma è più complessa e potrebbe introdurre latenza a causa della sincronizzazione dei dati tra le regioni. Questa opzione non è necessaria per lo scenario dato, che si concentra sulla gestione efficiente del traffico di lettura piuttosto che sul bilanciamento delle operazioni di lettura e scrittura tra le regioni.",
+            "Configurare il database per la replica sincrona garantisce la coerenza dei dati, ma può introdurre latenza durante i periodi di alto traffico di lettura. La replica sincrona richiede che tutte le repliche confermino la ricezione dei dati prima che il primario possa procedere, il che può rallentare le operazioni di lettura e non affronta efficacemente la necessità di accesso a bassa latenza per le letture."
+        ]
+    },
+    {
+        "Question Number": "55",
+        "Situation": "Una startup memorizza i dati degli utenti su Amazon S3 e desidera ottimizzare i costi di archiviazione implementando politiche di ciclo di vita dei dati. I dati vengono frequentemente accessi per i primi 30 giorni e raramente dopo, ma devono essere conservati per 5 anni per motivi di conformità.",
+        "Question": "Quale politica di ciclo di vita dei dati sarebbe la più economica?",
+        "Options": {
+            "1": "Memorizzare i dati in S3 Standard e spostarli in Glacier dopo 30 giorni",
+            "2": "Memorizzare i dati in S3 Intelligent-Tiering per tutto il loro ciclo di vita",
+            "3": "Spostare i dati in S3 Standard-IA dopo 30 giorni, quindi in Glacier Deep Archive dopo un anno",
+            "4": "Memorizzare tutti i dati in S3 Standard e eliminarli dopo 5 anni"
+        },
+        "Correct Answer": "Spostare i dati in S3 Standard-IA dopo 30 giorni, quindi in Glacier Deep Archive dopo un anno",
+        "Explanation": "Questa opzione è la più economica perché sfrutta S3 Standard per i primi 30 giorni, quando i dati vengono frequentemente accessi, garantendo prestazioni e costi ottimali per i dati attivi. Dopo 30 giorni, spostare i dati in S3 Standard-IA (Accesso Infrequente) riduce i costi di archiviazione per i dati che vengono raramente accessi ma devono comunque essere conservati. Infine, passare a Glacier Deep Archive dopo un anno offre il costo di archiviazione più basso per la conservazione a lungo termine, che si allinea con il requisito di mantenere i dati per 5 anni per motivi di conformità. Questa strategia bilancia efficacemente costi e necessità di accesso durante l'intero ciclo di vita dei dati.",
+        "Other Options": [
+            "Memorizzare i dati in S3 Standard e spostarli in Glacier dopo 30 giorni: Questa opzione comporta costi più elevati durante i primi 30 giorni perché mantiene i dati in S3 Standard, che è più costoso rispetto a Standard-IA. Inoltre, spostare in Glacier dopo 30 giorni potrebbe non essere ottimale poiché i dati dovranno comunque essere conservati per 5 anni e Glacier non è progettato per accessi frequenti.",
+            "Memorizzare i dati in S3 Intelligent-Tiering per tutto il loro ciclo di vita: Sebbene S3 Intelligent-Tiering sposti automaticamente i dati tra due livelli di accesso in base ai modelli di accesso che cambiano, potrebbe non essere la soluzione più economica per questo caso d'uso specifico. Dato che i dati vengono frequentemente accessi per i primi 30 giorni e raramente dopo, un approccio più mirato (come spostare in Standard-IA) probabilmente risparmierebbe di più sui costi rispetto alle spese di Intelligent-Tiering.",
+            "Memorizzare tutti i dati in S3 Standard e eliminarli dopo 5 anni: Questa opzione è la meno economica perché mantiene tutti i dati in S3 Standard per l'intera durata, che è la classe di archiviazione più costosa. Inoltre, non sfrutta le opzioni di archiviazione a costo inferiore per i dati che vengono raramente accessi dopo i primi 30 giorni."
+        ]
+    },
+    {
+        "Question Number": "56",
+        "Situation": "Un'azienda di e-commerce vuole proteggere i propri dati di transazione in caso di guasto del sistema. Per limitare la potenziale perdita di dati, hanno impostato un rigoroso Obiettivo di Punto di Ripristino (RPO) di 5 minuti, il che significa che possono permettersi di perdere solo fino a 5 minuti di dati in caso di interruzione. Hanno bisogno di una soluzione che mantenga la replica dei dati aggiornata per raggiungere questo RPO minimo.",
+        "Question": "Quale delle seguenti soluzioni soddisferebbe meglio questo requisito RPO?",
+        "Options": {
+            "1": "Eseguire snapshot orari del database per fornire punti di ripristino regolari, consentendo il ripristino fino all'ultimo backup orario.",
+            "2": "Implementare la replica continua dei dati su un database secondario, garantendo aggiornamenti quasi in tempo reale e minimizzando la potenziale perdita di dati.",
+            "3": "Eseguire il backup dei dati su Amazon S3 ogni 10 minuti, creando punti di ripristino regolari che possono essere ripristinati secondo necessità.",
+            "4": "Utilizzare backup completi settimanali con backup incrementali giornalieri per catturare le modifiche ai dati in modo economico."
+        },
+        "Correct Answer": "Implementare la replica continua dei dati su un database secondario, garantendo aggiornamenti quasi in tempo reale e minimizzando la potenziale perdita di dati.",
+        "Explanation": "La replica continua dei dati consente aggiornamenti in tempo reale o quasi in tempo reale del database primario su un database secondario. Questo approccio garantisce che qualsiasi modifica apportata al database primario venga immediatamente riflessa nel database secondario, riducendo così al minimo la potenziale perdita di dati a pochi secondi o minuti, il che si allinea perfettamente con il rigoroso Obiettivo di Punto di Ripristino (RPO) di 5 minuti stabilito dall'azienda di e-commerce. Questo metodo è il modo più efficace per soddisfare il requisito di mantenere la replica dei dati aggiornata.",
+        "Other Options": [
+            "Eseguire snapshot orari del database non soddisferebbe il requisito RPO di 5 minuti, poiché consentirebbe la perdita di fino a 59 minuti di dati se si verificasse un guasto subito dopo l'ultimo snapshot.",
+            "Eseguire il backup dei dati su Amazon S3 ogni 10 minuti non soddisferebbe sufficientemente l'RPO di 5 minuti, poiché ci potrebbe essere ancora una potenziale perdita di fino a 9 minuti di dati se si verificasse un guasto subito prima del prossimo backup.",
+            "Utilizzare backup completi settimanali con backup incrementali giornalieri non è adatto per un RPO di 5 minuti, poiché questo metodo comporterebbe una significativa perdita di dati, potenzialmente fino a 24 ore, a seconda di quando è stato eseguito l'ultimo backup incrementale."
+        ]
+    },
+    {
+        "Question Number": "57",
+        "Situation": "Una grande piattaforma di e-commerce deve implementare un'architettura basata su eventi per gestire gli aggiornamenti dell'inventario, l'elaborazione degli ordini e le notifiche ai clienti. La piattaforma deve garantire che il sistema sia altamente disponibile, resiliente ai guasti e in grado di scalare automaticamente in base al traffico.",
+        "Question": "Quale design architettonico dovrebbe essere implementato per raggiungere questi obiettivi? (Scegli due.)",
+        "Options": {
+            "1": "Utilizzare Amazon SQS per disaccoppiare i servizi e garantire l'elaborazione asincrona dei messaggi, e utilizzare Amazon SNS per trasmettere eventi a più abbonati. Implementare AWS Lambda per elaborare eventi e scalare automaticamente.",
+            "2": "Utilizzare istanze Amazon EC2 che eseguono un'applicazione personalizzata per gestire i messaggi dalle fonti di eventi e configurare Amazon Route 53 per instradare il traffico in base al carico.",
+            "3": "Utilizzare Amazon RDS con distribuzione multi-zona di disponibilità per gestire l'elaborazione degli eventi e memorizzare i messaggi in Amazon DynamoDB per la scalabilità.",
+            "4": "Utilizzare Amazon Kinesis Data Streams per gestire i dati degli eventi in tempo reale e integrarsi con Amazon Elasticsearch Service per interrogare i dati.",
+            "5": "Implementare AWS Step Functions per orchestrare i flussi di lavoro di elaborazione degli eventi e utilizzare Amazon MQ per il brokeraggio dei messaggi."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Utilizzare Amazon SQS per disaccoppiare i servizi e garantire l'elaborazione asincrona dei messaggi, e utilizzare Amazon SNS per trasmettere eventi a più abbonati. Implementare AWS Lambda per elaborare eventi e scalare automaticamente.",
+            "Utilizzare Amazon Kinesis Data Streams per gestire i dati degli eventi in tempo reale e integrarsi con Amazon Elasticsearch Service per interrogare i dati."
+        ],
+        "Explanation": "Amazon SQS e SNS sono utilizzati per disaccoppiare i servizi e trasmettere eventi a più abbonati, rispettivamente. Questo garantisce alta disponibilità e resilienza ai guasti. AWS Lambda è senza server e scala automaticamente in base al carico di lavoro, rendendolo adatto per l'elaborazione degli eventi. D'altra parte, Amazon Kinesis Data Streams è progettato per gestire dati di eventi in tempo reale, il che è cruciale per una piattaforma di e-commerce. Amazon Elasticsearch Service consente interrogazioni efficienti di questi dati.",
+        "Other Options": [
+            "Utilizzare istanze Amazon EC2 che eseguono un'applicazione personalizzata per gestire i messaggi dalle fonti di eventi e configurare Amazon Route 53 per instradare il traffico in base al carico non è la migliore opzione. Sebbene le istanze EC2 possano essere utilizzate per eseguire applicazioni e Route 53 possa aiutare a distribuire il carico, questo approccio non fornisce intrinsecamente l'architettura basata su eventi, alta disponibilità, resilienza ai guasti e scalabilità automatica richieste.",
+            "Utilizzare Amazon RDS con distribuzione multi-zona di disponibilità per gestire l'elaborazione degli eventi e memorizzare i messaggi in Amazon DynamoDB per la scalabilità non è ideale. Sebbene RDS e DynamoDB siano servizi AWS robusti, non sono progettati per architetture basate su eventi. RDS è un servizio di database relazionale, non un servizio di elaborazione degli eventi, e DynamoDB, sebbene scalabile, non è progettato per il messaging degli eventi.",
+            "Implementare AWS Step Functions per orchestrare i flussi di lavoro di elaborazione degli eventi e utilizzare Amazon MQ per il brokeraggio dei messaggi non è la scelta migliore. Sebbene Step Functions possano orchestrare flussi di lavoro e Amazon MQ possa brokerare messaggi, non forniscono intrinsecamente l'alta disponibilità, la resilienza ai guasti e la scalabilità automatica richieste per questo scenario."
+        ]
+    },
+    {
+        "Question Number": "58",
+        "Situation": "Un'azienda sta distribuendo un'applicazione di calcolo ad alte prestazioni su Amazon EC2 e vuole ottimizzare per la latenza di rete più bassa possibile e la massima prestazione in pacchetti al secondo tra le sue istanze. Allo stesso tempo, hanno un'altra applicazione che richiede la massima disponibilità e resilienza isolando ogni istanza su rack diversi.",
+        "Question": "Quali tipi di gruppi di posizionamento dovrebbe utilizzare l'azienda per queste applicazioni e perché?",
+        "Options": {
+            "1": "Utilizzare Cluster Placement Groups per l'applicazione ad alte prestazioni per ottenere bassa latenza e alta larghezza di banda, e Spread Placement Groups per l'applicazione che richiede alta disponibilità e isolamento tra i rack.",
+            "2": "Utilizzare Spread Placement Groups per entrambe le applicazioni per garantire resilienza e isolare le istanze su più rack.",
+            "3": "Utilizzare Partition Placement Groups per l'applicazione ad alte prestazioni per fornire alta larghezza di banda e Cluster Placement Groups per l'applicazione isolata per ridurre la latenza.",
+            "4": "Utilizzare Cluster Placement Groups per entrambe le applicazioni per minimizzare la latenza e aumentare le prestazioni tra le istanze."
+        },
+        "Correct Answer": "Utilizzare Cluster Placement Groups per l'applicazione ad alte prestazioni per ottenere bassa latenza e alta larghezza di banda, e Spread Placement Groups per l'applicazione che richiede alta disponibilità e isolamento tra i rack.",
+        "Explanation": "I Cluster Placement Groups sono progettati per fornire bassa latenza e alta larghezza di banda posizionando le istanze vicine all'interno di una singola Zona di Disponibilità. Questo è ideale per le applicazioni di calcolo ad alte prestazioni che richiedono una rapida comunicazione tra le istanze. D'altra parte, gli Spread Placement Groups garantiscono che le istanze siano posizionate su rack diversi, il che migliora la disponibilità e la resilienza riducendo il rischio di guasti simultanei. Questo rende gli Spread Placement Groups adatti per applicazioni che devono essere isolate l'una dall'altra per mantenere alta disponibilità.",
+        "Other Options": [
+            "Utilizzare Spread Placement Groups per entrambe le applicazioni garantirebbe resilienza e isolamento, ma non ottimizzerebbe per bassa latenza e alta larghezza di banda per l'applicazione ad alte prestazioni, che è un requisito critico.",
+            "Utilizzare Partition Placement Groups per l'applicazione ad alte prestazioni è errato perché i Partition Placement Groups sono progettati per applicazioni che richiedono alta disponibilità e tolleranza ai guasti, non specificamente per bassa latenza e alta larghezza di banda. Inoltre, utilizzare Cluster Placement Groups per l'applicazione isolata non fornirebbe la necessaria resilienza tra i rack.",
+            "Utilizzare Cluster Placement Groups per entrambe le applicazioni ottimizzerebbe per bassa latenza e prestazioni, ma non fornirebbe la necessaria isolamento e resilienza per l'applicazione che richiede alta disponibilità, poiché tutte le istanze sarebbero posizionate nello stesso rack."
+        ]
+    },
+    {
+        "Question Number": "59",
+        "Situation": "Un'azienda sta sviluppando un'applicazione che esporrà API ai clienti tramite un'interfaccia web. L'azienda deve garantire che le API possano scalare automaticamente in base alla domanda, gestire picchi di traffico e fornire una gestione efficiente delle API.",
+        "Question": "Quale servizio AWS dovrebbe utilizzare l'azienda per raggiungere questo obiettivo e quali principi di design dovrebbero essere seguiti per garantire scalabilità e resilienza?",
+        "Options": {
+            "1": "Utilizzare Amazon API Gateway per creare e gestire le API, e combinarlo con AWS Lambda per computazione stateless per gestire carichi di lavoro imprevedibili. Implementare strategie di caching per ridurre la latenza e migliorare le prestazioni.",
+            "2": "Utilizzare Amazon EC2 per ospitare le API e gestire il traffico con un gruppo di Auto Scaling, mentre memorizzare i dati in Amazon RDS per alta disponibilità.",
+            "3": "Utilizzare AWS Fargate per gestire i contenitori Docker che eseguono le API, e implementare chiamate API dirette a Amazon DynamoDB per memorizzare i dati dell'applicazione.",
+            "4": "Utilizzare AWS Elastic Load Balancer per instradare il traffico API alle istanze EC2 e memorizzare i dati API in Amazon S3 per alta scalabilità."
+        },
+        "Correct Answer": "Utilizzare Amazon API Gateway per creare e gestire le API, e combinarlo con AWS Lambda per computazione stateless per gestire carichi di lavoro imprevedibili. Implementare strategie di caching per ridurre la latenza e migliorare le prestazioni.",
+        "Explanation": "Amazon API Gateway è specificamente progettato per creare, pubblicare e gestire API su larga scala. Può gestire automaticamente picchi di traffico e fornisce funzionalità integrate per caching, throttling e monitoraggio. Quando combinato con AWS Lambda, che consente l'esecuzione serverless del codice, l'applicazione può scalare automaticamente in base alla domanda senza la necessità di provisioning di server. Questa combinazione supporta la computazione stateless, ideale per gestire carichi di lavoro imprevedibili. Le strategie di caching possono ulteriormente migliorare le prestazioni riducendo il numero di chiamate effettuate ai servizi backend, migliorando così i tempi di risposta e riducendo i costi.",
+        "Other Options": [
+            "Utilizzare Amazon EC2 per ospitare le API richiede la gestione manuale delle istanze e delle configurazioni di scaling, il che può complicare l'architettura e potrebbe non gestire i picchi di traffico in modo efficiente come le soluzioni serverless. Sebbene i gruppi di Auto Scaling possano aiutare, comportano ancora più overhead rispetto all'approccio serverless.",
+            "AWS Fargate è una buona opzione per gestire i contenitori, ma aggiunge complessità rispetto all'utilizzo di API Gateway e Lambda. Le chiamate API dirette a DynamoDB possono funzionare, ma senza le funzionalità di gestione delle API di API Gateway, la soluzione potrebbe mancare delle necessarie capacità di scalabilità e monitoraggio.",
+            "AWS Elastic Load Balancer può distribuire il traffico alle istanze EC2, ma questa configurazione richiede comunque la gestione di quelle istanze e il loro scaling manuale. Memorizzare i dati API in Amazon S3 non è adatto per risposte API dinamiche, poiché S3 è principalmente per lo storage di oggetti e non fornisce lo stesso livello di prestazioni e capacità di interrogazione di una soluzione database."
+        ]
+    },
+    {
+        "Question Number": "60",
+        "Situation": "Un'azienda sta vivendo un aumento del traffico dei clienti sulla propria applicazione web e deve scalare la propria infrastruttura per gestire il carico. Stanno considerando sia opzioni di scaling orizzontale che verticale.",
+        "Question": "Qual è una differenza chiave tra scaling orizzontale e verticale, e quale sarebbe più adatto per minimizzare le interruzioni dell'applicazione?",
+        "Options": {
+            "1": "Lo scaling verticale comporta l'aumento delle dimensioni dell'istanza, richiedendo un riavvio, il che può causare interruzioni temporanee, mentre lo scaling orizzontale comporta l'aggiunta di più istanze senza necessità di riavvio, evitando così le interruzioni.",
+            "2": "Lo scaling orizzontale aggiunge più risorse alla stessa istanza, aumentando la capacità senza interruzioni, mentre lo scaling verticale aggiunge nuove istanze per gestire più traffico.",
+            "3": "Lo scaling verticale richiede modifiche all'applicazione per ogni nuova dimensione dell'istanza, mentre lo scaling orizzontale non richiede modifiche all'applicazione.",
+            "4": "Lo scaling orizzontale ha un limite rigoroso sul numero di istanze che possono essere aggiunte, mentre lo scaling verticale offre capacità illimitata."
+        },
+        "Correct Answer": "Lo scaling verticale comporta l'aumento delle dimensioni dell'istanza, richiedendo un riavvio, il che può causare interruzioni temporanee, mentre lo scaling orizzontale comporta l'aggiunta di più istanze senza necessità di riavvio, evitando così le interruzioni.",
+        "Explanation": "La differenza chiave tra scaling orizzontale e verticale risiede nel modo in cui vengono aggiunte le risorse per gestire il carico aumentato. Lo scaling verticale (noto anche come 'scaling up') comporta l'aggiornamento delle risorse del server esistente, come CPU, RAM o storage. Questo processo richiede spesso un riavvio del server, il che può portare a un'interruzione temporanea dell'applicazione. Al contrario, lo scaling orizzontale (o 'scaling out') comporta l'aggiunta di più istanze o server per distribuire il carico. Questo metodo consente all'applicazione di continuare a funzionare senza interruzioni, rendendolo più adatto per minimizzare le interruzioni durante i periodi di traffico aumentato.",
+        "Other Options": [
+            "Questa opzione afferma erroneamente che lo scaling orizzontale aggiunge risorse alla stessa istanza, il che non è accurato. Lo scaling orizzontale aggiunge più istanze piuttosto che aumentare la capacità di un'unica istanza.",
+            "Questa opzione è errata perché suggerisce che lo scaling verticale richiede modifiche all'applicazione per ogni nuova dimensione dell'istanza. In realtà, lo scaling verticale non richiede modifiche all'applicazione stessa, ma richiede un riavvio, il che può causare interruzioni.",
+            "Questa opzione è fuorviante poiché afferma che lo scaling orizzontale ha un limite rigoroso sulle istanze, il che non è universalmente vero. Sebbene possano esserci limiti pratici basati sulle capacità dell'infrastruttura o del fornitore di cloud, lo scaling orizzontale è generalmente più flessibile dello scaling verticale, che è limitato dalla capacità massima di un singolo server."
+        ]
+    },
+    {
+        "Question Number": "61",
+        "Situation": "Nella configurazione di una connessione VPN IPSEC tra due siti aziendali, quale delle seguenti descrizioni rappresenta correttamente il ruolo di IKE (Internet Key Exchange) Fase 1 e Fase 2 nell'instaurare una connessione sicura?",
+        "Question": "Quali delle seguenti affermazioni sono vere riguardo a IKE Fase 1 e Fase 2? (Scegli due.)",
+        "Options": {
+            "1": "IKE Fase 1 stabilisce un tunnel sicuro utilizzando la crittografia simmetrica, mentre IKE Fase 2 utilizza la crittografia asimmetrica per il trasferimento di dati in blocco attraverso il tunnel.",
+            "2": "IKE Fase 1 è responsabile dell'autenticazione e dell'instaurazione di una connessione sicura con crittografia asimmetrica, impostando una chiave simmetrica e creando l'Associazione di Sicurezza IKE (SA); IKE Fase 2 utilizza quindi questa chiave per un rapido trasferimento di dati in blocco crittografato, creando l'IPSEC SA.",
+            "3": "IKE Fase 1 stabilisce direttamente l'IPSEC SA utilizzando chiavi simmetriche scambiate su una rete pubblica, mentre IKE Fase 2 gestisce la ri-autenticazione di ogni sessione.",
+            "4": "IKE Fase 1 e Fase 2 utilizzano entrambe la crittografia asimmetrica durante l'instaurazione della connessione e il processo di trasferimento dati per garantire il massimo livello di sicurezza.",
+            "5": "IKE Fase 1 negozia i parametri per il tunnel IPSEC, e IKE Fase 2 gestisce la crittografia effettiva dei dati trasmessi."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "IKE Fase 1 è responsabile dell'autenticazione e dell'instaurazione di una connessione sicura con crittografia asimmetrica, impostando una chiave simmetrica e creando l'Associazione di Sicurezza IKE (SA); IKE Fase 2 utilizza quindi questa chiave per un rapido trasferimento di dati in blocco crittografato, creando l'IPSEC SA.",
+            "IKE Fase 1 negozia i parametri per il tunnel IPSEC, e IKE Fase 2 gestisce la crittografia effettiva dei dati trasmessi."
+        ],
+        "Explanation": "IKE Fase 1 è responsabile dell'autenticazione dei peer, dell'instaurazione di una connessione sicura e dell'impostazione di una chiave simmetrica per la crittografia dei dati. Utilizza la crittografia asimmetrica per questi compiti per garantire la sicurezza. Una volta completato, crea l'Associazione di Sicurezza IKE (SA). IKE Fase 2 utilizza quindi la chiave simmetrica impostata nella Fase 1 per un rapido trasferimento di dati in blocco crittografato. Crea l'IPSEC SA che viene utilizzata per il trasferimento effettivo dei dati. La Fase 1 negozia anche i parametri per il tunnel IPSEC, e la Fase 2 gestisce la crittografia effettiva dei dati trasmessi.",
+        "Other Options": [
+            "IKE Fase 1 utilizza la crittografia asimmetrica per l'instaurazione della connessione sicura e l'impostazione della chiave simmetrica, non la crittografia simmetrica. IKE Fase 2 utilizza la chiave simmetrica della Fase 1 per il trasferimento dei dati, non la crittografia asimmetrica.",
+            "IKE Fase 1 non stabilisce direttamente l'IPSEC SA, stabilisce l'IKE SA. L'IPSEC SA viene stabilita nella Fase 2. Inoltre, le chiavi simmetriche non vengono scambiate su una rete pubblica, vengono impostate in modo sicuro utilizzando la crittografia asimmetrica nella Fase 1.",
+            "Sebbene IKE Fase 1 utilizzi la crittografia asimmetrica per l'instaurazione della connessione sicura e l'impostazione della chiave simmetrica, la Fase 2 utilizza la chiave simmetrica della Fase 1 per il trasferimento dei dati, non la crittografia asimmetrica."
+        ]
+    },
+    {
+        "Question Number": "62",
+        "Situation": "Un'azienda finanziaria ha bisogno di memorizzare dati critici delle transazioni in una soluzione di archiviazione altamente disponibile e resiliente per garantire la durabilità e l'accessibilità dei dati. Vogliono anche proteggere i dati contro la cancellazione accidentale e recuperarli rapidamente in caso di disastro.",
+        "Question": "Quale configurazione in Amazon S3 soddisfa meglio questi requisiti? (Scegli due.)",
+        "Options": {
+            "1": "Utilizza la classe di archiviazione Amazon S3 Standard con il versioning abilitato e la replica tra regioni per proteggere contro le cancellazioni accidentali e garantire la disponibilità dei dati in più regioni.",
+            "2": "Utilizza Amazon S3 Glacier per un'archiviazione a basso costo e abilita il blocco degli oggetti per prevenire cancellazioni accidentali mantenendo un accesso rapido ai dati.",
+            "3": "Memorizza i dati in Amazon S3 Intelligent-Tiering per ridurre i costi, facendo affidamento su AWS Backup per il ripristino in caso di disastro tra le regioni.",
+            "4": "Utilizza Amazon S3 One Zone-Infrequent Access per memorizzare i dati in una singola Availability Zone e abilita il versioning per proteggere contro la perdita di dati.",
+            "5": "Abilita la cancellazione con Autenticazione Multi-Fattore (MFA) nei bucket Amazon S3 per fornire un ulteriore livello di protezione contro le cancellazioni accidentali."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Utilizza la classe di archiviazione Amazon S3 Standard con il versioning abilitato e la replica tra regioni per proteggere contro le cancellazioni accidentali e garantire la disponibilità dei dati in più regioni.",
+            "Abilita la cancellazione con Autenticazione Multi-Fattore (MFA) nei bucket Amazon S3 per fornire un ulteriore livello di protezione contro le cancellazioni accidentali."
+        ],
+        "Explanation": "La classe di archiviazione Amazon S3 Standard offre un'alta durabilità, disponibilità e prestazioni per l'archiviazione di oggetti per dati frequentemente accessibili. Quando il versioning è abilitato, mantiene tutte le versioni di un oggetto (inclusi tutti i scritti e le cancellazioni) nel bucket. La replica tra regioni consente la copia automatica e asincrona di oggetti tra bucket in diverse regioni, il che può aiutare a soddisfare i requisiti di conformità e ridurre la latenza. La cancellazione con Autenticazione Multi-Fattore (MFA) aggiunge un ulteriore livello di sicurezza richiedendo MFA per eliminare una versione dell'oggetto o sospendere il versioning sul bucket.",
+        "Other Options": [
+            "Amazon S3 Glacier è una classe di archiviazione sicura, durevole e a basso costo per l'archiviazione dei dati e il backup a lungo termine. Tuttavia, non fornisce un accesso rapido ai dati poiché i tempi di recupero possono variare da minuti a ore.",
+            "Amazon S3 Intelligent-Tiering è progettato per ottimizzare i costi spostando automaticamente i dati nel livello di accesso più conveniente, senza impatti sulle prestazioni o oneri operativi. AWS Backup può essere utilizzato per il ripristino in caso di disastro, ma questa opzione non fornisce protezione contro le cancellazioni accidentali.",
+            "Amazon S3 One Zone-Infrequent Access è un'opzione a costo inferiore per dati accessibili raramente, ma memorizza i dati in una singola Availability Zone, che è meno resiliente e non soddisfa il requisito di alta disponibilità."
+        ]
+    },
+    {
+        "Question Number": "63",
+        "Situation": "Un'azienda di servizi finanziari sta migrando la propria applicazione on-premises su AWS. L'applicazione è composta da un livello web, un livello applicativo e un livello database. L'azienda richiede un'isolamento rigoroso tra i livelli per motivi di sicurezza e conformità. Hanno anche bisogno di ottimizzare l'indirizzamento IP per accogliere la crescita futura.",
+        "Question": "Quale architettura di rete dovrebbe progettare l'architetto delle soluzioni per soddisfare questi requisiti? (Scegli due.)",
+        "Options": {
+            "1": "Distribuire tutti i livelli in un'unica subnet pubblica con gruppi di sicurezza che controllano l'accesso.",
+            "2": "Utilizzare un'unica subnet privata per tutti i livelli con ACL di rete per l'isolamento.",
+            "3": "Creare subnet private separate per ciascun livello in più Availability Zone, utilizzando una VPC con blocchi CIDR che consentono un'espansione futura.",
+            "4": "Posizionare il livello web in una subnet pubblica e sia il livello applicativo che quello del database in un'unica subnet privata con intervalli IP sovrapposti.",
+            "5": "Implementare più subnet private per ciascun livello all'interno di una VPC e utilizzare il peering VPC per isolare il traffico tra i livelli."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Creare subnet private separate per ciascun livello in più Availability Zone, utilizzando una VPC con blocchi CIDR che consentono un'espansione futura.",
+            "Implementare più subnet private per ciascun livello all'interno di una VPC e utilizzare il peering VPC per isolare il traffico tra i livelli."
+        ],
+        "Explanation": "Creare subnet private separate per ciascun livello in più Availability Zone consente un'isolamento rigoroso tra i livelli, che è un requisito per l'azienda. Utilizzare una VPC con blocchi CIDR che consentono un'espansione futura aiuta a ottimizzare l'indirizzamento IP per accogliere la crescita futura. Implementare più subnet private per ciascun livello all'interno di una VPC e utilizzare il peering VPC per isolare il traffico tra i livelli fornisce anche l'isolamento e la sicurezza richiesti.",
+        "Other Options": [
+            "Distribuire tutti i livelli in un'unica subnet pubblica con gruppi di sicurezza che controllano l'accesso non è una buona pratica poiché non fornisce l'isolamento richiesto tra i livelli ed espone l'applicazione a potenziali rischi di sicurezza.",
+            "Utilizzare un'unica subnet privata per tutti i livelli con ACL di rete per l'isolamento non fornisce l'isolamento richiesto tra i livelli poiché tutti i livelli sono nella stessa subnet.",
+            "Posizionare il livello web in una subnet pubblica e sia il livello applicativo che quello del database in un'unica subnet privata con intervalli IP sovrapposti non fornisce l'isolamento richiesto tra i livelli e può causare conflitti IP a causa degli intervalli IP sovrapposti."
+        ]
+    },
+    {
+        "Question Number": "64",
+        "Situation": "Un'azienda sta utilizzando Amazon RDS per il proprio database e richiede la crittografia dei dati per motivi di conformità. L'azienda desidera garantire che i dati siano crittografati sia a riposo che in transito, e che le chiavi di crittografia siano gestite in modo sicuro. Inoltre, stanno utilizzando Oracle come motore del database.",
+        "Question": "Quale approccio soddisferebbe meglio questi requisiti di sicurezza? (Scegli due.)",
+        "Options": {
+            "1": "Utilizzare SSL/TLS integrato di RDS per la crittografia in transito e abilitare la Crittografia Trasparente dei Dati (TDE) per la crittografia a riposo all'interno del motore del database Oracle.",
+            "2": "Abilitare Amazon RDS per utilizzare chiavi gestite da KMS per la crittografia a riposo e configurare SSL/TLS per gestire la crittografia in transito.",
+            "3": "Integrare CloudHSM con Amazon RDS per gestire le chiavi di crittografia per Oracle, assicurando che AWS non abbia accesso alle chiavi, e abilitare SSL/TLS per la crittografia in transito.",
+            "4": "Utilizzare le impostazioni di crittografia predefinite di RDS e fare affidamento sulla crittografia dei volumi EBS per i dati a riposo, senza alcuna configurazione aggiuntiva per la crittografia in transito.",
+            "5": "Implementare la crittografia a livello di applicazione per gestire la crittografia dei dati prima che vengano inviati a RDS e utilizzare connessioni VPN per la crittografia in transito."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Utilizzare SSL/TLS integrato di RDS per la crittografia in transito e abilitare la Crittografia Trasparente dei Dati (TDE) per la crittografia a riposo all'interno del motore del database Oracle.",
+            "Abilitare Amazon RDS per utilizzare chiavi gestite da KMS per la crittografia a riposo e configurare SSL/TLS per gestire la crittografia in transito."
+        ],
+        "Explanation": "La prima risposta corretta è utilizzare SSL/TLS integrato di RDS per la crittografia in transito e abilitare la Crittografia Trasparente dei Dati (TDE) per la crittografia a riposo all'interno del motore del database Oracle. SSL/TLS è un protocollo che garantisce la trasmissione sicura dei dati attraverso le reti, e TDE è una funzionalità di Oracle che fornisce crittografia dei dati a riposo. La seconda risposta corretta è abilitare Amazon RDS per utilizzare chiavi gestite da KMS per la crittografia a riposo e configurare SSL/TLS per gestire la crittografia in transito. Amazon Key Management Service (KMS) è un servizio gestito che semplifica la creazione e il controllo delle chiavi di crittografia utilizzate per crittografare i dati.",
+        "Other Options": [
+            "Integrare CloudHSM con Amazon RDS per gestire le chiavi di crittografia per Oracle e abilitare SSL/TLS per la crittografia in transito non è necessario perché AWS KMS può gestire la gestione delle chiavi per RDS, ed è più semplice e conveniente.",
+            "Utilizzare le impostazioni di crittografia predefinite di RDS e fare affidamento sulla crittografia dei volumi EBS per i dati a riposo, senza alcuna configurazione aggiuntiva per la crittografia in transito, non è sufficiente perché non garantisce la crittografia in transito.",
+            "Implementare la crittografia a livello di applicazione per gestire la crittografia dei dati prima che vengano inviati a RDS e utilizzare connessioni VPN per la crittografia in transito non è il miglior approccio perché aggiunge complessità e oneri non necessari. È più efficiente utilizzare i servizi AWS integrati per la crittografia a riposo e in transito."
+        ]
+    },
+    {
+        "Question Number": "65",
+        "Situation": "Una società di produzione video archivia migliaia di file video, che vengono raramente accessibili dopo la produzione iniziale. Vogliono una soluzione di archiviazione economica che consenta loro di archiviare questi file ma di recuperarli comunque entro pochi minuti quando necessario.",
+        "Question": "Quali servizi di archiviazione AWS soddisferebbero meglio questi requisiti? (Scegli due.)",
+        "Options": {
+            "1": "Amazon EFS",
+            "2": "Amazon S3 Glacier Instant Retrieval",
+            "3": "Amazon FSx for Windows File Server",
+            "4": "Amazon EBS Provisioned IOPS",
+            "5": "Amazon S3 Intelligent-Tiering"
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Amazon S3 Glacier Instant Retrieval",
+            "Amazon S3 Intelligent-Tiering"
+        ],
+        "Explanation": "Amazon S3 Glacier Instant Retrieval è una soluzione di archiviazione economica per l'archiviazione dei dati. È progettata per l'archiviazione a lungo termine di dati che vengono accessibili raramente, ma quando necessario, possono essere recuperati entro pochi minuti. Questo la rende una scelta adatta per la società di produzione video. Amazon S3 Intelligent-Tiering è un'altra scelta adatta in quanto sposta automaticamente i dati nel livello di accesso più conveniente, senza impatto sulle prestazioni o oneri operativi. È ideale per dati con modelli di accesso sconosciuti o variabili, rendendola una buona soluzione per l'archiviazione di file video che vengono raramente accessibili.",
+        "Other Options": [
+            "Amazon EFS (Elastic File System) è un servizio di archiviazione file da utilizzare con Amazon EC2. Anche se potrebbe tecnicamente essere utilizzato per archiviare file video, non è la soluzione più economica per dati che vengono raramente accessibili.",
+            "Amazon FSx for Windows File Server fornisce un file system nativo Microsoft Windows completamente gestito. Questa non è la soluzione più economica per archiviare file video raramente accessibili, ed è più adatta a carichi di lavoro aziendali che richiedono file system Windows.",
+            "Amazon EBS (Elastic Block Store) Provisioned IOPS è un tipo di archiviazione progettato per fornire prestazioni entro il 10% delle prestazioni IOPS fornite il 99,9% del tempo. Questo è più adatto a carichi di lavoro che richiedono alte prestazioni piuttosto che archiviazione a lungo termine economica di dati raramente accessibili."
+        ]
+    }
+]

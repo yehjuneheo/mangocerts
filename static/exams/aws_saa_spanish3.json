@@ -1,0 +1,1232 @@
+[
+    {
+        "Question Number": "1",
+        "Situation": "Una empresa de comercio electrónico experimenta picos estacionales en el tráfico del sitio web durante las ventas navideñas. Para asegurar una alta disponibilidad y distribuir el tráfico entrante de manera eficiente, la empresa quiere implementar una solución de balanceo de carga que pueda enrutar las solicitudes en función del contenido de las mismas.",
+        "Question": "¿Qué solución de balanceo de carga de AWS debería recomendar el arquitecto de soluciones?",
+        "Options": {
+            "1": "Classic Load Balancer configurado con enrutamiento round-robin",
+            "2": "Network Load Balancer con direcciones IP estáticas",
+            "3": "Application Load Balancer con reglas de enrutamiento basadas en la ruta",
+            "4": "AWS Global Accelerator con enrutamiento basado en DNS"
+        },
+        "Correct Answer": "Application Load Balancer con reglas de enrutamiento basadas en la ruta",
+        "Explanation": "El Application Load Balancer (ALB) está diseñado para manejar tráfico HTTP y HTTPS y puede enrutar solicitudes en función del contenido de las mismas, como rutas de URL o encabezados de host. Esto lo hace ideal para una empresa de comercio electrónico que necesita distribuir el tráfico de manera eficiente durante los picos estacionales y enrutar solicitudes a diferentes servicios según el contenido. El enrutamiento basado en la ruta permite que el ALB dirija el tráfico a servicios backend específicos en función de la ruta de la URL, lo cual es particularmente útil para una aplicación con múltiples servicios o microservicios.",
+        "Other Options": [
+            "El Classic Load Balancer es una opción heredada que no admite enrutamiento basado en contenido. Utiliza principalmente enrutamiento round-robin o de sesión persistente, lo que es menos flexible para aplicaciones que requieren enrutamiento basado en el contenido de la solicitud.",
+            "El Network Load Balancer está optimizado para manejar tráfico TCP y es capaz de gestionar millones de solicitudes por segundo mientras mantiene latencias ultra-bajas. Sin embargo, no admite enrutamiento basado en contenido, que es un requisito en este escenario.",
+            "AWS Global Accelerator está diseñado para mejorar la disponibilidad y el rendimiento de las aplicaciones con usuarios globales al enrutar el tráfico a puntos finales óptimos en función de la salud, la geografía y las políticas de enrutamiento. Sin embargo, no proporciona capacidades de enrutamiento basado en contenido, lo que lo hace inadecuado para la necesidad específica de enrutar solicitudes en función de su contenido."
+        ]
+    },
+    {
+        "Question Number": "2",
+        "Situation": "Una empresa quiere asegurar sus datos en volúmenes de Amazon EBS adjuntos a instancias de EC2, asegurando que los datos permanezcan cifrados en reposo. También están planeando tomar instantáneas de estos volúmenes para fines de respaldo.",
+        "Question": "¿Cuál de las siguientes describe correctamente cómo funciona el cifrado de EBS para este caso de uso? (Elija dos.)",
+        "Options": {
+            "1": "Los volúmenes de EBS solo pueden ser cifrados si están adjuntos a instancias dedicadas, y el cifrado debe aplicarse manualmente a cada instantánea tomada.",
+            "2": "Cada volumen de EBS utiliza una clave de cifrado de datos (DEK) única generada por AWS KMS, y todas las instantáneas y futuros volúmenes creados a partir de estas instantáneas utilizarán la misma DEK.",
+            "3": "El cifrado de EBS se basa únicamente en el cifrado a nivel de instancia y no requiere integración con KMS, lo que hace que el cifrado sea transparente para el volumen.",
+            "4": "Habilitar el cifrado por defecto para todos los volúmenes de EBS utilizando claves gestionadas por AWS KMS, asegurando que todas las instantáneas existentes y nuevas estén automáticamente cifradas.",
+            "5": "El cifrado de EBS solo cifra instantáneas, no los datos del volumen activo almacenados en reposo en las instancias de EC2."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Cada volumen de EBS utiliza una clave de cifrado de datos (DEK) única generada por AWS KMS, y todas las instantáneas y futuros volúmenes creados a partir de estas instantáneas utilizarán la misma DEK.",
+            "Habilitar el cifrado por defecto para todos los volúmenes de EBS utilizando claves gestionadas por AWS KMS, asegurando que todas las instantáneas existentes y nuevas estén automáticamente cifradas."
+        ],
+        "Explanation": "Cada volumen de EBS utiliza una clave de cifrado de datos (DEK) única generada por AWS KMS. Esta DEK se utiliza para cifrar el volumen, y todas las instantáneas tomadas del volumen, así como cualquier volumen futuro creado a partir de estas instantáneas, también utilizarán la misma DEK. Esto asegura que los datos permanezcan cifrados en reposo. Además, AWS permite habilitar el cifrado por defecto para todos los volúmenes de EBS utilizando claves gestionadas por AWS KMS. Esto asegura que todas las instantáneas existentes y nuevas estén automáticamente cifradas, proporcionando una capa adicional de seguridad.",
+        "Other Options": [
+            "Los volúmenes de EBS solo pueden ser cifrados si están adjuntos a instancias dedicadas, y el cifrado debe aplicarse manualmente a cada instantánea tomada. Esto es incorrecto porque el cifrado de EBS no está limitado a instancias dedicadas, y las instantáneas tomadas de volúmenes cifrados se cifran automáticamente.",
+            "El cifrado de EBS se basa únicamente en el cifrado a nivel de instancia y no requiere integración con KMS, lo que hace que el cifrado sea transparente para el volumen. Esto es incorrecto porque el cifrado de EBS sí requiere integración con AWS KMS para generar y gestionar las claves de cifrado.",
+            "El cifrado de EBS solo cifra instantáneas, no los datos del volumen activo almacenados en reposo en las instancias de EC2. Esto es incorrecto porque el cifrado de EBS cifra tanto los datos del volumen activo como las instantáneas."
+        ]
+    },
+    {
+        "Question Number": "3",
+        "Situation": "Una empresa de juegos global está lanzando un nuevo juego multijugador en línea que atrae a jugadores de todo el mundo. La empresa quiere asegurar una latencia mínima y una experiencia de juego fluida para todos los jugadores, independientemente de su ubicación geográfica. Además, buscan proteger sus servidores de juego contra ataques DDoS.",
+        "Question": "¿Qué servicios de AWS debería recomendar el arquitecto de soluciones para optimizar la entrega de contenido y mejorar la seguridad en el borde? (Elija dos.)",
+        "Options": {
+            "1": "Amazon CloudFront con AWS Shield Advanced",
+            "2": "AWS Global Accelerator con Amazon Route 53",
+            "3": "AWS Direct Connect con AWS WAF",
+            "4": "Amazon ElastiCache con AWS Firewall Manager",
+            "5": "AWS Global Accelerator con AWS Shield Advanced"
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Amazon CloudFront con AWS Shield Advanced",
+            "AWS Global Accelerator con AWS Shield Advanced"
+        ],
+        "Explanation": "Amazon CloudFront con AWS Shield Advanced y AWS Global Accelerator con AWS Shield Advanced son las respuestas correctas. Amazon CloudFront es una red de entrega de contenido (CDN) que entrega datos, videos, aplicaciones y APIs a clientes de todo el mundo con baja latencia y altas velocidades de transferencia. AWS Shield Advanced proporciona protección DDoS rentable para recursos que se ejecutan en AWS, lo cual es crucial para la empresa de juegos para proteger sus servidores de ataques DDoS. AWS Global Accelerator es un servicio de red que envía el tráfico de tus usuarios a través de la infraestructura de red global de Amazon Web Services, mejorando el rendimiento de los usuarios de internet hasta en un 60%. Cuando se combina con AWS Shield Advanced, no solo mejora el rendimiento, sino que también proporciona protección contra DDoS.",
+        "Other Options": [
+            "AWS Global Accelerator con Amazon Route 53 no es una solución completa. Si bien AWS Global Accelerator mejora la disponibilidad y el rendimiento de las aplicaciones, Amazon Route 53 es un servicio web de Sistema de Nombres de Dominio (DNS) escalable, pero no proporciona protección DDoS.",
+            "AWS Direct Connect con AWS WAF no es la mejor solución. AWS Direct Connect es una solución de servicio en la nube que facilita establecer una conexión de red dedicada desde tus instalaciones a AWS, y AWS WAF es un firewall de aplicaciones web que ayuda a proteger tus aplicaciones web de explotaciones comunes, pero ninguno de estos servicios optimiza la entrega de contenido o proporciona protección DDoS en el borde.",
+            "Amazon ElastiCache con AWS Firewall Manager no es la solución correcta. Amazon ElastiCache es un servicio web que facilita el despliegue, operación y escalado de un caché en memoria en la nube, y AWS Firewall Manager es un servicio de gestión de seguridad que te permite configurar y gestionar centralmente las reglas de firewall en tus cuentas y aplicaciones en AWS Organization. Sin embargo, ninguno de estos servicios optimiza la entrega de contenido o proporciona protección DDoS en el borde."
+        ]
+    },
+    {
+        "Question Number": "4",
+        "Situation": "Una empresa minorista quiere implementar un sistema de monitoreo donde se desencadenen automáticamente acciones específicas cuando ocurran ciertos eventos en su entorno de AWS. Por ejemplo, si una instancia de EC2 cambia de estado de \"detenida\" a \"en ejecución\", se debería activar una función de Lambda para registrar esta actividad. También quieren programar tareas periódicas, como copias de seguridad nocturnas, utilizando el mismo servicio.",
+        "Question": "¿Qué configuración de servicio de AWS cumpliría mejor con estos requisitos?",
+        "Options": {
+            "1": "Amazon CloudWatch Logs con consultas programadas",
+            "2": "AWS Lambda con configuraciones de invocación periódica",
+            "3": "Amazon EventBridge con reglas de patrones de eventos y reglas de programación",
+            "4": "AWS Step Functions con patrones de reintento"
+        },
+        "Correct Answer": "Amazon EventBridge con reglas de patrones de eventos y reglas de programación",
+        "Explanation": "Amazon EventBridge está diseñado para facilitar arquitecturas impulsadas por eventos y puede reaccionar a cambios de estado en recursos de AWS, como instancias de EC2. Permite crear patrones de eventos que desencadenan acciones (como invocar una función de Lambda) cuando ocurren eventos específicos, como un cambio de estado en una instancia de EC2. Además, EventBridge admite eventos programados, lo que permite configurar tareas periódicas como copias de seguridad nocturnas. Esto lo convierte en la mejor opción para los requisitos descritos en el escenario.",
+        "Other Options": [
+            "Amazon CloudWatch Logs con consultas programadas se utiliza principalmente para registrar y consultar datos de registro. Aunque puede ayudar en el monitoreo de registros, no proporciona inherentemente la capacidad de desencadenar acciones basadas en eventos o programar tareas directamente.",
+            "AWS Lambda con configuraciones de invocación periódica puede ejecutar funciones según un horario, pero no maneja de forma nativa los desencadenadores impulsados por eventos basados en cambios de estado de recursos. Requeriría una configuración adicional para monitorear cambios de estado de EC2.",
+            "AWS Step Functions es un servicio para orquestar flujos de trabajo complejos y gestionar el estado a través de múltiples servicios. Aunque puede manejar reintentos y gestionar flujos de trabajo, no está diseñado específicamente para desencadenadores impulsados por eventos o para programar tareas directamente, lo que lo hace menos adecuado para los requisitos establecidos."
+        ]
+    },
+    {
+        "Question Number": "5",
+        "Situation": "Una aplicación web necesita manejar cargas de tráfico fluctuantes, y la empresa quiere utilizar una estrategia de balanceo de carga que minimice costos mientras distribuye el tráfico de manera eficiente entre las instancias. También quieren optimizar costos utilizando balanceo de carga de Capa 7 (Capa de Aplicación).",
+        "Question": "¿Qué opción de balanceo de carga sería la más rentable para este requisito?",
+        "Options": {
+            "1": "Usar un Classic Load Balancer con escalado manual",
+            "2": "Desplegar un Application Load Balancer (ALB) con escalado automático habilitado",
+            "3": "Usar un Network Load Balancer (NLB) para manejar tráfico HTTP/HTTPS",
+            "4": "Desplegar balanceadores de carga individuales para cada Zona de Disponibilidad"
+        },
+        "Correct Answer": "Desplegar un Application Load Balancer (ALB) con escalado automático habilitado",
+        "Explanation": "Un Application Load Balancer (ALB) está diseñado específicamente para manejar tráfico HTTP y HTTPS en la Capa 7, lo que permite un enrutamiento avanzado y gestión del tráfico basada en el contenido de las solicitudes. Al habilitar el escalado automático, la aplicación puede ajustar automáticamente el número de instancias según la carga de tráfico actual, asegurando una utilización eficiente de los recursos y rentabilidad. Esta combinación permite a la empresa distribuir el tráfico de manera eficiente mientras minimiza los costos asociados con la sobreaprovisionamiento de recursos.",
+        "Other Options": [
+            "Usar un Classic Load Balancer con escalado manual no es rentable porque requiere intervención manual para ajustar el número de instancias según la carga de tráfico, lo que puede llevar a una subutilización o sobreutilización de recursos, aumentando los costos.",
+            "Usar un Network Load Balancer (NLB) no es adecuado para tráfico HTTP/HTTPS ya que opera en la Capa 4 y no proporciona las capacidades avanzadas de enrutamiento que ofrece un ALB. Además, los NLB suelen ser más costosos y no optimizan los costos de manera tan efectiva para aplicaciones web.",
+            "Desplegar balanceadores de carga individuales para cada Zona de Disponibilidad es ineficiente y costoso. Este enfoque requeriría mantener múltiples balanceadores de carga, lo que llevaría a un aumento de la carga operativa y los costos, en lugar de utilizar un solo ALB que pueda gestionar el tráfico de manera eficiente entre múltiples zonas."
+        ]
+    },
+    {
+        "Question Number": "6",
+        "Situation": "Una empresa de análisis de marketing quiere migrar su almacén de datos a gran escala a AWS. Los datos están estructurados para consultas analíticas complejas en lugar de cargas de trabajo transaccionales, y la empresa necesita una solución que pueda integrarse fácilmente con sus herramientas de BI basadas en SQL existentes. Además, la empresa quiere consultar datos históricos almacenados en Amazon S3 directamente sin cargarlos en el almacén de datos.",
+        "Question": "¿Qué combinación de servicio y características de AWS debería recomendar el arquitecto de soluciones?",
+        "Options": {
+            "1": "Amazon Redshift con Redshift Spectrum",
+            "2": "Amazon RDS con Réplicas de Lectura",
+            "3": "Amazon DynamoDB con Tablas Globales",
+            "4": "Amazon S3 con Athena para consultas ad-hoc"
+        },
+        "Correct Answer": "Amazon Redshift con Redshift Spectrum",
+        "Explanation": "Amazon Redshift es un servicio de almacén de datos totalmente gestionado que está diseñado para consultas analíticas complejas, lo que lo hace adecuado para las necesidades de la empresa de análisis de marketing. Redshift Spectrum permite a los usuarios ejecutar consultas sobre datos almacenados en Amazon S3 sin necesidad de cargarlos en Redshift, lo cual es ideal para consultar datos históricos. Esta combinación permite una integración fluida con las herramientas de BI basadas en SQL existentes, ya que Redshift utiliza SQL estándar para las consultas.",
+        "Other Options": [
+            "Amazon RDS con Réplicas de Lectura está diseñado principalmente para cargas de trabajo transaccionales y gestión de bases de datos relacionales, lo que no se alinea con la necesidad de la empresa de realizar consultas analíticas complejas y consultar directamente datos históricos en S3.",
+            "Amazon DynamoDB con Tablas Globales es un servicio de base de datos NoSQL que está optimizado para cargas de trabajo transaccionales de alta velocidad, no para consultas analíticas complejas. No soporta herramientas de BI basadas en SQL tan efectivamente como lo hace Redshift.",
+            "Amazon S3 con Athena para consultas ad-hoc es una opción viable para consultar datos directamente en S3, pero puede no proporcionar el mismo nivel de rendimiento y optimización para consultas analíticas complejas como lo hace Amazon Redshift con Redshift Spectrum."
+        ]
+    },
+    {
+        "Question Number": "7",
+        "Situation": "Una empresa de biotecnología está realizando análisis de secuenciación de genomas a gran escala que requieren recursos de computación significativos de manera intermitente. La empresa quiere optimizar costos asegurándose de que los recursos de computación solo se utilicen cuando sea necesario y puedan escalar automáticamente en función de las demandas de carga de trabajo.",
+        "Question": "¿Qué servicio de computación de AWS debería recomendar el arquitecto de soluciones para este escenario?",
+        "Options": {
+            "1": "Amazon EC2 Auto Scaling",
+            "2": "AWS Lambda",
+            "3": "AWS Batch",
+            "4": "Amazon ECS en EC2"
+        },
+        "Correct Answer": "AWS Batch",
+        "Explanation": "AWS Batch está diseñado específicamente para ejecutar cargas de trabajo de computación por lotes de manera eficiente a cualquier escala. Proporciona automáticamente la cantidad y tipo óptimos de recursos de computación (por ejemplo, instancias optimizadas para CPU o memoria) en función del volumen y los requisitos específicos de recursos de los trabajos por lotes enviados. Esto lo hace ideal para las necesidades de la empresa de biotecnología, ya que puede manejar análisis de secuenciación de genomas a gran escala que requieren recursos de computación significativos de manera intermitente, optimizando costos al utilizar recursos solo cuando sea necesario y escalando automáticamente en función de las demandas de carga de trabajo.",
+        "Other Options": [
+            "Amazon EC2 Auto Scaling es útil para gestionar instancias de EC2 y escalarlas en función de la demanda, pero no está específicamente diseñado para cargas de trabajo de procesamiento por lotes. Requiere más configuración y gestión manual en comparación con AWS Batch, que está diseñado para trabajos por lotes.",
+            "AWS Lambda es un servicio de computación sin servidor que ejecuta código en respuesta a eventos y gestiona automáticamente los recursos de computación requeridos. Sin embargo, no es adecuado para trabajos por lotes de larga duración como los análisis de secuenciación de genomas, ya que tiene un límite máximo de tiempo de ejecución de 15 minutos por invocación.",
+            "Amazon ECS en EC2 es un servicio de orquestación de contenedores que permite ejecutar y gestionar contenedores Docker. Aunque puede escalar en función de la demanda, requiere más gestión y no está específicamente optimizado para cargas de trabajo de procesamiento por lotes como AWS Batch, lo que lo hace menos adecuado para las necesidades intermitentes de recursos de computación de la empresa."
+        ]
+    },
+    {
+        "Question Number": "8",
+        "Situation": "Una plataforma de educación en línea experimenta un alto tráfico de lectura para el contenido de los cursos durante las horas pico. Para mejorar los tiempos de respuesta y reducir la carga de la base de datos, la empresa quiere implementar una capa de caché.",
+        "Question": "¿Qué solución de caché debería recomendar el arquitecto de soluciones para lograr la mejor mejora en el rendimiento?",
+        "Options": {
+            "1": "Implementar Amazon S3 con Transfer Acceleration para una entrega de contenido más rápida.",
+            "2": "Desplegar Amazon ElastiCache utilizando Redis para almacenar en caché el contenido de los cursos de acceso frecuente.",
+            "3": "Usar Amazon CloudFront para almacenar en caché las consultas a la base de datos en ubicaciones de borde.",
+            "4": "Configurar una caché en memoria en cada servidor de aplicaciones para almacenar el contenido de los cursos."
+        },
+        "Correct Answer": "Desplegar Amazon ElastiCache utilizando Redis para almacenar en caché el contenido de los cursos de acceso frecuente.",
+        "Explanation": "Amazon ElastiCache utilizando Redis es un almacén de datos en memoria que proporciona acceso de alta velocidad a datos de acceso frecuente. Al almacenar en caché el contenido de los cursos en memoria, reduce significativamente los tiempos de respuesta para las solicitudes de lectura y alivia la carga en la base de datos durante las horas pico de tráfico. Redis es particularmente adecuado para escenarios donde se requieren baja latencia y alto rendimiento, lo que lo convierte en una opción ideal para mejorar el rendimiento en una plataforma de educación en línea.",
+        "Other Options": [
+            "Implementar Amazon S3 con Transfer Acceleration se centra principalmente en mejorar la velocidad de las cargas y descargas de archivos, no en almacenar en caché contenido dinámico o consultas a la base de datos. Aunque puede mejorar la entrega de contenido para activos estáticos, no aborda de manera efectiva la necesidad de almacenar en caché el contenido de los cursos de acceso frecuente.",
+            "Usar Amazon CloudFront para almacenar en caché consultas a la base de datos en ubicaciones de borde no es un caso de uso típico para CloudFront, que está diseñado para almacenar en caché contenido web estático y dinámico en lugar de consultas a la base de datos. Aunque puede mejorar la entrega de contenido para activos estáticos, no proporciona el mismo nivel de mejora en el rendimiento para contenido dinámico de acceso frecuente como una caché en memoria como Redis.",
+            "Configurar una caché en memoria en cada servidor de aplicaciones puede llevar a inconsistencias y aumentar la complejidad en la gestión de la sincronización de caché entre múltiples servidores. Este enfoque también puede no escalar bien a medida que aumenta el número de servidores de aplicaciones, lo que lo hace menos eficiente en comparación con una solución de caché centralizada como Amazon ElastiCache."
+        ]
+    },
+    {
+        "Question Number": "9",
+        "Situation": "Una empresa está construyendo una aplicación que involucra múltiples pasos, incluyendo invocar funciones Lambda, esperar un período de tiempo específico y pasar datos entre diferentes tareas. Quieren asegurarse de que las tareas se ejecuten en la secuencia correcta y sean escalables, confiables y manejables. La empresa está considerando diferentes servicios de AWS para orquestar el flujo de trabajo de estas tareas.",
+        "Question": "¿Qué servicio de AWS debería usar la empresa para este propósito?",
+        "Options": {
+            "1": "Usar AWS Step Functions para definir y ejecutar una máquina de estados que gestione el flujo de tareas y las transiciones entre ellas.",
+            "2": "Usar AWS Lambda para orquestar tareas invocando otras funciones Lambda en secuencia, pasando datos a través de variables de entorno.",
+            "3": "Usar Amazon SQS para encolar las tareas y procesarlas secuencialmente utilizando instancias de EC2.",
+            "4": "Usar Amazon EC2 Auto Scaling para gestionar la ejecución de tareas y escalar automáticamente en función del número de tareas a completar."
+        },
+        "Correct Answer": "Usar AWS Step Functions para definir y ejecutar una máquina de estados que gestione el flujo de tareas y las transiciones entre ellas.",
+        "Explanation": "AWS Step Functions está diseñado específicamente para orquestar flujos de trabajo complejos que involucran múltiples pasos, incluyendo invocar funciones AWS Lambda, esperar períodos de tiempo específicos y pasar datos entre tareas. Permite definir una máquina de estados que describe claramente la secuencia de tareas y sus transiciones, asegurando que se ejecuten en el orden correcto. Step Functions también proporciona manejo de errores incorporado, reintentos y la capacidad de gestionar el estado, lo que lo convierte en una solución confiable y manejable para orquestar flujos de trabajo.",
+        "Other Options": [
+            "Usar AWS Lambda para orquestar tareas invocando otras funciones Lambda en secuencia no es ideal porque Lambda está diseñado principalmente para ejecutar funciones individuales en lugar de gestionar flujos de trabajo complejos. Aunque puedes invocar funciones en secuencia, carece de las características de gestión de estado y manejo de errores que proporciona Step Functions.",
+            "Usar Amazon SQS para encolar las tareas y procesarlas secuencialmente utilizando instancias de EC2 no es la mejor opción para orquestar flujos de trabajo. SQS es un servicio de mensajería que puede ayudar a desacoplar componentes, pero no gestiona inherentemente el orden de ejecución o el estado de las tareas, lo cual es crucial para el escenario descrito.",
+            "Usar Amazon EC2 Auto Scaling para gestionar la ejecución de tareas y escalar automáticamente en función del número de tareas a completar no es adecuado para orquestar flujos de trabajo. EC2 Auto Scaling se centra en escalar instancias de EC2 en función de la demanda, pero no proporciona capacidades de orquestación de flujos de trabajo, que son esenciales para gestionar la secuencia y las dependencias de las tareas."
+        ]
+    },
+    {
+        "Question Number": "10",
+        "Situation": "Una empresa quiere asegurarse de que su entorno de AWS siga el principio de menor privilegio para minimizar los riesgos de seguridad. La empresa tiene varias aplicaciones en ejecución en AWS, cada una de las cuales requiere permisos específicos para acceder a ciertos recursos.",
+        "Question": "¿Cuál es el enfoque MÁS efectivo para implementar esta mejor práctica de seguridad?",
+        "Options": {
+            "1": "Asignar a cada aplicación la política AdministratorAccess para asegurarse de que tenga permisos completos para todos los recursos.",
+            "2": "Crear políticas IAM personalizadas que otorguen solo los permisos que cada aplicación necesita y adjuntarlas a los roles IAM respectivos para las aplicaciones.",
+            "3": "Usar la cuenta de usuario root para todas las aplicaciones y rastrear manualmente los permisos de cada aplicación.",
+            "4": "Otorgar a todos los usuarios IAM en la cuenta permisos completos y confiar en los controles internos de la aplicación para restringir el acceso."
+        },
+        "Correct Answer": "Crear políticas IAM personalizadas que otorguen solo los permisos que cada aplicación necesita y adjuntarlas a los roles IAM respectivos para las aplicaciones.",
+        "Explanation": "Crear políticas IAM personalizadas que otorguen solo los permisos que cada aplicación necesita es la forma más efectiva de implementar el principio de menor privilegio. Este enfoque asegura que cada aplicación tenga acceso solo a los recursos necesarios para su funcionamiento, reduciendo el riesgo de acceso no autorizado o cambios accidentales en otros recursos. Al adjuntar estas políticas a roles IAM específicos, la empresa puede gestionar los permisos de forma centralizada y ajustarlos según sea necesario sin afectar a otras aplicaciones.",
+        "Other Options": [
+            "Asignar a cada aplicación la política AdministratorAccess no es una práctica segura, ya que otorga permisos completos a todos los recursos, lo que contradice el principio de menor privilegio y aumenta significativamente los riesgos de seguridad.",
+            "Usar la cuenta de usuario root para todas las aplicaciones está muy desaconsejado porque la cuenta root tiene acceso sin restricciones a todos los recursos de AWS. Esta práctica representa un riesgo de seguridad significativo, ya que cualquier compromiso de la cuenta root llevaría al control total sobre el entorno de AWS.",
+            "Otorgar a todos los usuarios IAM en la cuenta permisos completos y confiar en los controles internos de la aplicación no es un enfoque seguro. Expone el entorno de AWS a un posible uso indebido, ya que cualquier usuario IAM podría acceder a cualquier recurso sin restricciones, socavando el principio de menor privilegio."
+        ]
+    },
+    {
+        "Question Number": "11",
+        "Situation": "Una plataforma de educación en línea necesita una solución de base de datos que pueda escalar automáticamente según la demanda. Su tráfico varía mucho, con picos en ciertos momentos del día. Quieren una solución rentable que ajuste la capacidad automáticamente sin intervención manual.",
+        "Question": "¿Qué estrategia de planificación de capacidad de base de datos cumpliría mejor con estos requisitos?",
+        "Options": {
+            "1": "Capacidad provisionada con escalado manual durante los picos",
+            "2": "Instancias reservadas con un compromiso de 3 años",
+            "3": "Capacidad bajo demanda con escalado automático habilitado",
+            "4": "Usar réplicas de lectura para manejar períodos de alto tráfico"
+        },
+        "Correct Answer": "Capacidad bajo demanda con escalado automático habilitado",
+        "Explanation": "La capacidad bajo demanda con escalado automático habilitado es la mejor solución para la plataforma de educación en línea porque permite que la base de datos ajuste automáticamente su capacidad según la demanda en tiempo real sin ninguna intervención manual. Esto es particularmente importante para manejar patrones de tráfico variables, ya que asegura que la plataforma pueda gestionar eficientemente las cargas máximas mientras también es rentable durante los períodos de baja demanda. La función de escalado automático asigna recursos dinámicamente según sea necesario, lo que se alinea perfectamente con el requisito de una solución que pueda adaptarse a los niveles de tráfico fluctuantes.",
+        "Other Options": [
+            "La capacidad provisionada con escalado manual durante los picos requiere intervención manual para ajustar la capacidad, lo que no cumple con el requisito de escalado automático según la demanda. Esto podría llevar a problemas de rendimiento durante picos de tráfico inesperados si el escalado no se realiza a tiempo.",
+            "Las instancias reservadas con un compromiso de 3 años bloquean a la plataforma en una capacidad y costo fijos, lo que no es ideal para una situación con tráfico altamente variable. Esta estrategia no proporciona la flexibilidad necesaria para escalar automáticamente con la demanda, lo que podría llevar a un aprovisionamiento excesivo y costos innecesarios durante períodos de baja demanda.",
+            "Usar réplicas de lectura para manejar períodos de alto tráfico puede ayudar a distribuir las solicitudes de lectura, pero no aborda la planificación general de la capacidad para la base de datos. Esta estrategia puede no ser suficiente si la base de datos principal no puede escalar para manejar un aumento en las operaciones de escritura o la carga general, y también requiere configuración y gestión manual."
+        ]
+    },
+    {
+        "Question Number": "12",
+        "Situation": "Una empresa está migrando su base de datos Oracle local a AWS. Quieren minimizar los cambios en la aplicación mientras se trasladan a un servicio de base de datos gestionado.",
+        "Question": "¿Qué servicio de base de datos de AWS debería recomendar el arquitecto de soluciones para esta migración heterogénea?",
+        "Options": {
+            "1": "Amazon Aurora con compatibilidad con PostgreSQL",
+            "2": "Amazon RDS para Oracle",
+            "3": "Amazon DynamoDB",
+            "4": "Amazon Redshift"
+        },
+        "Correct Answer": "Amazon RDS para Oracle",
+        "Explanation": "Amazon RDS para Oracle es la mejor opción para migrar una base de datos Oracle local a AWS mientras se minimizan los cambios en la aplicación. RDS para Oracle proporciona un servicio de base de datos gestionado que admite características de base de datos Oracle, lo que permite una transición más fluida sin requerir cambios significativos en el código de la aplicación o en las consultas de la base de datos. Este servicio también maneja tareas rutinarias de la base de datos, como copias de seguridad, parches y escalado, lo que puede ayudar a reducir la carga operativa.",
+        "Other Options": [
+            "Amazon Aurora con compatibilidad con PostgreSQL es un servicio de base de datos relacional que ofrece compatibilidad con PostgreSQL. Sin embargo, requeriría cambios en la aplicación para adaptarse al dialecto y las características de PostgreSQL, lo que lo hace menos adecuado para una migración sin problemas desde Oracle.",
+            "Amazon DynamoDB es un servicio de base de datos NoSQL diseñado para un alto rendimiento y escalabilidad. Migrar de una base de datos relacional Oracle a una base de datos NoSQL requeriría cambios significativos en la arquitectura de la aplicación y el modelo de datos, lo que contradice el objetivo de minimizar los cambios durante la migración.",
+            "Amazon Redshift es un servicio de almacenamiento de datos optimizado para análisis e informes. No está diseñado para cargas de trabajo transaccionales como las que normalmente maneja una base de datos Oracle. Migrar a Redshift requeriría un rediseño completo de la aplicación y los patrones de acceso a los datos, lo que lo convierte en una opción inadecuada para este escenario."
+        ]
+    },
+    {
+        "Question Number": "13",
+        "Situation": "Una empresa está solucionando problemas de rendimiento en su aplicación basada en microservicios desplegada en AWS. Quieren obtener una visibilidad profunda de la arquitectura de su aplicación para identificar cuellos de botella y mejorar los tiempos de respuesta.",
+        "Question": "¿Qué servicio de AWS debería utilizar la empresa para rastrear y analizar las solicitudes a través de sus microservicios y obtener información detallada sobre el rendimiento de la aplicación?",
+        "Options": {
+            "1": "Utilizar AWS X-Ray para rastrear y analizar el flujo de solicitudes a través de la aplicación, proporcionando información sobre latencias y cuellos de botella en tiempo real.",
+            "2": "Utilizar Amazon CloudWatch Logs para monitorear y almacenar registros de la aplicación, pero analizar manualmente los datos de rendimiento utilizando instancias de EC2.",
+            "3": "Utilizar AWS CloudTrail para rastrear solicitudes de API, pero configurar registros personalizados adicionales para obtener información específica sobre el rendimiento.",
+            "4": "Utilizar Amazon RDS Performance Insights para analizar el rendimiento de la base de datos e identificar consultas lentas en la aplicación."
+        },
+        "Correct Answer": "Utilizar AWS X-Ray para rastrear y analizar el flujo de solicitudes a través de la aplicación, proporcionando información sobre latencias y cuellos de botella en tiempo real.",
+        "Explanation": "AWS X-Ray está diseñado específicamente para rastrear solicitudes en arquitecturas de microservicios. Proporciona información detallada sobre el rendimiento de las aplicaciones al permitir a los desarrolladores visualizar el flujo de solicitudes a través de varios servicios, identificar latencias y localizar cuellos de botella. Esta visibilidad profunda es crucial para solucionar problemas de rendimiento y optimizar los tiempos de respuesta en un entorno de microservicios.",
+        "Other Options": [
+            "Amazon CloudWatch Logs es útil para monitorear y almacenar registros, pero no proporciona el mismo nivel de rastreo y análisis para flujos de solicitudes como AWS X-Ray. El análisis manual utilizando instancias de EC2 sería laborioso y menos efectivo para identificar cuellos de botella de rendimiento.",
+            "AWS CloudTrail se centra principalmente en rastrear solicitudes de API y cambios en los recursos de AWS, no en analizar el rendimiento de la aplicación. Aunque puede proporcionar algunas ideas sobre el uso de la API, no ofrece el rastreo detallado de solicitudes necesario para identificar problemas de rendimiento en microservicios.",
+            "Amazon RDS Performance Insights está diseñado para analizar el rendimiento de la base de datos e identificar consultas lentas, pero no proporciona información sobre el rendimiento general de la aplicación o el flujo de solicitudes a través de microservicios. Está limitado al análisis a nivel de base de datos y no aborda la arquitectura más amplia de la aplicación."
+        ]
+    },
+    {
+        "Question Number": "14",
+        "Situation": "Una empresa está desarrollando una aplicación impulsada por eventos donde varios componentes necesitan responder a eventos en tiempo real, como pedidos de clientes y actualizaciones de inventario. El sistema necesita asegurar que los componentes estén desacoplados para mejorar la escalabilidad y la fiabilidad. La empresa también quiere la capacidad de manejar eventos de manera asíncrona, para que cada servicio pueda procesarlos de forma independiente.",
+        "Question": "¿Qué servicio de AWS debería utilizar la empresa para implementar un patrón de mensajería de publicación/suscripción? (Elija dos.)",
+        "Options": {
+            "1": "Utilizar Amazon SNS (Simple Notification Service) para publicar eventos y suscribir diferentes componentes de la aplicación (como funciones de AWS Lambda) a los temas de SNS para su procesamiento.",
+            "2": "Utilizar Amazon SQS (Simple Queue Service) para colas de mensajes directas entre componentes sin implementar un modelo de publicación/suscripción.",
+            "3": "Utilizar AWS Direct Connect para establecer una conexión privada entre componentes y publicar los eventos directamente a través del enlace de red dedicado.",
+            "4": "Utilizar Amazon EventBridge para crear buses de eventos y definir reglas para enrutar eventos a múltiples destinos, habilitando un patrón de publicación/suscripción.",
+            "5": "Utilizar Amazon S3 para almacenar eventos y permitir que los componentes consulten el bucket de S3 para procesar nuevos eventos."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Utilizar Amazon SNS (Simple Notification Service) para publicar eventos y suscribir diferentes componentes de la aplicación (como funciones de AWS Lambda) a los temas de SNS para su procesamiento.",
+            "Utilizar Amazon EventBridge para crear buses de eventos y definir reglas para enrutar eventos a múltiples destinos, habilitando un patrón de publicación/suscripción."
+        ],
+        "Explanation": "Amazon SNS (Simple Notification Service) es un servicio web que coordina y gestiona la entrega o el envío de mensajes a puntos finales o clientes suscritos. Está diseñado para soportar el patrón de mensajería de publicación/suscripción, que es exactamente lo que necesita la empresa. Las funciones de AWS Lambda pueden suscribirse a los temas de SNS y procesar los eventos de manera asíncrona. Amazon EventBridge es un servicio de bus de eventos sin servidor que facilita la conexión de aplicaciones utilizando datos de sus propias aplicaciones, aplicaciones integradas de Software como Servicio (SaaS) y servicios de AWS. Permite crear un paradigma de mensajería pub/sub, con buses de eventos y reglas para enrutar eventos a múltiples destinos.",
+        "Other Options": [
+            "Amazon SQS (Simple Queue Service) es un servicio de colas de mensajes completamente gestionado que permite desacoplar y escalar microservicios, sistemas distribuidos y aplicaciones sin servidor. Sin embargo, no admite inherentemente un modelo de publicación/suscripción, que es un requisito en el escenario dado.",
+            "AWS Direct Connect es una solución de servicio en la nube que facilita establecer una conexión de red dedicada desde sus instalaciones a AWS. No admite un patrón de mensajería de publicación/suscripción y no proporciona inherentemente manejo asíncrono de eventos.",
+            "Amazon S3 (Simple Storage Service) es un servicio de almacenamiento de objetos que ofrece escalabilidad, disponibilidad de datos, seguridad y rendimiento líderes en la industria. Sin embargo, no está diseñado para aplicaciones impulsadas por eventos en tiempo real ni para implementar un patrón de mensajería de publicación/suscripción. Utilizar S3 requeriría que los componentes consulten continuamente nuevos eventos, lo que es ineficiente y no en tiempo real."
+        ]
+    },
+    {
+        "Question Number": "15",
+        "Situation": "Una empresa está utilizando Amazon Elastic Container Service (ECS) para desplegar una aplicación basada en microservicios en un entorno de producción. La aplicación maneja datos sensibles de clientes, y la empresa quiere asegurarse de que la seguridad esté correctamente implementada en todas las capas de la aplicación.",
+        "Question": "¿Cuáles de las siguientes prácticas deberían implementarse para asegurar los contenedores de ECS y garantizar que los datos estén protegidos?",
+        "Options": {
+            "1": "Utilizar Amazon ECS con AWS Fargate para la gestión de contenedores sin servidor y asegurarse de que todos los datos sensibles se almacenen en Amazon S3 con cifrado habilitado.",
+            "2": "Utilizar roles de IAM para tareas de ECS para asignar los permisos mínimos requeridos para acceder a los recursos de AWS y configurar los grupos de seguridad para las instancias de contenedores para restringir el tráfico entrante.",
+            "3": "Confiar únicamente en el cifrado a nivel de tarea de Amazon ECS para proteger los datos sensibles en reposo, ya que esto proporciona cifrado de extremo a extremo para toda la aplicación.",
+            "4": "Habilitar direcciones IP públicas para las instancias de ECS para asegurar el acceso a los contenedores desde internet y configurar grupos de seguridad para un flujo de tráfico flexible."
+        },
+        "Correct Answer": "Utilizar roles de IAM para tareas de ECS para asignar los permisos mínimos requeridos para acceder a los recursos de AWS y configurar los grupos de seguridad para las instancias de contenedores para restringir el tráfico entrante.",
+        "Explanation": "Utilizar roles de IAM para tareas de ECS permite asignar los permisos de menor privilegio necesarios para que los contenedores accedan a los recursos de AWS, que es un principio fundamental de seguridad. Esto minimiza el riesgo de acceso no autorizado a datos sensibles. Además, configurar grupos de seguridad para las instancias de contenedores ayuda a controlar el tráfico entrante y saliente, asegurando que solo fuentes de confianza puedan comunicarse con los contenedores, mejorando aún más la seguridad.",
+        "Other Options": [
+            "Utilizar Amazon ECS con AWS Fargate para la gestión de contenedores sin servidor y almacenar datos sensibles en Amazon S3 con cifrado habilitado es una buena práctica, pero no aborda la necesidad de controles de acceso adecuados y seguridad de red para los contenedores de ECS en sí. Si bien el cifrado es importante, debería ser parte de una estrategia de seguridad más amplia que incluya roles de IAM y grupos de seguridad.",
+            "Confiar únicamente en el cifrado a nivel de tarea de Amazon ECS no es suficiente para proteger los datos sensibles en reposo. Si bien el cifrado a nivel de tarea puede ayudar, no proporciona seguridad integral para toda la aplicación y no aborda otros aspectos críticos como el control de acceso y la seguridad de red.",
+            "Habilitar direcciones IP públicas para las instancias de ECS representa un riesgo de seguridad significativo al exponer los contenedores a internet. Esto puede llevar a accesos no autorizados y ataques. En su lugar, las mejores prácticas de seguridad recomiendan restringir el acceso a través de grupos de seguridad y utilizar IPs privadas siempre que sea posible."
+        ]
+    },
+    {
+        "Question Number": "16",
+        "Situation": "Una plataforma de trading financiero procesa miles de transacciones por segundo y requiere un servicio de colas altamente escalable para manejar un extenso volumen de mensajes con un rendimiento casi ilimitado. El sistema de trading no requiere orden de mensajes y puede tolerar mensajes duplicados ocasionales, siempre que garantice que cada mensaje se procese al menos una vez.",
+        "Question": "¿Qué configuración de Amazon SQS cumpliría mejor con estos requisitos?",
+        "Options": {
+            "1": "Configurar una Cola FIFO de Amazon SQS para garantizar un procesamiento exactamente una vez y mantener el orden de los mensajes",
+            "2": "Utilizar una Cola Estándar de Amazon SQS con entrega al menos una vez, permitiendo un alto rendimiento y duplicados ocasionales",
+            "3": "Configurar un Tema de Amazon SNS con entrega de mensajes FIFO para asegurar un alto rendimiento y baja latencia",
+            "4": "Implementar Amazon Kinesis Data Streams para proporcionar procesamiento de mensajes ordenados y entrega al menos una vez para el manejo de transacciones en tiempo real"
+        },
+        "Correct Answer": "Utilizar una Cola Estándar de Amazon SQS con entrega al menos una vez, permitiendo un alto rendimiento y duplicados ocasionales",
+        "Explanation": "Una Cola Estándar de Amazon SQS está diseñada para un alto rendimiento y puede manejar un extenso volumen de mensajes con escalabilidad casi ilimitada. Proporciona entrega al menos una vez, lo que significa que, aunque los mensajes pueden ser entregados más de una vez, garantiza que cada mensaje se procesará al menos una vez. Esto se alinea perfectamente con los requisitos del sistema de trading, que no necesita orden de mensajes y puede tolerar duplicados ocasionales.",
+        "Other Options": [
+            "Configurar una Cola FIFO de Amazon SQS no sería adecuado porque las colas FIFO están diseñadas para escenarios donde el orden de los mensajes es crítico y garantizan un procesamiento exactamente una vez. Esto viene a costa de un menor rendimiento en comparación con las Colas Estándar, lo cual no es ideal para una plataforma de trading de alto volumen.",
+            "Configurar un Tema de Amazon SNS con entrega de mensajes FIFO no es apropiado porque SNS se utiliza principalmente para mensajería pub/sub y no está diseñado para encolar mensajes de la misma manera que SQS. Además, los temas FIFO también están limitados en rendimiento en comparación con las Colas Estándar.",
+            "Implementar Amazon Kinesis Data Streams proporcionaría procesamiento de mensajes ordenados y entrega al menos una vez, pero es más complejo y se utiliza típicamente para análisis en tiempo real en lugar de necesidades de encolado simples. Los requisitos del sistema de trading no justifican la complejidad adicional de Kinesis cuando una Cola Estándar sería suficiente."
+        ]
+    },
+    {
+        "Question Number": "17",
+        "Situation": "Una organización está utilizando Amazon S3 para almacenar datos confidenciales y requiere un método de cifrado del lado del servidor que permita a AWS Key Management Service (KMS) gestionar las claves. Además, desean características como control de rotación de claves y separación de roles.",
+        "Question": "¿Qué opción de cifrado S3 cumple mejor con estas necesidades?",
+        "Options": {
+            "1": "Cifrado del lado del cliente",
+            "2": "Cifrado del lado del servidor con Claves Gestionadas por S3 (SSE-S3)",
+            "3": "Cifrado del lado del servidor con Claves Proporcionadas por el Cliente (SSE-C)",
+            "4": "Cifrado del lado del servidor con Claves Gestionadas por AWS KMS (SSE-KMS)"
+        },
+        "Correct Answer": "Cifrado del lado del servidor con Claves Gestionadas por AWS KMS (SSE-KMS)",
+        "Explanation": "SSE-KMS es la mejor opción para este escenario porque permite a AWS Key Management Service (KMS) gestionar las claves de cifrado. Este método proporciona características de seguridad mejoradas, como el control de rotación de claves, que permite a la organización rotar automáticamente las claves según un horario, y la separación de roles, que asegura que diferentes roles puedan tener permisos para el uso y gestión de claves. Esto se alinea perfectamente con los requisitos de la organización para gestionar datos confidenciales de manera segura.",
+        "Other Options": [
+            "El Cifrado del lado del cliente requiere que el cliente gestione las claves de cifrado, lo que no utiliza AWS KMS para la gestión de claves y carece de las características de rotación de claves y separación de roles que la organización necesita.",
+            "El Cifrado del lado del servidor con Claves Gestionadas por S3 (SSE-S3) utiliza Amazon S3 para gestionar las claves de cifrado, pero no proporciona el mismo nivel de control sobre la gestión de claves, como la rotación de claves y la separación de roles, que ofrece SSE-KMS.",
+            "El Cifrado del lado del servidor con Claves Proporcionadas por el Cliente (SSE-C) permite a los clientes gestionar sus propias claves de cifrado, lo que significa que la organización tendría que manejar la gestión y rotación de claves por sí misma, nuevamente sin utilizar AWS KMS y careciendo de las características deseadas."
+        ]
+    },
+    {
+        "Question Number": "18",
+        "Situation": "Una startup está desarrollando un backend móvil que requiere procesar cargas de usuario, realizar transformaciones de imágenes y almacenar los resultados. El equipo quiere minimizar la sobrecarga operativa y asegurar que el backend pueda escalar sin problemas con la demanda de los usuarios.",
+        "Question": "¿Qué servicio sin servidor de AWS debería utilizar el arquitecto de soluciones para manejar las tareas de procesamiento de imágenes? (Elija dos.)",
+        "Options": {
+            "1": "AWS Fargate",
+            "2": "Amazon EC2",
+            "3": "AWS Lambda",
+            "4": "Amazon ECS",
+            "5": "Notificaciones de Eventos de Amazon S3"
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "AWS Lambda",
+            "Notificaciones de Eventos de Amazon S3"
+        ],
+        "Explanation": "AWS Lambda es un servicio de computación sin servidor que te permite ejecutar tu código sin aprovisionar o gestionar servidores. Escala automáticamente tu aplicación con alta disponibilidad, y solo pagas por el tiempo de computación que consumes. Esto lo convierte en una opción perfecta para manejar tareas de procesamiento de imágenes de manera escalable y rentable. Las Notificaciones de Eventos de Amazon S3 se pueden utilizar junto con AWS Lambda para activar las tareas de procesamiento de imágenes cada vez que se carga una nueva imagen en un bucket de S3. Esto permite que el sistema responda inmediatamente a las cargas de usuario, reduciendo aún más la sobrecarga operativa.",
+        "Other Options": [
+            "AWS Fargate es un motor de computación sin servidor para contenedores. Aunque se puede utilizar para ejecutar tareas de procesamiento de imágenes, no es tan simple o rentable como AWS Lambda para este caso de uso específico. Además, no proporciona la respuesta inmediata a las cargas de usuario que se puede lograr con las Notificaciones de Eventos de S3.",
+            "Amazon EC2 es un servicio web que proporciona capacidad de computación redimensionable en la nube. No es sin servidor, lo que significa que requiere escalado manual y gestión de servidores, lo que contradice el deseo del equipo de minimizar la sobrecarga operativa.",
+            "Amazon ECS (Elastic Container Service) es un servicio de orquestación de contenedores altamente escalable y de alto rendimiento. Aunque podría usarse para tareas de procesamiento de imágenes, no es sin servidor y requiere más sobrecarga operativa que AWS Lambda. También no proporciona la respuesta inmediata a las cargas de usuario que se puede lograr con las Notificaciones de Eventos de S3."
+        ]
+    },
+    {
+        "Question Number": "19",
+        "Situation": "Una empresa está configurando el control de acceso para su entorno de AWS y quiere asegurarse de que cada miembro del equipo tenga el nivel de acceso adecuado a los servicios de AWS. La empresa tiene múltiples departamentos, como desarrollo, finanzas y recursos humanos, cada uno con diferentes niveles de permisos necesarios.",
+        "Question": "¿Cuál sería la estructura de IAM más efectiva y manejable para asignar permisos a los usuarios en estos departamentos?",
+        "Options": {
+            "1": "Crear usuarios individuales de IAM para cada miembro del equipo y adjuntar políticas directamente a cada usuario.",
+            "2": "Crear grupos de IAM para cada departamento, asignar usuarios al grupo correspondiente y adjuntar políticas específicas del departamento a cada grupo.",
+            "3": "Usar un único rol de IAM con permisos completos y hacer que todos los usuarios asuman este rol según sea necesario.",
+            "4": "Crear cuentas de AWS separadas para cada departamento y gestionar el acceso a nivel de cuenta."
+        },
+        "Correct Answer": "Crear grupos de IAM para cada departamento, asignar usuarios al grupo correspondiente y adjuntar políticas específicas del departamento a cada grupo.",
+        "Explanation": "Crear grupos de IAM para cada departamento es la forma más efectiva y manejable de asignar permisos, ya que permite una gestión centralizada de los permisos. Al adjuntar políticas a grupos en lugar de a usuarios individuales, la empresa puede gestionar fácilmente los niveles de acceso a medida que los miembros del equipo se unen o abandonan la organización o cambian de rol. Este enfoque reduce la carga administrativa de gestionar permisos y asegura que todos los usuarios en un departamento tengan derechos de acceso consistentes que se alineen con sus funciones laborales.",
+        "Other Options": [
+            "Crear usuarios individuales de IAM para cada miembro del equipo y adjuntar políticas directamente a cada usuario puede llevar a una situación compleja y difícil de gestionar a medida que crece el número de usuarios. Se vuelve difícil mantener permisos consistentes entre los usuarios, y cualquier cambio en los niveles de acceso tendría que hacerse individualmente para cada usuario.",
+            "Usar un único rol de IAM con permisos completos para todos los usuarios no es una práctica segura. Viola el principio de menor privilegio, ya que otorga a todos los usuarios acceso a todos los recursos, aumentando el riesgo de acciones accidentales o maliciosas que podrían comprometer el entorno de AWS.",
+            "Crear cuentas de AWS separadas para cada departamento complica la gestión y puede llevar a costos y carga administrativa aumentados. También dificulta compartir recursos entre departamentos y requiere estrategias de facturación y gestión de acceso más complejas."
+        ]
+    },
+    {
+        "Question Number": "20",
+        "Situation": "Una empresa está utilizando un Grupo de Auto Scaling (ASG) para gestionar instancias de EC2 en función de la demanda fluctuante. Quieren ajustar automáticamente la capacidad de las instancias para mantener una utilización de CPU agregada del 40%.",
+        "Question": "¿Qué tipo de política de escalado deberían implementar y por qué?",
+        "Options": {
+            "1": "Escalado Manual, ya que permite un control directo sobre la capacidad deseada en función del monitoreo en tiempo real.",
+            "2": "Escalado Programado, que ajustará la capacidad en momentos específicos según los patrones de demanda previstos.",
+            "3": "Escalado Dinámico con Seguimiento de Objetivos, ya que ajusta la capacidad para mantener automáticamente el objetivo de CPU especificado.",
+            "4": "Escalado Simple, que permite aumentar o disminuir la capacidad en función de condiciones de umbral de CPU individuales."
+        },
+        "Correct Answer": "Escalado Dinámico con Seguimiento de Objetivos",
+        "Explanation": "El Escalado Dinámico con Seguimiento de Objetivos es la opción más adecuada para este escenario porque ajusta automáticamente el número de instancias de EC2 en el Grupo de Auto Scaling para mantener un objetivo especificado de utilización de CPU—en este caso, el 40%. Este tipo de política de escalado monitorea continuamente la utilización de CPU y realiza ajustes según sea necesario, asegurando que la aplicación pueda responder a la demanda fluctuante sin intervención manual.",
+        "Other Options": [
+            "El Escalado Manual requiere intervención humana para ajustar la capacidad deseada, lo que no es eficiente para mantener un objetivo específico de utilización de CPU, especialmente en un entorno dinámico.",
+            "El Escalado Programado es útil para cargas de trabajo predecibles donde la demanda puede anticiparse en momentos específicos, pero no responde a cambios en tiempo real en la utilización de CPU, lo que lo hace menos efectivo para mantener un nivel de utilización objetivo.",
+            "El Escalado Simple reacciona a umbrales específicos pero no proporciona el ajuste continuo necesario para mantener un objetivo promedio de utilización de CPU como el 40%. Puede llevar a sobreaprovisionamiento o subaprovisionamiento si la demanda fluctúa con frecuencia."
+        ]
+    },
+    {
+        "Question Number": "21",
+        "Situation": "Una empresa quiere asegurar su bucket de Amazon S3 y restringir el acceso solo a través de su distribución de CloudFront. Deciden usar una Identidad de Acceso de Origen (OAI) para lograr esto.",
+        "Question": "¿Cuál es la función principal de la OAI en esta configuración?",
+        "Options": {
+            "1": "La OAI actúa como un usuario que puede ser añadido a políticas de IAM para restringir el acceso a los buckets de S3.",
+            "2": "La OAI se convierte en una identidad asociada con CloudFront, permitiendo solo solicitudes de CloudFront para acceder al bucket de S3, con todo acceso directo bloqueado por defecto.",
+            "3": "La OAI permite el acceso directo al bucket de S3 desde cualquier ubicación, eludiendo las restricciones de CloudFront.",
+            "4": "La OAI se utiliza para proporcionar acceso público al bucket de S3 a través de un encabezado personalizado."
+        },
+        "Correct Answer": "La OAI se convierte en una identidad asociada con CloudFront, permitiendo solo solicitudes de CloudFront para acceder al bucket de S3, con todo acceso directo bloqueado por defecto.",
+        "Explanation": "La Identidad de Acceso de Origen (OAI) es una característica especial de CloudFront que permite restringir el acceso a su bucket de Amazon S3 para que solo CloudFront pueda acceder a él. Al asociar una OAI con su distribución de CloudFront, se asegura que las solicitudes al bucket de S3 solo puedan provenir de CloudFront, bloqueando efectivamente todo acceso directo al bucket de S3 desde Internet. Esto mejora la seguridad al prevenir el acceso no autorizado al contenido de S3 mientras permite que los usuarios accedan a él a través de CloudFront.",
+        "Other Options": [
+            "La OAI no actúa como un usuario que puede ser añadido a políticas de IAM. En cambio, es una característica de CloudFront que proporciona una forma de restringir el acceso a los buckets de S3 específicamente para CloudFront.",
+            "Esta opción es en realidad la respuesta correcta, ya que describe con precisión la función de la OAI en este contexto.",
+            "La OAI no permite el acceso directo al bucket de S3 desde ninguna ubicación. De hecho, hace lo contrario al asegurar que solo CloudFront pueda acceder al bucket de S3, bloqueando todo otro acceso directo."
+        ]
+    },
+    {
+        "Question Number": "22",
+        "Situation": "Una empresa de tecnología aloja una aplicación crítica en instancias de Amazon EC2. Para mejorar la seguridad, necesitan controlar el acceso a las instancias y garantizar la protección de datos en múltiples niveles, incluyendo las capas de red y aplicación. También están preocupados por el acceso no autorizado, por lo que quieren hacer cumplir políticas de acceso seguro y monitorear posibles amenazas.",
+        "Question": "¿Cuál de las siguientes mejores prácticas deberían implementar para garantizar la seguridad de su entorno EC2? (Elija dos.)",
+        "Options": {
+            "1": "Adjuntar grupos de seguridad a las instancias de EC2 para restringir el tráfico entrante y saliente, usar roles de IAM para gestionar permisos y habilitar el registro de CloudTrail para monitorear el acceso y la actividad.",
+            "2": "Desplegar todas las instancias de EC2 en una subred pública con acceso sin restricciones, permitiendo una gestión remota y acceso más fácil para los usuarios.",
+            "3": "Habilitar AWS Shield en las instancias de EC2 para manejar todos los requisitos de seguridad y prevenir el acceso no autorizado bloqueando todo el tráfico entrante.",
+            "4": "Usar pares de claves de EC2 para gestionar el acceso de todos los usuarios y almacenar las claves directamente en las instancias para facilitar inicios de sesión rápidos.",
+            "5": "Implementar ACLs de red además de grupos de seguridad para una seguridad de red en capas y habilitar Amazon GuardDuty para la detección de amenazas."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Adjuntar grupos de seguridad a las instancias de EC2 para restringir el tráfico entrante y saliente, usar roles de IAM para gestionar permisos y habilitar el registro de CloudTrail para monitorear el acceso y la actividad.",
+            "Implementar ACLs de red además de grupos de seguridad para una seguridad de red en capas y habilitar Amazon GuardDuty para la detección de amenazas."
+        ],
+        "Explanation": "Los grupos de seguridad actúan como un cortafuegos virtual para las instancias de EC2 para controlar el tráfico entrante y saliente. Los roles de IAM proporcionan acceso seguro y controlado a los servicios y recursos de AWS. El registro de CloudTrail ayuda a monitorear y registrar la actividad de la cuenta relacionada con acciones en la infraestructura de AWS. Las ACLs de red proporcionan una capa adicional de seguridad, permitiendo controlar el tráfico dentro y fuera de una o más subredes. Amazon GuardDuty es un servicio de detección de amenazas que monitorea continuamente comportamientos maliciosos o no autorizados.",
+        "Other Options": [
+            "Desplegar todas las instancias de EC2 en una subred pública con acceso sin restricciones no es una buena práctica de seguridad. Expone las instancias a posibles amenazas de Internet y no proporciona control sobre quién puede acceder a las instancias.",
+            "Si bien AWS Shield proporciona protección contra DDoS, no maneja todos los requisitos de seguridad para las instancias de EC2. No bloquea todo el tráfico entrante, lo cual no es deseable ya que impediría el acceso legítimo a las instancias.",
+            "Usar pares de claves de EC2 para gestionar el acceso es una buena práctica, pero almacenar las claves directamente en las instancias no lo es. Si una instancia se ve comprometida, las claves podrían ser accesibles, lo que llevaría a un acceso no autorizado adicional."
+        ]
+    },
+    {
+        "Question Number": "23",
+        "Situation": "Una organización de noticias global necesita desplegar su aplicación de entrega de contenido en múltiples regiones geográficas para reducir la latencia y mejorar la experiencia del usuario para los espectadores en todo el mundo. La aplicación requiere sincronización de actualizaciones de contenido en tiempo real en todas las regiones.",
+        "Question": "¿Qué servicio de AWS debería recomendar el arquitecto de soluciones para lograr este requisito de computación distribuida?",
+        "Options": {
+            "1": "Amazon CloudFront",
+            "2": "AWS Global Accelerator",
+            "3": "Amazon Route 53",
+            "4": "Amazon ElastiCache"
+        },
+        "Correct Answer": "Amazon CloudFront",
+        "Explanation": "Amazon CloudFront es un servicio de red de entrega de contenido (CDN) que almacena en caché contenido en ubicaciones de borde alrededor del mundo, lo que ayuda a reducir la latencia para los usuarios que acceden a la aplicación desde diferentes regiones geográficas. También admite actualizaciones de contenido en tiempo real, permitiendo la sincronización en todas las regiones, lo que lo hace ideal para una organización de noticias global que necesita entregar actualizaciones oportunas a sus espectadores.",
+        "Other Options": [
+            "AWS Global Accelerator mejora la disponibilidad y el rendimiento de las aplicaciones al dirigir el tráfico a puntos finales óptimos, pero no proporciona capacidades de entrega de contenido o almacenamiento en caché como lo hace CloudFront.",
+            "Amazon Route 53 es un servicio web escalable de Sistema de Nombres de Dominio (DNS) que proporciona registro de dominios y enrutamiento, pero no maneja la entrega de contenido o la sincronización de actualizaciones de contenido.",
+            "Amazon ElastiCache es un servicio que proporciona almacenamiento en caché en memoria para mejorar el rendimiento de la aplicación, pero no está diseñado para la entrega de contenido a través de regiones geográficas y no admite la sincronización en tiempo real de actualizaciones de contenido."
+        ]
+    },
+    {
+        "Question Number": "24",
+        "Situation": "Una firma financiera internacional necesita garantizar alta disponibilidad para su aplicación central que debe permanecer operativa incluso durante cortes regionales. Su objetivo es implementar una estrategia de conmutación por error que minimice el tiempo de inactividad y redirija automáticamente el tráfico a un entorno de reserva en otra región si la región primaria falla.",
+        "Question": "Dadas sus necesidades, ¿qué estrategia de conmutación por error de AWS sería más adecuada y por qué?",
+        "Options": {
+            "1": "Pilot Light, ya que mantiene una versión mínima de la aplicación en otra región, permitiendo un rápido aumento durante eventos de conmutación por error.",
+            "2": "Warm Standby, porque ejecuta una versión reducida de la aplicación en otra región, permitiendo una conmutación por error más rápida con un tiempo de configuración mínimo.",
+            "3": "Conmutación por error Activa-Activa, donde ambas regiones ejecutan la carga completa de la aplicación, permitiendo la redirección inmediata del tráfico a la región secundaria en caso de una falla.",
+            "4": "Copia de seguridad y restauración, ya que implica restaurar desde copias de seguridad almacenadas en otra región, ofreciendo una solución rentable para aplicaciones no críticas."
+        },
+        "Correct Answer": "Conmutación por error Activa-Activa, donde ambas regiones ejecutan la carga completa de la aplicación, permitiendo la redirección inmediata del tráfico a la región secundaria en caso de una falla.",
+        "Explanation": "La estrategia de Conmutación por error Activa-Activa es la más adecuada para la firma financiera internacional porque permite que ambas regiones ejecuten simultáneamente la carga completa de la aplicación. Esto significa que si una región experimenta un corte, el tráfico puede ser redirigido inmediatamente a la otra región sin tiempo de inactividad. Este enfoque garantiza alta disponibilidad y cumple con el requisito de la firma de minimizar el tiempo de inactividad durante cortes regionales, lo que lo convierte en la solución más efectiva para su aplicación central.",
+        "Other Options": [
+            "Pilot Light no es adecuado porque solo mantiene una versión mínima de la aplicación en otra región, lo que requeriría tiempo para escalar durante un evento de conmutación por error, lo que podría llevar a un tiempo de inactividad potencial.",
+            "Warm Standby, aunque mejor que Pilot Light, aún ejecuta una versión reducida de la aplicación. Aunque permite una conmutación por error más rápida que Pilot Light, puede no proporcionar la redirección inmediata del tráfico necesaria para alta disponibilidad, ya que requiere algo de tiempo de configuración para escalar a plena capacidad.",
+            "Copia de seguridad y restauración no es apropiada para este escenario, ya que implica restaurar desde copias de seguridad, lo que puede llevar un tiempo significativo y no está diseñado para alta disponibilidad. Esta estrategia es más adecuada para aplicaciones no críticas donde se puede tolerar el tiempo de inactividad."
+        ]
+    },
+    {
+        "Question Number": "25",
+        "Situation": "Una empresa está almacenando datos sensibles de clientes en una base de datos Amazon RDS MySQL. Para cumplir con los requisitos de seguridad y regulación, necesitan asegurarse de que los datos estén cifrados en reposo, con un control estricto sobre quién puede acceder a las claves de cifrado. Además, deben asegurarse de que las copias de seguridad y las instantáneas de la base de datos también estén cifradas.",
+        "Question": "¿Qué solución cumpliría mejor con estos requisitos? (Elija dos.)",
+        "Options": {
+            "1": "Habilitar el cifrado en reposo de RDS utilizando AWS Key Management Service (KMS) con una CMK gestionada por el cliente, asegurando que solo roles IAM específicos tengan permisos para acceder a la clave.",
+            "2": "Utilizar la función de cifrado incorporada de MySQL para cifrar datos en reposo y configurar RDS para habilitar el cifrado en copias de seguridad automatizadas e instantáneas.",
+            "3": "Habilitar el Cifrado de Datos Transparente (TDE) en MySQL y gestionar las claves de cifrado utilizando AWS CloudHSM para asegurar que las claves de cifrado no sean accesibles por AWS.",
+            "4": "Almacenar datos en texto plano dentro de la base de datos RDS pero habilitar SSL/TLS para acceso seguro, confiando en la seguridad de la red para proteger los datos en reposo.",
+            "5": "Configurar RDS para utilizar cifrado en tránsito con SSL/TLS y cifrar manualmente las copias de seguridad antes de almacenarlas en Amazon S3."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Habilitar el cifrado en reposo de RDS utilizando AWS Key Management Service (KMS) con una CMK gestionada por el cliente, asegurando que solo roles IAM específicos tengan permisos para acceder a la clave.",
+            "Habilitar el Cifrado de Datos Transparente (TDE) en MySQL y gestionar las claves de cifrado utilizando AWS CloudHSM para asegurar que las claves de cifrado no sean accesibles por AWS."
+        ],
+        "Explanation": "AWS Key Management Service (KMS) permite el cifrado en reposo y otorga al cliente control sobre quién puede acceder a las claves de cifrado al asignar permisos a roles IAM específicos. Esto cumple con el requisito de control estricto sobre el acceso a las claves de cifrado. La opción 3 es correcta porque el Cifrado de Datos Transparente (TDE) en MySQL proporciona cifrado en reposo, y AWS CloudHSM permite la gestión de claves de cifrado de manera que no sean accesibles por AWS, cumpliendo así con el requisito de control estricto sobre el acceso a las claves de cifrado.",
+        "Other Options": [
+            "Si bien la función de cifrado incorporada de MySQL puede cifrar datos en reposo, no proporciona el nivel de control sobre el acceso a las claves de cifrado que se requiere en este escenario.",
+            "Almacenar datos en texto plano dentro de la base de datos RDS no proporciona cifrado en reposo, que es un requisito en este escenario. Si bien SSL/TLS proporciona acceso seguro, no protege los datos en reposo.",
+            "Si bien proporciona cifrado en tránsito con SSL/TLS y permite el cifrado manual de copias de seguridad, no proporciona cifrado en reposo para los datos en la base de datos RDS, que es un requisito en este escenario."
+        ]
+    },
+    {
+        "Question Number": "26",
+        "Situation": "Una agencia gubernamental necesita ingerir datos sensibles de múltiples oficinas sucursales en un lago de datos Amazon S3. Los puntos de ingestión de datos deben estar asegurados para prevenir el acceso no autorizado y garantizar la integridad de los datos durante la transferencia.",
+        "Question": "¿Qué solución debería implementar el arquitecto de soluciones para asegurar el acceso a los puntos de ingestión de datos?",
+        "Options": {
+            "1": "Utilizar URLs prefirmadas de Amazon S3 para que cada oficina sucursal suba datos directamente a S3.",
+            "2": "Configurar una conexión VPN entre cada oficina sucursal y la VPC de AWS, y restringir el acceso a S3 a los puntos finales de la VPC.",
+            "3": "Implementar usuarios IAM con claves de acceso a S3 para cada oficina sucursal.",
+            "4": "Habilitar el acceso público al bucket de S3 y utilizar cifrado a nivel de objeto."
+        },
+        "Correct Answer": "Configurar una conexión VPN entre cada oficina sucursal y la VPC de AWS, y restringir el acceso a S3 a los puntos finales de la VPC.",
+        "Explanation": "Configurar una conexión VPN entre cada oficina sucursal y la VPC de AWS asegura que todas las transferencias de datos ocurran a través de un canal seguro y cifrado. Esto protege los datos sensibles de accesos no autorizados durante la transmisión. Al restringir el acceso a S3 a los puntos finales de la VPC, se mejora aún más la seguridad al asegurar que solo el tráfico que proviene de la VPC pueda acceder al bucket de S3, aislándolo efectivamente de Internet público y reduciendo el riesgo de exposición a amenazas potenciales.",
+        "Other Options": [
+            "Utilizar URLs prefirmadas de Amazon S3 permite el acceso temporal para subir datos directamente a S3, pero no proporciona un canal seguro para la transferencia de datos. Si la URL prefirmada es interceptada, usuarios no autorizados podrían acceder al bucket de S3, comprometiendo la seguridad de los datos.",
+            "Implementar usuarios IAM con claves de acceso a S3 para cada oficina sucursal puede proporcionar control de acceso, pero no asegura la transferencia de datos en sí. Si las claves de acceso son comprometidas, usuarios no autorizados podrían acceder al bucket de S3. Además, este método no cifra los datos en tránsito, dejándolos vulnerables a la interceptación.",
+            "Habilitar el acceso público al bucket de S3 y utilizar cifrado a nivel de objeto es altamente inseguro. El acceso público significa que cualquier persona en Internet podría potencialmente acceder a los datos, lo que contradice el requisito de prevenir el acceso no autorizado. El cifrado a nivel de objeto protege los datos en reposo, pero no asegura los datos durante la transferencia, dejándolos vulnerables a la interceptación."
+        ]
+    },
+    {
+        "Question Number": "27",
+        "Situation": "Una empresa de streaming de medios quiere mejorar el rendimiento de su aplicación, que entrega contenido de video a usuarios en todo el mundo. La empresa necesita minimizar la latencia y reducir la carga en los servidores backend.",
+        "Question": "¿Qué estrategia de caché debería utilizar la empresa para asegurar una entrega rápida de contenido y mantener alta disponibilidad?",
+        "Options": {
+            "1": "Utilizar Amazon CloudFront como una red de entrega de contenido (CDN) para almacenar en caché contenido de video en ubicaciones de borde, y almacenar contenido de acceso frecuente en Amazon S3 para almacenamiento a largo plazo.",
+            "2": "Utilizar Amazon ElastiCache para almacenar en caché consultas de base de datos y almacenar contenido de video en Amazon DynamoDB, asegurando tiempos de acceso rápidos para los usuarios.",
+            "3": "Utilizar instancias de Amazon EC2 con un balanceador de carga para almacenar en caché contenido de video, y almacenar contenido en un sistema de archivos tradicional para fácil recuperación.",
+            "4": "Utilizar Amazon RDS con réplicas de lectura para almacenar en caché datos y optimizar la entrega de video, y almacenar contenido multimedia en Amazon EFS para acceso compartido."
+        },
+        "Correct Answer": "Utilizar Amazon CloudFront como una red de entrega de contenido (CDN) para almacenar en caché contenido de video en ubicaciones de borde, y almacenar contenido de acceso frecuente en Amazon S3 para almacenamiento a largo plazo.",
+        "Explanation": "Utilizar Amazon CloudFront como una CDN permite a la empresa de streaming de medios almacenar en caché contenido de video en ubicaciones de borde alrededor del mundo. Esto reduce significativamente la latencia para los usuarios al entregar contenido desde una ubicación más cercana a ellos, en lugar de desde un servidor centralizado. Además, almacenar contenido de acceso frecuente en Amazon S3 proporciona una solución de almacenamiento escalable y duradera, asegurando que el contenido esté fácilmente disponible para su recuperación. Esta combinación optimiza el rendimiento y mantiene alta disponibilidad, lo que la convierte en la mejor opción para una entrega rápida de contenido.",
+        "Other Options": [
+            "Utilizar Amazon ElastiCache para almacenar en caché consultas de base de datos y almacenar contenido de video en Amazon DynamoDB no es ideal para la entrega de contenido de video. ElastiCache se utiliza principalmente para almacenar en caché datos en memoria para acelerar consultas de base de datos, mientras que DynamoDB es una base de datos NoSQL que puede no estar optimizada para servir archivos de video grandes de manera eficiente.",
+            "Utilizar instancias de Amazon EC2 con un balanceador de carga para almacenar en caché contenido de video y almacenar contenido en un sistema de archivos tradicional no es una estrategia eficiente. Este enfoque requeriría más gestión y esfuerzos de escalado, y los sistemas de archivos tradicionales pueden no proporcionar los mismos beneficios de rendimiento que una CDN para la entrega de contenido global.",
+            "Utilizar Amazon RDS con réplicas de lectura para almacenar en caché datos y optimizar la entrega de video no es adecuado para contenido de video. RDS está diseñado para bases de datos relacionales y no está optimizado para servir archivos multimedia grandes. Además, Amazon EFS es un servicio de almacenamiento de archivos que puede no proporcionar los mismos beneficios de rendimiento que una CDN para streaming de video."
+        ]
+    },
+    {
+        "Question Number": "28",
+        "Situation": "Una empresa está ejecutando una aplicación en instancias de Amazon EC2 que necesitan acceder a datos almacenados en un bucket de Amazon S3. Para evitar gestionar credenciales a largo plazo, la empresa quiere proporcionar de manera segura los permisos necesarios a las instancias.",
+        "Question": "¿Qué configuración cumpliría mejor con estos requisitos?",
+        "Options": {
+            "1": "Adjuntar un rol de IAM con los permisos necesarios para acceder al bucket de S3 a cada instancia de EC2. El rol proporcionará credenciales temporales que se rotan automáticamente.",
+            "2": "Generar manualmente una clave de acceso de IAM y una clave secreta de acceso con permisos de S3 y almacenarlas en cada instancia de EC2 para que la aplicación las use.",
+            "3": "Crear un usuario de IAM con permisos de acceso a S3, configurar las credenciales del usuario en cada instancia de EC2 y establecer un trabajo programado para rotar las credenciales manualmente.",
+            "4": "Usar AWS Secrets Manager para almacenar las credenciales de acceso a S3 y recuperarlas en el código de la aplicación que se ejecuta en las instancias de EC2."
+        },
+        "Correct Answer": "Adjuntar un rol de IAM con los permisos necesarios para acceder al bucket de S3 a cada instancia de EC2. El rol proporcionará credenciales temporales que se rotan automáticamente.",
+        "Explanation": "Adjuntar un rol de IAM a una instancia de EC2 es la mejor práctica para proporcionar permisos para acceder a recursos de AWS como S3. Este método permite que la instancia asuma el rol y reciba credenciales de seguridad temporales que son rotadas automáticamente por AWS. Esto elimina la necesidad de credenciales a largo plazo, mejora la seguridad y simplifica la gestión, ya que las credenciales son manejadas por AWS y no necesitan ser almacenadas o rotadas manualmente.",
+        "Other Options": [
+            "Generar manualmente una clave de acceso de IAM y una clave secreta de acceso y almacenarlas en cada instancia de EC2 no es seguro. Si estas credenciales se ven comprometidas, pueden ser utilizadas indefinidamente hasta que sean revocadas manualmente. Además, gestionar y rotar estas credenciales puede ser engorroso y propenso a errores.",
+            "Crear un usuario de IAM con permisos de acceso a S3 y configurar las credenciales del usuario en cada instancia de EC2 también es inseguro. Al igual que la opción anterior, este enfoque requiere la gestión manual de credenciales a largo plazo, lo que puede llevar a vulnerabilidades de seguridad si las credenciales se filtran o no se rotan adecuadamente.",
+            "Usar AWS Secrets Manager para almacenar las credenciales de acceso a S3 y recuperarlas en el código de la aplicación es un mejor enfoque que almacenar credenciales directamente en la instancia. Sin embargo, aún implica gestionar credenciales, lo cual es innecesario cuando los roles de IAM pueden proporcionar credenciales temporales automáticamente. Esto añade complejidad sin beneficios significativos en este escenario."
+        ]
+    },
+    {
+        "Question Number": "29",
+        "Situation": "Una institución financiera, SecureBank, tiene estrictos requisitos de cumplimiento para la encriptación de datos y la gestión de claves. Para cumplir con los estándares regulatorios, SecureBank debe utilizar un módulo de seguridad de hardware (HSM) que cumpla con FIPS 140-2 Nivel 3 para el almacenamiento y gestión de claves. Están considerando AWS CloudHSM y AWS Key Management Service (KMS) para cumplir con estos requisitos. SecureBank quiere tener control total sobre el proceso de gestión de claves y la capacidad de integrarse con APIs estándar de la industria para flujos de trabajo de encriptación personalizados. También quieren entender las diferencias en el control del cliente, los niveles de cumplimiento y la integración con los servicios de AWS entre AWS CloudHSM y AWS KMS.",
+        "Question": "¿Cuál de las siguientes opciones explica mejor las diferencias principales entre AWS CloudHSM y AWS Key Management Service (KMS) en cuanto al control del cliente y los niveles de cumplimiento, particularmente al tratar con estándares de seguridad estrictos como FIPS 140-2 Nivel 3?",
+        "Options": {
+            "1": "AWS CloudHSM y AWS KMS proporcionan ambos cumplimiento con FIPS 140-2 Nivel 3; sin embargo, solo AWS CloudHSM es un servicio totalmente gestionado y multi-tenant, permitiendo a los clientes gestionar sus claves de encriptación en un entorno compartido.",
+            "2": "AWS CloudHSM es un módulo de seguridad de hardware (HSM) de un solo inquilino provisionado por AWS pero totalmente gestionado por el cliente, ofreciendo cumplimiento con FIPS 140-2 Nivel 3. En contraste, AWS KMS generalmente proporciona cumplimiento de Nivel 2 y ofrece una integración más profunda con los servicios de AWS, pero con menos control del cliente sobre la gestión de claves.",
+            "3": "AWS CloudHSM está diseñado para integrarse de manera nativa con servicios de AWS como la encriptación del lado del servidor de S3, proporcionando una gestión de encriptación sin interrupciones. Sin embargo, AWS KMS es más adecuado para entornos impulsados por el cumplimiento que necesitan un HSM controlado por el cliente.",
+            "4": "A diferencia de AWS CloudHSM, AWS KMS permite a los clientes utilizar APIs estándar de la industria, incluyendo bibliotecas PKCS#11 y CNG, para integrarse con otros flujos de trabajo de encriptación, lo que lo hace más adecuado para implementaciones criptográficas personalizadas."
+        },
+        "Correct Answer": "AWS CloudHSM es un módulo de seguridad de hardware (HSM) de un solo inquilino provisionado por AWS pero totalmente gestionado por el cliente, ofreciendo cumplimiento con FIPS 140-2 Nivel 3. En contraste, AWS KMS generalmente proporciona cumplimiento de Nivel 2 y ofrece una integración más profunda con los servicios de AWS, pero con menos control del cliente sobre la gestión de claves.",
+        "Explanation": "AWS CloudHSM proporciona a los clientes control total sobre sus claves de encriptación y está diseñado para cumplir con requisitos de cumplimiento estrictos, incluyendo FIPS 140-2 Nivel 3. Es una solución de un solo inquilino, lo que significa que el hardware está dedicado a un solo cliente, lo que mejora la seguridad y el control. Por otro lado, AWS Key Management Service (KMS) es un servicio multi-tenant que simplifica la gestión de claves e integra sin problemas con otros servicios de AWS, pero no proporciona el mismo nivel de control sobre la gestión de claves que CloudHSM. KMS generalmente cumple con el nivel 2 de FIPS 140-2, lo que puede no satisfacer los requisitos regulatorios más estrictos que enfrenta SecureBank.",
+        "Other Options": [
+            "La opción 1 afirma incorrectamente que tanto AWS CloudHSM como AWS KMS proporcionan cumplimiento con FIPS 140-2 Nivel 3. Mientras que CloudHSM cumple con este estándar, KMS típicamente cumple con el Nivel 2, lo cual es una distinción crítica para las necesidades de SecureBank.",
+            "La opción 3 tergiversa las capacidades de AWS CloudHSM y AWS KMS. CloudHSM no está diseñado principalmente para integrarse con servicios de AWS como S3; más bien, se centra en proporcionar un entorno seguro para la gestión de claves. KMS está más integrado con los servicios de AWS, pero no ofrece el mismo nivel de control que CloudHSM.",
+            "La opción 4 afirma incorrectamente que AWS KMS permite el uso de APIs estándar de la industria como PKCS#11 y bibliotecas CNG para implementaciones criptográficas personalizadas. En realidad, AWS CloudHSM admite estas APIs, proporcionando la flexibilidad necesaria para flujos de trabajo de encriptación personalizados, mientras que KMS no ofrece el mismo nivel de control o soporte de API."
+        ]
+    },
+    {
+        "Question Number": "30",
+        "Situation": "Una aplicación móvil experimenta grandes picos en el uso durante eventos importantes, lo que requiere que la aplicación escale rápidamente. La aplicación debe manejar estos picos de manera eficiente mientras mantiene los costos bajo control.",
+        "Question": "¿Qué estrategias de escalado cumplirían mejor con estas necesidades? (Elija dos.)",
+        "Options": {
+            "1": "Escalado vertical al actualizar a tipos de instancia más grandes durante el tráfico alto",
+            "2": "Escalado horizontal con un grupo de Auto Scaling y políticas de escalado dinámico",
+            "3": "Escalado programado para agregar recursos durante los tiempos de evento",
+            "4": "Escalado manual al agregar instancias según la demanda proyectada",
+            "5": "Implementar escalado predictivo utilizando Amazon CloudWatch para anticipar picos de tráfico y ajustar la capacidad proactivamente"
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Escalado horizontal con un grupo de Auto Scaling y políticas de escalado dinámico",
+            "Implementar escalado predictivo utilizando Amazon CloudWatch para anticipar picos de tráfico y ajustar la capacidad proactivamente"
+        ],
+        "Explanation": "El escalado horizontal con un grupo de Auto Scaling y políticas de escalado dinámico es una respuesta correcta porque permite que la aplicación agregue más instancias a medida que aumenta la demanda y las elimine a medida que disminuye la demanda, lo cual es ideal para manejar grandes picos en el uso. Implementar escalado predictivo utilizando Amazon CloudWatch también es correcto, ya que utiliza algoritmos de aprendizaje automático para predecir la demanda futura y ajustar la capacidad proactivamente, lo que puede ayudar a manejar picos de tráfico de manera eficiente y mantener los costos bajo control.",
+        "Other Options": [
+            "El escalado vertical al actualizar a tipos de instancia más grandes durante el tráfico alto no es una solución ideal porque implica aumentar la capacidad de una sola instancia, lo que puede ser costoso y puede no proporcionar la flexibilidad necesaria para manejar grandes picos en el uso.",
+            "El escalado programado para agregar recursos durante los tiempos de evento puede no ser eficiente porque requiere una predicción precisa de cuándo ocurrirán los picos, lo cual puede no ser siempre posible.",
+            "El escalado manual al agregar instancias según la demanda proyectada no es la mejor estrategia porque requiere intervención manual y puede no ser capaz de responder lo suficientemente rápido a picos repentinos en la demanda."
+        ]
+    },
+    {
+        "Question Number": "31",
+        "Situation": "Una empresa, XYZ Corp, está gestionando información sensible como credenciales de bases de datos, claves de API y otros secretos que son necesarios para varios microservicios en su aplicación. Quieren almacenar estos secretos de forma segura y asegurarse de que cada aplicación pueda acceder a ellos solo cuando sea necesario. Además, XYZ Corp desea que los secretos se roten automáticamente sin requerir actualizaciones manuales en las aplicaciones ni tiempo de inactividad para cambios de configuración. El equipo de seguridad ha elegido AWS Secrets Manager para gestionar y rotar estos secretos. También quieren asegurarse de que los secretos estén cifrados mientras están en reposo y solo sean accesibles para servicios y aplicaciones autorizados.",
+        "Question": "¿Cuál de los siguientes pasos describe correctamente cómo AWS Secrets Manager maneja la recuperación y rotación de secretos para el acceso seguro por parte de las aplicaciones?",
+        "Options": {
+            "1": "Secrets Manager recupera secretos de AWS Key Management Service (KMS) y los actualiza periódicamente en la aplicación directamente para mantener la sincronización.",
+            "2": "La aplicación recupera secretos de Secrets Manager utilizando un SDK, y Secrets Manager utiliza AWS Lambda para la rotación automática de secretos, con secretos cifrados en reposo utilizando KMS.",
+            "3": "Secrets Manager proporciona rotación automática almacenando todos los secretos dentro de roles de IAM, que se rotan periódicamente a través de políticas de AWS Identity and Access Management (IAM).",
+            "4": "AWS Secrets Manager recupera credenciales directamente de IAM para autorización, y los secretos se rotan automáticamente sin necesidad de funciones Lambda."
+        },
+        "Correct Answer": "La aplicación recupera secretos de Secrets Manager utilizando un SDK, y Secrets Manager utiliza AWS Lambda para la rotación automática de secretos, con secretos cifrados en reposo utilizando KMS.",
+        "Explanation": "AWS Secrets Manager permite a las aplicaciones recuperar secretos de forma segura utilizando AWS SDKs. Cuando una aplicación necesita un secreto, llama a la API de Secrets Manager, que recupera el secreto de un almacén seguro. Secrets Manager también admite la rotación automática de secretos, que se puede implementar utilizando funciones de AWS Lambda. Esto significa que los secretos se pueden actualizar sin intervención manual, y las aplicaciones pueden seguir funcionando sin tiempo de inactividad. Además, los secretos están cifrados en reposo utilizando AWS Key Management Service (KMS), asegurando que la información sensible esté protegida.",
+        "Other Options": [
+            "AWS Secrets Manager no recupera secretos de KMS directamente. En cambio, gestiona los secretos por sí mismo y utiliza KMS para el cifrado en reposo. Los secretos no se actualizan periódicamente en la aplicación directamente; más bien, las aplicaciones recuperan la última versión del secreto cuando es necesario.",
+            "AWS Secrets Manager no almacena secretos dentro de roles de IAM. IAM se utiliza para gestionar permisos y control de acceso, pero Secrets Manager gestiona los secretos en sí y utiliza Lambda para la rotación, no políticas de IAM.",
+            "AWS Secrets Manager no recupera credenciales directamente de IAM. En cambio, gestiona secretos de forma independiente y utiliza funciones Lambda para la rotación automática. IAM se utiliza para autorización y control de acceso, pero no maneja la recuperación de secretos."
+        ]
+    },
+    {
+        "Question Number": "32",
+        "Situation": "Una empresa está gestionando sus claves de cifrado utilizando AWS Key Management Service (AWS KMS) y quiere controlar el acceso a estas claves en función de los roles de usuario.",
+        "Question": "¿Qué método debería utilizar la empresa para definir los permisos de acceso para las claves de KMS?",
+        "Options": {
+            "1": "Asignar permisos directamente a los usuarios de IAM",
+            "2": "Utilizar políticas basadas en recursos en las claves de KMS",
+            "3": "Habilitar MFA Delete en las claves de KMS",
+            "4": "Configurar listas de control de acceso (ACL) para las claves de KMS"
+        },
+        "Correct Answer": "Utilizar políticas basadas en recursos en las claves de KMS",
+        "Explanation": "AWS Key Management Service (KMS) permite definir permisos de acceso para las claves de KMS utilizando políticas basadas en recursos. Estas políticas se adjuntan directamente a las claves de KMS y especifican qué usuarios, roles o servicios de IAM pueden realizar acciones específicas sobre las claves. Este método proporciona un control detallado sobre el acceso y es el enfoque recomendado para gestionar permisos para las claves de KMS, ya que permite definir permisos a nivel de recurso en lugar de a nivel de usuario.",
+        "Other Options": [
+            "Asignar permisos directamente a los usuarios de IAM no es la mejor práctica para gestionar el acceso a las claves de KMS, ya que no proporciona la granularidad necesaria y puede llevar a una complejidad de gestión. Se prefieren las políticas basadas en recursos para la gestión de claves.",
+            "Habilitar MFA Delete es una función asociada principalmente con Amazon S3 y no se aplica a las claves de KMS. Aunque MFA (Autenticación de Múltiples Factores) puede mejorar la seguridad, no controla directamente los permisos de acceso para las claves de KMS.",
+            "Configurar listas de control de acceso (ACL) no es aplicable a las claves de KMS. KMS utiliza políticas de IAM y políticas basadas en recursos para el control de acceso, mientras que las ACL se utilizan típicamente en otros servicios de AWS como S3."
+        ]
+    },
+    {
+        "Question Number": "33",
+        "Situation": "Una empresa necesita almacenar contenido generado por usuarios, incluyendo imágenes, videos y documentos, con la capacidad de escalar el almacenamiento fácilmente y proporcionar acceso rápido. La empresa está buscando una solución que pueda manejar grandes cantidades de datos no estructurados y soporte alta disponibilidad. También quieren asegurarse de que la solución de almacenamiento sea rentable y fácilmente accesible por múltiples servicios.",
+        "Question": "¿Qué tipo de almacenamiento de AWS debería utilizar la empresa para almacenar estos datos, y cuáles son sus características?",
+        "Options": {
+            "1": "Utilizar Amazon S3 (almacenamiento de objetos) para almacenar archivos, ya que es altamente escalable y adecuado para datos no estructurados con fácil acceso a través de HTTP/HTTPS.",
+            "2": "Utilizar Amazon EBS (almacenamiento en bloque) para almacenar grandes archivos de video, ya que proporciona acceso de baja latencia a los datos y alto rendimiento para aplicaciones sensibles al rendimiento.",
+            "3": "Utilizar Amazon EFS (almacenamiento de archivos) para almacenar contenido generado por usuarios, ya que proporciona acceso compartido a archivos a través de múltiples instancias de EC2 con capacidad de almacenamiento escalable.",
+            "4": "Utilizar Amazon RDS (base de datos relacional) para almacenar contenido generado por usuarios por su fuerte consistencia y modelo de datos estructurado."
+        },
+        "Correct Answer": "Utilizar Amazon S3 (almacenamiento de objetos) para almacenar archivos, ya que es altamente escalable y adecuado para datos no estructurados con fácil acceso a través de HTTP/HTTPS.",
+        "Explanation": "Amazon S3 (Simple Storage Service) está diseñado para almacenar y recuperar cualquier cantidad de datos desde cualquier lugar de la web. Es un servicio de almacenamiento de objetos que es altamente escalable, lo que lo hace ideal para contenido generado por usuarios como imágenes, videos y documentos. S3 admite datos no estructurados y proporciona alta disponibilidad, permitiendo un fácil acceso a través de HTTP/HTTPS. Además, es rentable, ya que los usuarios solo pagan por el almacenamiento que utilizan, y se integra bien con varios servicios de AWS, lo que lo hace accesible para múltiples aplicaciones.",
+        "Other Options": [
+            "Utilizar Amazon EBS (Elastic Block Store) no es ideal para almacenar grandes archivos de video en este escenario porque EBS es almacenamiento en bloque que se utiliza principalmente para datos que requieren acceso de baja latencia y alto rendimiento, típicamente para aplicaciones que se ejecutan en instancias de EC2. No está diseñado para el almacenamiento de datos no estructurados a gran escala y es más adecuado para bases de datos o aplicaciones que necesitan acceso rápido a bloques de datos.",
+            "Utilizar Amazon EFS (Elastic File System) podría proporcionar acceso compartido a archivos a través de múltiples instancias de EC2, pero es más adecuado para escenarios donde se necesita almacenamiento de archivos en lugar de almacenamiento de objetos. EFS también es generalmente más caro que S3 para grandes cantidades de datos no estructurados y no ofrece el mismo nivel de escalabilidad y rentabilidad que S3 para almacenar grandes volúmenes de contenido generado por usuarios.",
+            "Utilizar Amazon RDS (Relational Database Service) es inapropiado para almacenar contenido generado por usuarios porque RDS está diseñado para datos estructurados y bases de datos relacionales. No está optimizado para datos no estructurados como imágenes y videos, y utilizarlo para tales propósitos no sería rentable ni eficiente, ya que requeriría esquemas de base de datos complejos y gestión."
+        ]
+    },
+    {
+        "Question Number": "34",
+        "Situation": "Una organización ha federado su proveedor de identidad local con AWS para permitir que los usuarios asuman roles utilizando SAML. La organización quiere hacer cumplir la autenticación multifactor (MFA) para todos los usuarios federados que acceden a la Consola de Administración de AWS.",
+        "Question": "¿Cuál es el mejor enfoque para hacer cumplir MFA en este escenario? (Elija dos.)",
+        "Options": {
+            "1": "Configurar la configuración de MFA en los roles de AWS IAM utilizados para el acceso federado",
+            "2": "Requerir MFA a través del proveedor de identidad local de la organización",
+            "3": "Habilitar MFA a nivel de cuenta raíz de AWS",
+            "4": "Configurar un grupo de usuarios de Amazon Cognito con requisitos de MFA",
+            "5": "Usar políticas de AWS IAM para exigir autenticación MFA para la asunción de roles"
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Requerir MFA a través del proveedor de identidad local de la organización",
+            "Usar políticas de AWS IAM para exigir autenticación MFA para la asunción de roles"
+        ],
+        "Explanation": "En este escenario, el mejor enfoque para hacer cumplir MFA para todos los usuarios federados que acceden a la Consola de Administración de AWS es requerir MFA a través del proveedor de identidad local de la organización y usar políticas de AWS IAM para exigir autenticación MFA para la asunción de roles. El proveedor de identidad local es responsable de la autenticación inicial del usuario, incluida la MFA. Después de que el usuario es autenticado, el proveedor de identidad genera una afirmación SAML que se utiliza para solicitar credenciales de seguridad temporales y asumir un rol de IAM. Las políticas de AWS IAM se pueden usar para hacer cumplir MFA en el momento de la asunción del rol, asegurando que el usuario se haya autenticado con MFA antes de poder asumir el rol.",
+        "Other Options": [
+            "Configurar la configuración de MFA en los roles de AWS IAM utilizados para el acceso federado no es posible porque la aplicación de MFA no es una configuración que se pueda configurar directamente en los roles de IAM.",
+            "Habilitar MFA a nivel de cuenta raíz de AWS no haría cumplir MFA para los usuarios federados. La MFA a nivel de cuenta raíz solo se aplica al usuario raíz de la cuenta, no a los usuarios de IAM o a los usuarios federados.",
+            "Configurar un grupo de usuarios de Amazon Cognito con requisitos de MFA no haría cumplir MFA para los usuarios federados que acceden a la Consola de Administración de AWS. Amazon Cognito se utiliza para construir, asegurar y escalar la autenticación de usuarios en aplicaciones móviles y web, no para hacer cumplir MFA para usuarios federados que acceden a la Consola de Administración de AWS."
+        ]
+    },
+    {
+        "Question Number": "35",
+        "Situation": "Una aplicación para procesar datos de comercio de acciones en tiempo real requiere un alto rendimiento de CPU, pero no necesita mucha memoria. La empresa quiere optimizar costos eligiendo el tipo de instancia más adecuado.",
+        "Question": "¿Qué familia de instancias cumpliría mejor con estos requisitos de rendimiento y costo?",
+        "Options": {
+            "1": "Optimizado para Memoria",
+            "2": "Optimizado para Cómputo",
+            "3": "Optimizado para Almacenamiento",
+            "4": "Computación Acelerada"
+        },
+        "Correct Answer": "Optimizado para Cómputo",
+        "Explanation": "La familia de instancias Optimizado para Cómputo está diseñada específicamente para aplicaciones que requieren un alto rendimiento de CPU. Dado que la aplicación en cuestión está procesando datos de comercio de acciones en tiempo real, se beneficiará del mayor poder de procesamiento proporcionado por estas instancias. Además, las instancias Optimizado para Cómputo son generalmente más rentables para cargas de trabajo intensivas en CPU en comparación con otros tipos de instancias que pueden ofrecer más memoria o capacidades de almacenamiento de las necesarias.",
+        "Other Options": [
+            "Las instancias Optimizado para Memoria están diseñadas para aplicaciones que requieren un alto rendimiento de memoria. Dado que la aplicación no necesita mucha memoria, esta opción no sería adecuada y probablemente incurriría en costos innecesarios.",
+            "Las instancias Optimizado para Almacenamiento están diseñadas para cargas de trabajo que requieren un alto rendimiento de almacenamiento y IOPS. Dado que la aplicación no tiene necesidades de almacenamiento significativas, este tipo de instancia no sería apropiado y no optimizaría costos.",
+            "Las instancias de Computación Acelerada están diseñadas para cargas de trabajo que se benefician de aceleradores de hardware, como GPUs. Estas instancias se utilizan típicamente para aprendizaje automático, renderizado gráfico u otras tareas especializadas. Dado que la aplicación se centra en el rendimiento de CPU y no requiere aceleración, esta opción no cumpliría eficazmente con los requisitos."
+        ]
+    },
+    {
+        "Question Number": "36",
+        "Situation": "Una plataforma de comercio electrónico experimenta un alto tráfico de lectura para catálogos de productos, lo que impacta el rendimiento de la base de datos principal. La empresa quiere descargar las operaciones de lectura para mejorar la escalabilidad sin comprometer la consistencia de los datos.",
+        "Question": "¿Qué estrategia debería implementar el arquitecto de soluciones para lograr esto?",
+        "Options": {
+            "1": "Habilitar la implementación Multi-AZ para la instancia de Amazon RDS para distribuir el tráfico de lectura.",
+            "2": "Crear Réplicas de Lectura de Amazon RDS y configurar la aplicación para dirigir las consultas de lectura a las réplicas.",
+            "3": "Usar Amazon DynamoDB con Tablas Globales para manejar la escalabilidad de lectura.",
+            "4": "Implementar una configuración de replicación maestro-esclavo utilizando instancias de Amazon EC2 y MySQL."
+        },
+        "Correct Answer": "Crear Réplicas de Lectura de Amazon RDS y configurar la aplicación para dirigir las consultas de lectura a las réplicas.",
+        "Explanation": "Crear Réplicas de Lectura de Amazon RDS permite a la plataforma de comercio electrónico descargar el tráfico de lectura de la base de datos principal. Las réplicas de lectura están diseñadas específicamente para manejar operaciones de lectura, lo que ayuda a mejorar la escalabilidad y el rendimiento sin comprometer la consistencia de los datos. Las réplicas replican datos de manera asíncrona desde la base de datos principal, asegurando que las consultas de lectura puedan dirigirse a estas réplicas, reduciendo así la carga en la instancia principal y mejorando el rendimiento general de la aplicación.",
+        "Other Options": [
+            "Habilitar la implementación Multi-AZ para la instancia de Amazon RDS se centra principalmente en la alta disponibilidad y las capacidades de conmutación por error en lugar de escalar las operaciones de lectura. Si bien proporciona redundancia, no ayuda a distribuir el tráfico de lectura de manera efectiva.",
+            "Usar Amazon DynamoDB con Tablas Globales es una solución de base de datos diferente que puede no ser adecuada si la arquitectura existente depende de Amazon RDS. Además, puede introducir complejidad en la migración de datos y garantizar la compatibilidad con la aplicación actual.",
+            "Implementar una configuración de replicación maestro-esclavo utilizando instancias de Amazon EC2 y MySQL requiere más gestión y no aprovecha las capacidades integradas de Amazon RDS. Este enfoque también puede introducir desafíos de consistencia y es menos eficiente en comparación con el uso de Réplicas de Lectura de RDS."
+        ]
+    },
+    {
+        "Question Number": "37",
+        "Situation": "Un equipo de marketing necesita analizar datos de clickstream que están almacenados en Amazon S3 para obtener información sobre el comportamiento del usuario y mejorar el compromiso con el sitio web. Quieren ejecutar consultas SQL directamente sobre estos datos sin configurar un almacén de datos completo ni gestionar servidores. Además, desean una solución que les permita pagar solo por los datos que realmente consultan, lo que les permitirá ahorrar costos mientras mantienen la infraestructura mínima y sin servidores.",
+        "Question": "¿Qué servicio de AWS satisfaría mejor sus necesidades?",
+        "Options": {
+            "1": "Amazon Redshift",
+            "2": "Amazon EMR",
+            "3": "Amazon RDS",
+            "4": "Amazon Athena"
+        },
+        "Correct Answer": "Amazon Athena",
+        "Explanation": "Amazon Athena es un servicio de consulta interactivo sin servidor que permite a los usuarios analizar datos directamente en Amazon S3 utilizando SQL estándar. Está diseñado para consultas ad-hoc y no requiere gestión de infraestructura, lo que lo hace ideal para las necesidades del equipo de marketing. Con Athena, los usuarios solo pagan por las consultas que realizan, lo que se alinea con su objetivo de ahorro de costos mientras mantienen la infraestructura mínima.",
+        "Other Options": [
+            "Amazon Redshift es un servicio de almacén de datos totalmente gestionado que requiere configurar un clúster y gestionar recursos. No es sin servidor y conllevaría mayores costos y complejidad para el equipo de marketing, que busca una solución más sencilla.",
+            "Amazon EMR (Elastic MapReduce) es una plataforma de big data en la nube que permite procesar grandes cantidades de datos utilizando marcos como Apache Hadoop y Apache Spark. Sin embargo, requiere más gestión y configuración en comparación con una solución sin servidor como Athena, lo que la hace menos adecuada para las necesidades del equipo.",
+            "Amazon RDS (Relational Database Service) es un servicio de base de datos relacional gestionado que requiere aprovisionar y gestionar instancias de base de datos. No está diseñado para consultar datos directamente desde S3 y conllevaría más sobrecarga de la que desea el equipo de marketing."
+        ]
+    },
+    {
+        "Question Number": "38",
+        "Situation": "Una empresa de producción de video almacena miles de archivos de video, que rara vez se acceden después de la producción inicial. Quieren una solución de almacenamiento rentable que les permita archivar estos archivos pero que aún les permita recuperarlos en unos pocos minutos cuando sea necesario.",
+        "Question": "¿Qué servicio de almacenamiento de AWS satisfaría mejor estos requisitos?",
+        "Options": {
+            "1": "Amazon EFS",
+            "2": "Amazon S3 Glacier Instant Retrieval",
+            "3": "Amazon FSx for Windows File Server",
+            "4": "Amazon EBS Provisioned IOPS"
+        },
+        "Correct Answer": "Amazon S3 Glacier Instant Retrieval",
+        "Explanation": "Amazon S3 Glacier Instant Retrieval está diseñado específicamente para la archivación de datos a largo plazo con la capacidad de recuperar datos rápidamente, típicamente en milisegundos. Este servicio es ideal para la empresa de producción de video, ya que les permite almacenar grandes cantidades de archivos de video raramente accedidos de manera rentable, mientras que aún proporciona la capacidad de acceder a estos archivos en unos pocos minutos cuando sea necesario. La función de 'Instant Retrieval' asegura que el tiempo de recuperación se alinee con el requisito de la empresa para un acceso rápido a los archivos archivados.",
+        "Other Options": [
+            "Amazon EFS (Elastic File System) está diseñado para acceso de baja latencia a almacenamiento de archivos compartidos y no es rentable para la archivación a largo plazo de datos raramente accedidos. Es más adecuado para aplicaciones que requieren acceso frecuente a los datos.",
+            "Amazon FSx for Windows File Server proporciona sistemas de archivos de Windows totalmente gestionados, pero tampoco está optimizado para la archivación a largo plazo. Es más adecuado para aplicaciones que requieren almacenamiento de archivos compartidos con compatibilidad con Windows y acceso de baja latencia.",
+            "Amazon EBS (Elastic Block Store) Provisioned IOPS está diseñado para almacenamiento en bloque de alto rendimiento para instancias de EC2. No es adecuado para archivar grandes cantidades de datos raramente accedidos, ya que es más costoso y está destinado a cargas de trabajo que requieren un rendimiento consistente y de baja latencia."
+        ]
+    },
+    {
+        "Question Number": "39",
+        "Situation": "Una organización utiliza un Grupo de Auto Scaling (ASG) para gestionar su flota de instancias de EC2, respondiendo a niveles de demanda variables. Su objetivo es ajustar automáticamente el número de instancias para mantener un promedio general de utilización de CPU del 40%.",
+        "Question": "¿Qué tipo de política de escalado debería implementar la organización para lograr este objetivo de manera efectiva, y por qué?",
+        "Options": {
+            "1": "Escalado Manual: Proporciona control directo sobre la capacidad deseada basado en monitoreo en tiempo real.",
+            "2": "Escalado Programado: Ajusta la capacidad en momentos predeterminados de acuerdo con las tendencias de demanda pronosticadas.",
+            "3": "Escalado Dinámico con Seguimiento de Objetivos: Modifica automáticamente la capacidad para mantener el objetivo de utilización de CPU especificado.",
+            "4": "Escalado Simple: Aumenta o disminuye la capacidad basándose en desencadenadores de umbral de CPU individuales."
+        },
+        "Correct Answer": "Escalado Dinámico con Seguimiento de Objetivos",
+        "Explanation": "El Escalado Dinámico con Seguimiento de Objetivos es la política de escalado más efectiva para el objetivo de la organización de mantener un promedio general de utilización de CPU del 40%. Esta política ajusta automáticamente el número de instancias de EC2 en el Grupo de Auto Scaling basado en métricas en tiempo real, apuntando específicamente al nivel de utilización de CPU especificado. Al monitorear continuamente la utilización de CPU y hacer ajustes según sea necesario, la organización puede asegurarse de que cumpla con sus objetivos de rendimiento sin intervención manual, optimizando así el uso de recursos y costos.",
+        "Other Options": [
+            "El Escalado Manual requiere intervención humana directa para ajustar la capacidad deseada, lo que no es eficiente para responder a niveles de demanda variables. Este enfoque no proporciona la automatización necesaria para mantener un objetivo específico de utilización de CPU de manera efectiva.",
+            "El Escalado Programado ajusta la capacidad en momentos predeterminados, lo que puede no alinearse con las fluctuaciones reales de demanda. Este método es menos sensible a los cambios en tiempo real en la carga de trabajo y puede llevar a una sobreaprovisionamiento o subaprovisionamiento de recursos.",
+            "El Escalado Simple aumenta o disminuye la capacidad basándose en desencadenadores de umbral de CPU individuales, lo que puede llevar a acciones de escalado rápidas que pueden no estabilizar la utilización de CPU en el promedio deseado del 40%. Este método carece de la función de ajuste continuo del seguimiento de objetivos, lo que lo hace menos adecuado para mantener un nivel de utilización específico."
+        ]
+    },
+    {
+        "Question Number": "40",
+        "Situation": "Una empresa está implementando una base de datos altamente disponible en AWS utilizando Amazon RDS y quiere asegurar la conmutación por error automática a una instancia de espera en caso de una interrupción. También necesita descargar algo de tráfico de lectura y mejorar el rendimiento de lectura.",
+        "Question": "¿Qué configuración de Amazon RDS deberían elegir y qué beneficios ofrece? (Elija dos.)",
+        "Options": {
+            "1": "Utilizar la arquitectura de instancia Multi-AZ de Amazon RDS para la replicación síncrona a una instancia de espera, proporcionando conmutación por error automática en la misma región, con copias de seguridad tomadas de la instancia de espera para mejorar el rendimiento.",
+            "2": "Configurar la arquitectura de clúster Multi-AZ de Amazon RDS con un escritor y dos instancias lectoras en diferentes Zonas de Disponibilidad, permitiendo descargar el tráfico de lectura y proporcionando tiempos de conmutación por error más rápidos con replicación basada en registros de transacciones.",
+            "3": "Configurar Amazon RDS en una sola Zona de Disponibilidad con instantáneas frecuentes a S3 para copias de seguridad, asegurando la durabilidad de los datos pero sin proporcionar conmutación por error automática.",
+            "4": "Implementar Amazon RDS con replicación entre regiones para habilitar la conmutación por error a otra región de AWS, reduciendo el riesgo de interrupciones regionales pero sin soportar replicación síncrona.",
+            "5": "Implementar réplicas de lectura de Amazon RDS en la misma región para distribuir el tráfico de lectura y mejorar el rendimiento de lectura, mientras se mantiene una configuración Multi-AZ para la conmutación por error automática."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Utilizar la arquitectura de instancia Multi-AZ de Amazon RDS para la replicación síncrona a una instancia de espera, proporcionando conmutación por error automática en la misma región, con copias de seguridad tomadas de la instancia de espera para mejorar el rendimiento.",
+            "Implementar réplicas de lectura de Amazon RDS en la misma región para distribuir el tráfico de lectura y mejorar el rendimiento de lectura, mientras se mantiene una configuración Multi-AZ para la conmutación por error automática."
+        ],
+        "Explanation": "La primera respuesta correcta es correcta porque las implementaciones Multi-AZ de Amazon RDS proporcionan alta disponibilidad y soporte para la conmutación por error de las instancias de base de datos. Funcionan replicando automáticamente los datos a una instancia de espera en una Zona de Disponibilidad (AZ) diferente. En caso de una interrupción, Amazon RDS realiza una conmutación por error automática a la instancia de espera, para que puedas reanudar las operaciones de la base de datos tan pronto como se complete la conmutación por error. La segunda respuesta correcta es correcta porque las réplicas de lectura de Amazon RDS proporcionan un rendimiento y durabilidad mejorados para las instancias de base de datos (DB). Esta función facilita la escalabilidad elástica más allá de las limitaciones de capacidad de una sola instancia de DB para cargas de trabajo de base de datos con alta lectura.",
+        "Other Options": [
+            "La opción 'Configurar la arquitectura de clúster Multi-AZ de Amazon RDS con un escritor y dos instancias lectoras en diferentes Zonas de Disponibilidad, permitiendo descargar el tráfico de lectura y proporcionando tiempos de conmutación por error más rápidos con replicación basada en registros de transacciones.' es incorrecta porque Amazon RDS no soporta una configuración con un escritor y dos instancias lectoras en una implementación Multi-AZ.",
+            "La opción 'Configurar Amazon RDS en una sola Zona de Disponibilidad con instantáneas frecuentes a S3 para copias de seguridad, asegurando la durabilidad de los datos pero sin proporcionar conmutación por error automática.' es incorrecta porque esta configuración no proporciona conmutación por error automática, que es un requisito en la pregunta.",
+            "La opción 'Implementar Amazon RDS con replicación entre regiones para habilitar la conmutación por error a otra región de AWS, reduciendo el riesgo de interrupciones regionales pero sin soportar replicación síncrona.' es incorrecta porque la replicación entre regiones no soporta replicación síncrona, que es necesaria para la conmutación por error automática."
+        ]
+    },
+    {
+        "Question Number": "41",
+        "Situation": "Una aplicación que se ejecuta en instancias de Amazon EC2 en una subred pública necesita comunicarse de forma segura con una base de datos de Amazon RDS alojada en una subred privada.",
+        "Question": "¿Cómo debería configurarse la aplicación para permitir el acceso seguro a la base de datos?",
+        "Options": {
+            "1": "Agregar una regla de entrada al grupo de seguridad de RDS para permitir todo el tráfico desde Internet",
+            "2": "Utilizar una puerta de enlace NAT para enrutar el tráfico desde la subred pública a la subred privada",
+            "3": "Crear una conexión de emparejamiento de VPC entre las subredes pública y privada",
+            "4": "Configurar las instancias de EC2 para usar la dirección IP privada de la base de datos y permitir el acceso a través del grupo de seguridad de RDS"
+        },
+        "Correct Answer": "Configurar las instancias de EC2 para usar la dirección IP privada de la base de datos y permitir el acceso a través del grupo de seguridad de RDS",
+        "Explanation": "Para permitir el acceso seguro desde las instancias de EC2 en la subred pública a la base de datos de RDS en la subred privada, las instancias de EC2 deben conectarse utilizando la dirección IP privada de la base de datos. Esto asegura que el tráfico no atraviese Internet, manteniendo la seguridad. Además, el grupo de seguridad de RDS debe configurarse para permitir el tráfico de entrada desde el grupo de seguridad de las instancias de EC2, asegurando que solo se permita el tráfico autorizado.",
+        "Other Options": [
+            "Agregar una regla de entrada al grupo de seguridad de RDS para permitir todo el tráfico desde Internet es inseguro y no se recomienda. Esto expondría la base de datos de RDS a posibles ataques desde cualquier fuente de Internet, comprometiendo su seguridad.",
+            "Utilizar una puerta de enlace NAT para enrutar el tráfico desde la subred pública a la subred privada no es necesario para este escenario. Las puertas de enlace NAT se utilizan típicamente para permitir que las instancias en una subred privada accedan a Internet, no para la comunicación entre subredes públicas y privadas dentro de la misma VPC.",
+            "Crear una conexión de emparejamiento de VPC entre las subredes pública y privada es innecesario porque ambas subredes ya son parte de la misma VPC. El emparejamiento de VPC se utiliza para conectar diferentes VPCs, no subredes dentro de la misma VPC."
+        ]
+    },
+    {
+        "Question Number": "42",
+        "Situation": "Una empresa de biotecnología está implementando una aplicación de alto rendimiento que requiere orquestación de contenedores a través de múltiples Zonas de Disponibilidad para resiliencia y escalabilidad. Prefieren una solución gestionada que se integre con servicios de AWS como IAM para seguridad y EBS para almacenamiento. La plataforma también debe ser de código abierto y agnóstica a la nube para proporcionar flexibilidad para futuras implementaciones fuera de AWS.",
+        "Question": "¿Qué configuración de servicio de AWS cumpliría mejor con estos requisitos?",
+        "Options": {
+            "1": "Amazon ECS con Fargate e integración de EBS",
+            "2": "Amazon EKS con grupos de nodos gestionados y plano de control multi-AZ",
+            "3": "Instancias de Amazon EC2 con Docker y replicación entre AZ",
+            "4": "AWS Batch con replicación entre regiones"
+        },
+        "Correct Answer": "Amazon EKS con grupos de nodos gestionados y plano de control multi-AZ",
+        "Explanation": "Amazon EKS (Elastic Kubernetes Service) es un servicio de Kubernetes gestionado que proporciona orquestación de contenedores a través de múltiples Zonas de Disponibilidad, asegurando resiliencia y escalabilidad. Se integra perfectamente con servicios de AWS como IAM para seguridad y EBS para almacenamiento. EKS también es de código abierto y agnóstico a la nube, lo que permite flexibilidad en futuras implementaciones fuera de AWS. Los grupos de nodos gestionados simplifican la gestión de las instancias de EC2 subyacentes, y el plano de control multi-AZ mejora la disponibilidad y la tolerancia a fallos.",
+        "Other Options": [
+            "Amazon ECS con Fargate e integración de EBS es una opción viable para la orquestación de contenedores, pero no es tan agnóstica a la nube como EKS. ECS está más integrado con los servicios de AWS y no proporciona el mismo nivel de flexibilidad para futuras implementaciones fuera de AWS.",
+            "Instancias de Amazon EC2 con Docker y replicación entre AZ requerirían más gestión manual y configuración en comparación con un servicio gestionado como EKS. Si bien puede lograr los resultados deseados, no ofrece el mismo nivel de integración con los servicios de AWS ni la facilidad de uso que viene con una solución gestionada.",
+            "AWS Batch con replicación entre regiones está diseñado para procesamiento por lotes en lugar de aplicaciones continuas de alto rendimiento. No proporciona las capacidades de orquestación de contenedores necesarias para el escenario descrito y no es adecuado para aplicaciones que requieren escalado y resiliencia en tiempo real."
+        ]
+    },
+    {
+        "Question Number": "43",
+        "Situation": "Una empresa de servicios financieros requiere una conexión segura y de baja latencia entre su centro de datos local y AWS para soportar el procesamiento de datos en tiempo real y las operaciones de trading. Para reducir los costos de red mientras asegura la fiabilidad, la empresa busca una conexión privada y consistente para transferencias de datos críticas que evite el internet público, evitando los riesgos de seguridad y rendimiento asociados.",
+        "Question": "¿Qué opción de conectividad de red satisfaría mejor estas necesidades?",
+        "Options": {
+            "1": "Establecer un AWS Site-to-Site VPN, permitiendo la transferencia de datos encriptados a través del internet público para una solución de bajo costo",
+            "2": "Configurar AWS Direct Connect para una conexión de red dedicada y privada que proporcione un ancho de banda seguro y consistente",
+            "3": "Usar una conexión a internet regular con AWS Shield para proteger contra ataques DDoS y asegurar la seguridad",
+            "4": "Configurar VPC Peering para establecer un enlace directo entre el centro de datos local y AWS, proporcionando conectividad segura"
+        },
+        "Correct Answer": "Configurar AWS Direct Connect para una conexión de red dedicada y privada que proporcione un ancho de banda seguro y consistente",
+        "Explanation": "AWS Direct Connect está diseñado específicamente para proporcionar una conexión dedicada y privada entre un centro de datos local y AWS. Esta opción evita el internet público, asegurando menor latencia, mayor fiabilidad y mayor seguridad para transferencias de datos críticas. Es ideal para el procesamiento de datos en tiempo real y operaciones de trading, ya que ofrece un ancho de banda consistente y reduce los costos de red en comparación con las conexiones a internet tradicionales.",
+        "Other Options": [
+            "Establecer un AWS Site-to-Site VPN permite la transferencia de datos encriptados a través del internet público, lo que no cumple con el requisito de una conexión privada. Aunque es una solución de bajo costo, introduce latencia y riesgos de seguridad potenciales asociados con el tráfico de internet público.",
+            "Usar una conexión a internet regular con AWS Shield proporciona protección contra ataques DDoS, pero no ofrece la conexión dedicada y privada que la empresa requiere. Esta opción aún depende del internet público, lo que puede llevar a problemas de rendimiento y vulnerabilidades de seguridad.",
+            "Configurar VPC Peering crea un enlace directo entre dos VPCs, pero no establece una conexión entre un centro de datos local y AWS. No es adecuada para las necesidades de la empresa, ya que no proporciona la conexión de red dedicada y privada requerida para transferencias de datos seguras y consistentes."
+        ]
+    },
+    {
+        "Question Number": "44",
+        "Situation": "Una empresa está diseñando una aplicación globalmente resiliente que requiere alta disponibilidad y baja latencia para usuarios en múltiples regiones geográficas. También quieren asegurarse de que las fallas en una región o Zona de Disponibilidad (AZ) no impacten la disponibilidad de la aplicación en otros lugares.",
+        "Question": "¿Qué servicio o característica de AWS apoya mejor estas necesidades aprovechando la infraestructura global de AWS?",
+        "Options": {
+            "1": "Usar Amazon Route 53 con enrutamiento basado en latencia para dirigir a los usuarios a la región de AWS más cercana, mejorando la baja latencia y habilitando la aislamiento de fallos regional.",
+            "2": "Desplegar la aplicación en una sola Zona de Disponibilidad dentro de una región de AWS, utilizando instantáneas para respaldar datos para resiliencia.",
+            "3": "Usar Amazon S3 con replicación entre regiones para reflejar datos a través de múltiples Zonas de Disponibilidad dentro de una sola región.",
+            "4": "Desplegar globalmente usando ubicaciones de borde de Amazon CloudFront para asegurar acceso de baja latencia, sin aislamiento completo de fallos a nivel regional o de AZ."
+        },
+        "Correct Answer": "Usar Amazon Route 53 con enrutamiento basado en latencia para dirigir a los usuarios a la región de AWS más cercana, mejorando la baja latencia y habilitando la aislamiento de fallos regional.",
+        "Explanation": "Amazon Route 53 es un servicio web de Sistema de Nombres de Dominio (DNS) altamente disponible y escalable que proporciona enrutamiento basado en latencia. Esta característica permite a la aplicación dirigir a los usuarios a la región de AWS más cercana, lo que minimiza la latencia y mejora el rendimiento. Además, al enrutar el tráfico a diferentes regiones, asegura que si una región experimenta una falla, los usuarios aún puedan acceder a la aplicación desde otra región, proporcionando así aislamiento de fallos regional y alta disponibilidad a través de ubicaciones geográficas.",
+        "Other Options": [
+            "Desplegar la aplicación en una sola Zona de Disponibilidad dentro de una región de AWS no proporciona la resiliencia o alta disponibilidad necesarias. Si esa AZ falla, la aplicación estaría completamente indisponible, lo que contradice el requisito de aislamiento de fallos.",
+            "Usar Amazon S3 con replicación entre regiones solo aborda la durabilidad y disponibilidad de los datos, pero no asegura baja latencia para los usuarios ni proporciona aislamiento de fallos a nivel de aplicación. Se centra principalmente en el almacenamiento de datos en lugar del rendimiento de la aplicación a través de regiones.",
+            "Desplegar globalmente usando ubicaciones de borde de Amazon CloudFront puede mejorar la latencia para la entrega de contenido, pero no proporciona un aislamiento completo de fallos a nivel regional o de AZ. Si el servidor de origen en una región específica falla, los usuarios pueden seguir experimentando tiempo de inactividad, lo que no cumple con el requisito de alta disponibilidad."
+        ]
+    },
+    {
+        "Question Number": "45",
+        "Situation": "Una empresa de medios necesita entregar contenido rápidamente a una audiencia global, reduciendo la latencia y mejorando la experiencia del usuario. También quieren almacenar en caché el contenido más cerca de los usuarios para reducir la carga en sus servidores de origen.",
+        "Question": "¿Qué servicio de AWS satisfaría mejor estos requisitos y qué beneficio proporciona?",
+        "Options": {
+            "1": "Amazon CloudFront",
+            "2": "Amazon S3",
+            "3": "AWS Direct Connect",
+            "4": "Amazon API Gateway"
+        },
+        "Correct Answer": "Amazon CloudFront",
+        "Explanation": "Amazon CloudFront es un servicio de red de entrega de contenido (CDN) que almacena en caché contenido en ubicaciones de borde alrededor del mundo. Esto permite reducir la latencia y acelerar la entrega de contenido a los usuarios, ya que el contenido se sirve desde una ubicación más cercana a ellos. Al almacenar en caché el contenido más cerca de los usuarios, CloudFront también reduce la carga en los servidores de origen, mejorando el rendimiento general y la experiencia del usuario. Esto lo convierte en la mejor opción para la empresa de medios que busca entregar contenido de manera rápida y eficiente a una audiencia global.",
+        "Other Options": [
+            "Amazon S3 es un servicio de almacenamiento escalable que permite almacenar y recuperar cualquier cantidad de datos. Aunque se puede usar para almacenar contenido, no proporciona las características de almacenamiento en caché y distribución global que son esenciales para reducir la latencia y mejorar la experiencia del usuario en este escenario.",
+            "AWS Direct Connect es un servicio que proporciona una conexión de red dedicada desde sus instalaciones a AWS. Se utiliza principalmente para establecer una conexión privada a los servicios de AWS, lo que puede mejorar el ancho de banda y reducir la latencia para la transferencia de datos, pero no aborda la necesidad de entrega de contenido y almacenamiento en caché para una audiencia global.",
+            "Amazon API Gateway es un servicio para crear, publicar y gestionar APIs. Aunque puede ayudar en la construcción de aplicaciones sin servidor y en la gestión de llamadas a APIs, no proporciona las capacidades de entrega de contenido y almacenamiento en caché requeridas para entregar rápidamente contenido multimedia a una audiencia global."
+        ]
+    },
+    {
+        "Question Number": "46",
+        "Situation": "Un proveedor de atención médica almacena datos de pacientes en AWS y necesita cumplir con las regulaciones de protección de datos y privacidad, que requieren un control de acceso estricto y gestión del ciclo de vida de los datos. El proveedor debe asegurarse de que el acceso a los datos esté limitado a usuarios autorizados, que los datos estén cifrados y que los datos antiguos se archiven o eliminen de acuerdo con la política.",
+        "Question": "¿Qué acciones debe tomar el proveedor de atención médica para implementar políticas de acceso seguro a los datos, gestión del ciclo de vida y protección?",
+        "Options": {
+            "1": "Utilizar políticas de IAM para controlar el acceso a los datos, implementar políticas de ciclo de vida de S3 para gestionar el envejecimiento de los datos y configurar el cifrado a través de AWS KMS.",
+            "2": "Almacenar todos los datos en Amazon Glacier para asegurarse de que estén archivados y eliminar automáticamente los datos después de cinco años.",
+            "3": "Habilitar el registro de AWS CloudTrail para archivar automáticamente todos los datos, asegurando la gestión del ciclo de vida de los datos sin políticas adicionales.",
+            "4": "Utilizar AWS Shield para la gestión del ciclo de vida y controlar el acceso a datos sensibles en cumplimiento con las regulaciones."
+        },
+        "Correct Answer": "Utilizar políticas de IAM para controlar el acceso a los datos, implementar políticas de ciclo de vida de S3 para gestionar el envejecimiento de los datos y configurar el cifrado a través de AWS KMS.",
+        "Explanation": "Esta opción es correcta porque aborda de manera integral las necesidades del proveedor de atención médica para el acceso seguro a los datos, la gestión del ciclo de vida y la protección de datos. Las políticas de IAM (Gestión de Identidad y Acceso) permiten al proveedor definir quién puede acceder a datos específicos, asegurando que solo los usuarios autorizados tengan acceso. Las políticas de ciclo de vida de S3 permiten al proveedor automatizar la transición de datos a diferentes clases de almacenamiento o eliminarlos después de un período específico, gestionando así el envejecimiento de los datos de manera efectiva. Además, el uso de AWS KMS (Servicio de Gestión de Claves) para el cifrado asegura que los datos estén protegidos tanto en reposo como en tránsito, cumpliendo con las regulaciones de protección de datos.",
+        "Other Options": [
+            "Esta opción es incorrecta porque, aunque almacenar datos en Amazon Glacier es una buena manera de archivar datos, no proporciona una solución integral para el control de acceso o el cifrado. Tampoco aborda la necesidad de gestionar el acceso a los datos o las políticas de ciclo de vida más allá del simple archivo y eliminación después de cinco años.",
+            "Esta opción es incorrecta porque habilitar el registro de AWS CloudTrail es principalmente para auditoría y monitoreo de llamadas a la API y no gestiona directamente el ciclo de vida de los datos o el control de acceso. CloudTrail no archiva automáticamente los datos ni aplica políticas de gestión del ciclo de vida; requiere configuraciones adicionales para lograr esos objetivos.",
+            "Esta opción es incorrecta porque AWS Shield es un servicio diseñado para proteger aplicaciones de ataques DDoS y no proporciona características para la gestión del ciclo de vida o el control de acceso. No aborda las necesidades específicas de protección de datos y regulaciones de cumplimiento descritas en el escenario."
+        ]
+    },
+    {
+        "Question Number": "47",
+        "Situation": "Una empresa de comercio electrónico está rediseñando su sistema de procesamiento de pedidos para mejorar la fiabilidad y escalabilidad. El sistema necesita manejar un alto volumen de pedidos y asegurarse de que cada pedido se procese exactamente una vez, incluso en caso de fallos de componentes.",
+        "Question": "¿Qué servicio de AWS debería implementar el arquitecto de soluciones para desacoplar de manera efectiva la presentación de pedidos de los componentes de procesamiento de pedidos?",
+        "Options": {
+            "1": "Amazon SNS (Servicio de Notificaciones Simple)",
+            "2": "Amazon SQS (Servicio de Cola Simple)",
+            "3": "AWS Step Functions",
+            "4": "Amazon MQ"
+        },
+        "Correct Answer": "Amazon SQS (Servicio de Cola Simple)",
+        "Explanation": "Amazon SQS es un servicio de colas de mensajes totalmente gestionado que permite desacoplar microservicios, sistemas distribuidos y aplicaciones sin servidor. Permite que el componente de presentación de pedidos envíe mensajes a una cola, que luego puede ser procesada por el componente de procesamiento de pedidos de forma independiente. Esto asegura que cada pedido se procese exactamente una vez, incluso en caso de fallos de componentes, ya que SQS proporciona entrega al menos una vez y se puede configurar para procesamiento exactamente una vez mediante el uso de características de deduplicación. Además, SQS puede manejar un alto volumen de mensajes, lo que lo hace adecuado para los requisitos de escalabilidad del sistema de comercio electrónico.",
+        "Other Options": [
+            "Amazon SNS (Servicio de Notificaciones Simple) se utiliza principalmente para mensajería pub/sub y no está diseñado para desacoplar la presentación de pedidos del procesamiento de una manera que asegure un procesamiento exactamente una vez. SNS es más adecuado para transmitir mensajes a múltiples suscriptores en lugar de encolar mensajes para su procesamiento.",
+            "AWS Step Functions es un servicio de orquestación sin servidor que permite coordinar múltiples servicios de AWS en flujos de trabajo sin servidor. Aunque puede gestionar flujos de trabajo complejos, no está diseñado específicamente para desacoplar componentes como SQS. Es más adecuado para orquestar tareas que para manejar colas de mensajes.",
+            "Amazon MQ es un servicio de corredor de mensajes gestionado que admite varios protocolos de mensajería. Aunque se puede utilizar para desacoplar componentes, es más complejo de configurar y gestionar en comparación con SQS. Además, puede no proporcionar el mismo nivel de escalabilidad y fiabilidad para el procesamiento de pedidos de alto volumen como lo hace SQS."
+        ]
+    },
+    {
+        "Question Number": "48",
+        "Situation": "Una empresa de medios utiliza Amazon RDS para múltiples aplicaciones en diferentes departamentos. Quieren rastrear y asignar los costos de la base de datos a cada departamento para entender los gastos y optimizar el uso.",
+        "Question": "¿Qué característica de gestión de costos de AWS les ayudaría mejor a lograr esto? (Elija dos.)",
+        "Options": {
+            "1": "Habilitar la facturación de múltiples cuentas entre departamentos",
+            "2": "Aplicar etiquetas de asignación de costos a cada instancia de base de datos RDS por departamento",
+            "3": "Configurar presupuestos de AWS separados para cada departamento",
+            "4": "Utilizar el nivel gratuito de AWS para todas las bases de datos del departamento",
+            "5": "Implementar categorías de costos de AWS para agrupar costos según criterios específicos de cada departamento"
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Aplicar etiquetas de asignación de costos a cada instancia de base de datos RDS por departamento",
+            "Implementar categorías de costos de AWS para agrupar costos según criterios específicos de cada departamento"
+        ],
+        "Explanation": "Aplicar etiquetas de asignación de costos a cada instancia de base de datos RDS por departamento permite a la empresa rastrear y asignar costos a cada departamento. Estas etiquetas se pueden utilizar para categorizar costos en informes de facturación detallados. Las categorías de costos de AWS se pueden utilizar para agrupar costos según criterios específicos de cada departamento. Esto permite a la empresa personalizar cómo ven y gestionan los costos, y puede ayudarles a entender los costos asociados con el uso de recursos de AWS de cada departamento.",
+        "Other Options": [
+            "Habilitar la facturación de múltiples cuentas entre departamentos no es la mejor solución porque requeriría que cada departamento tuviera su propia cuenta de AWS, lo que puede no ser práctico o eficiente. Esta opción tampoco ayuda directamente a rastrear y asignar costos a cada departamento.",
+            "Configurar presupuestos de AWS separados para cada departamento podría ayudar a gestionar costos, pero no ayuda directamente a rastrear y asignar costos a cada departamento. Se trata más de establecer y gestionar límites de gasto que de rastrear y asignar costos.",
+            "Utilizar el nivel gratuito de AWS para todas las bases de datos del departamento no es una solución viable porque el nivel gratuito tiene límites de uso, y una empresa de medios con múltiples aplicaciones en diferentes departamentos probablemente superará estos límites. Además, esta opción no ayuda a rastrear y asignar costos."
+        ]
+    },
+    {
+        "Question Number": "49",
+        "Situation": "Una organización necesita proporcionar acceso temporal a un proveedor externo para acceder a ciertos recursos dentro de su cuenta de AWS. El acceso del proveedor debe estar limitado a una duración específica, y la organización quiere asegurarse de que el proveedor no pueda iniciar sesión directamente como un usuario IAM.",
+        "Question": "¿Qué enfoques debería adoptar la organización para otorgar al proveedor un acceso seguro y temporal? (Elija dos.)",
+        "Options": {
+            "1": "Crear un usuario IAM para el proveedor con los permisos necesarios y eliminar la cuenta de usuario una vez que ya no se necesite el acceso.",
+            "2": "Configurar un grupo IAM con los permisos requeridos, añadir al proveedor al grupo y eliminarlo una vez que ya no se requiera el acceso.",
+            "3": "Utilizar roles IAM y el Servicio de Token Seguro (STS) para proporcionar al proveedor acceso temporal a través de una asunción de rol.",
+            "4": "Adjuntar una política a la cuenta raíz para permitir temporalmente el acceso al proveedor y eliminarla después de la duración requerida.",
+            "5": "Utilizar AWS IAM Identity Center (AWS Single Sign-On) para asignar un rol de acceso temporal al proveedor."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Utilizar roles IAM y el Servicio de Token Seguro (STS) para proporcionar al proveedor acceso temporal a través de una asunción de rol.",
+            "Utilizar AWS IAM Identity Center (AWS Single Sign-On) para asignar un rol de acceso temporal al proveedor."
+        ],
+        "Explanation": "Los roles IAM y el Servicio de Token Seguro (STS) están diseñados para proporcionar acceso temporal a los recursos de AWS. Al utilizar la asunción de rol, se pueden otorgar los permisos necesarios al proveedor sin necesidad de crear un usuario IAM permanente. Los permisos se pueden revocar simplemente eliminando el rol. AWS IAM Identity Center (AWS Single Sign-On) también permite la asignación de acceso temporal, que se puede revocar una vez que ya no se necesite el acceso del proveedor. Ambos métodos aseguran que el proveedor no pueda iniciar sesión directamente como un usuario IAM, cumpliendo con los requisitos de la organización.",
+        "Other Options": [
+            "Crear un usuario IAM para el proveedor y eliminarlo una vez que ya no se necesite el acceso no es un enfoque recomendado, ya que implica crear y gestionar usuarios IAM permanentes, lo que puede ser un riesgo de seguridad. Además, esto no impide que el proveedor inicie sesión directamente como un usuario IAM.",
+            "Configurar un grupo IAM y añadir al proveedor al grupo tampoco es un enfoque recomendado. Aunque permite gestionar permisos a nivel de grupo, sigue implicando la creación de un usuario IAM permanente para el proveedor, lo cual no es deseado en este escenario.",
+            "Adjuntar una política a la cuenta raíz para permitir temporalmente el acceso al proveedor no es una buena práctica. La cuenta raíz tiene acceso completo a todos los recursos en la cuenta de AWS, y no se recomienda utilizarla para interacciones diarias o para otorgar acceso temporal a terceros."
+        ]
+    },
+    {
+        "Question Number": "50",
+        "Situation": "Una empresa de producción de medios necesita migrar 20 PB de metraje de video en alta definición archivado desde su almacenamiento local a AWS para almacenamiento a largo plazo y procesamiento ocasional. Los datos se encuentran en múltiples sitios, y la empresa prefiere una solución que sea tanto rentable como que proporcione alguna capacidad de procesamiento de datos durante el proceso de transferencia.",
+        "Question": "¿Qué solución de migración de datos de AWS se ajustaría mejor a las necesidades de la empresa?",
+        "Options": {
+            "1": "AWS Snowball con dispositivos de 80 TB",
+            "2": "AWS Snowball Edge con dispositivos optimizados para almacenamiento",
+            "3": "AWS Snowmobile",
+            "4": "AWS Direct Connect con una conexión dedicada"
+        },
+        "Correct Answer": "AWS Snowball Edge con dispositivos optimizados para almacenamiento",
+        "Explanation": "AWS Snowball Edge con dispositivos optimizados para almacenamiento es la mejor opción para las necesidades de la empresa porque permite la transferencia de grandes cantidades de datos (hasta 100 TB por dispositivo) mientras también proporciona capacidades de procesamiento en el dispositivo. Esto significa que la empresa puede realizar algún procesamiento de datos durante la transferencia, lo cual es esencial dado su requisito de procesamiento ocasional del metraje archivado. Además, los dispositivos Snowball Edge están diseñados para la computación en el borde, lo que los hace adecuados para manejar datos de manera eficiente en múltiples sitios.",
+        "Other Options": [
+            "AWS Snowball con dispositivos de 80 TB no es la mejor opción porque, aunque puede manejar grandes transferencias de datos, no proporciona el mismo nivel de capacidades de procesamiento que los dispositivos Snowball Edge. La empresa necesita específicamente alguna capacidad de procesamiento durante la transferencia, lo que Snowball no ofrece.",
+            "AWS Snowmobile es una opción viable para migraciones de datos extremadamente grandes (hasta 100 PB), pero es más adecuada para escenarios donde los datos se encuentran en un solo sitio y requieren una transferencia física a gran escala. Dado que los datos están distribuidos en múltiples sitios y la empresa prefiere una solución más flexible, Snowmobile no es la mejor opción.",
+            "AWS Direct Connect proporciona una conexión de red dedicada a AWS, lo que puede facilitar la transferencia de datos, pero no proporciona inherentemente un medio para migrar grandes cantidades de datos de manera eficiente ni ofrece capacidades de procesamiento durante la transferencia. Esta opción probablemente sería más costosa y menos efectiva para las necesidades específicas de la empresa en comparación con el uso de Snowball Edge."
+        ]
+    },
+    {
+        "Question Number": "51",
+        "Situation": "Una empresa está configurando la seguridad de red para su entorno de AWS y quiere entender el comportamiento de los firewalls con estado y sin estado. El equipo de seguridad necesita permitir que los clientes inicien conexiones HTTPS con el servidor web de la empresa y asegurarse de que las respuestas se devuelvan correctamente.",
+        "Question": "¿Cómo debería la empresa configurar las reglas de seguridad para permitir esta conexión mientras comprende la diferencia entre el filtrado con estado y sin estado?",
+        "Options": {
+            "1": "Utilizar un firewall con estado que permita automáticamente las respuestas entrantes a una solicitud saliente, configurando solo una regla saliente para HTTPS (puerto 443) desde el cliente al servidor.",
+            "2": "Utilizar un firewall sin estado, configurando reglas tanto salientes como entrantes en el puerto 443 para permitir el tráfico HTTPS desde el cliente al servidor y la respuesta desde el servidor al cliente.",
+            "3": "Utilizar un firewall con estado, configurando reglas tanto salientes como entrantes en el puerto 443, ya que los firewalls con estado no rastrean automáticamente los estados de conexión.",
+            "4": "Utilizar un firewall sin estado, configurando solo una regla entrante en el puerto 443, ya que la respuesta saliente se permitirá automáticamente."
+        },
+        "Correct Answer": "Utilizar un firewall con estado que permita automáticamente las respuestas entrantes a una solicitud saliente, configurando solo una regla saliente para HTTPS (puerto 443) desde el cliente al servidor.",
+        "Explanation": "Un firewall con estado rastrea el estado de las conexiones activas y permite automáticamente el tráfico de retorno para las conexiones establecidas. En este escenario, cuando un cliente inicia una conexión HTTPS con el servidor web, el firewall con estado permitirá la respuesta entrante del servidor de vuelta al cliente sin necesidad de una regla entrante separada. Por lo tanto, solo se necesita una regla saliente para el tráfico HTTPS desde el cliente al servidor, ya que el firewall con estado manejará automáticamente el tráfico entrante correspondiente.",
+        "Other Options": [
+            "Utilizar un firewall sin estado requiere reglas explícitas para el tráfico tanto entrante como saliente. Por lo tanto, configurar solo una regla saliente para HTTPS no permitiría que la respuesta del servidor llegara al cliente, ya que el firewall sin estado no rastrea los estados de conexión y bloquearía la respuesta entrante.",
+            "Esta opción afirma incorrectamente que los firewalls con estado no rastrean automáticamente los estados de conexión. De hecho, los firewalls con estado sí rastrean los estados de conexión, razón por la cual solo se necesita una regla saliente para la solicitud inicial, permitiendo automáticamente la respuesta entrante.",
+            "Esta opción es incorrecta porque un firewall sin estado no permite automáticamente las respuestas salientes. Requiere reglas explícitas para ambas direcciones. Configurar solo una regla entrante no permitiría que la respuesta del servidor llegara al cliente, ya que la solicitud saliente no tendría una regla correspondiente para permitir el tráfico de retorno."
+        ]
+    },
+    {
+        "Question Number": "52",
+        "Situation": "Una empresa minorista quiere recopilar datos de clickstream en tiempo real de su sitio web de comercio electrónico de alto tráfico para analizar patrones de comportamiento de los usuarios y mejorar el compromiso del cliente. Los datos deben ser transformados sobre la marcha, incluyendo la limpieza y etiquetado de datos, antes de ser entregados a Amazon Redshift para análisis y Amazon S3 para archivo a largo plazo. La empresa busca una solución gestionada y escalable que pueda manejar un flujo de datos continuo con un mínimo de sobrecarga operativa y capacidades de transformación en tiempo real.",
+        "Question": "¿Qué configuración de servicio de AWS cumpliría mejor con estos requisitos?",
+        "Options": {
+            "1": "Usar Amazon Kinesis Data Streams junto con AWS Lambda para transformar datos en tiempo real y luego entregarlos a Amazon S3 para almacenamiento",
+            "2": "Implementar Amazon Kinesis Data Firehose con una función de AWS Lambda para transformación en tiempo real y configurarlo para entregar los datos transformados tanto a Amazon Redshift como a Amazon S3",
+            "3": "Usar Amazon S3 como el almacenamiento principal de datos y procesar las transformaciones de datos por lotes utilizando AWS Glue antes de cargar en Amazon Redshift",
+            "4": "Configurar Amazon Managed Streaming for Apache Kafka para manejar la ingestión de datos en streaming, con AWS Lambda realizando la transformación y luego entregándolo a Redshift"
+        },
+        "Correct Answer": "Implementar Amazon Kinesis Data Firehose con una función de AWS Lambda para transformación en tiempo real y configurarlo para entregar los datos transformados tanto a Amazon Redshift como a Amazon S3",
+        "Explanation": "Amazon Kinesis Data Firehose está diseñado específicamente para la ingestión y transformación de datos en tiempo real. Permite una integración fluida con AWS Lambda, que se puede utilizar para realizar la limpieza y etiquetado de datos necesarios sobre la marcha. Esta configuración permite a la empresa minorista recopilar y procesar eficientemente los datos de clickstream en tiempo real, entregando los datos transformados tanto a Amazon Redshift para análisis como a Amazon S3 para almacenamiento a largo plazo. Esta solución es gestionada y escalable, minimizando la sobrecarga operativa mientras cumple con el requisito de flujo de datos continuo.",
+        "Other Options": [
+            "Usar Amazon Kinesis Data Streams con AWS Lambda es una opción viable para el procesamiento de datos en tiempo real; sin embargo, requiere pasos adicionales para gestionar la entrega de datos tanto a Amazon Redshift como a Amazon S3, lo que lo hace menos directo que usar Kinesis Data Firehose, que puede manejar esto directamente.",
+            "Usar Amazon S3 como el almacenamiento principal de datos y procesar las transformaciones de datos por lotes con AWS Glue no cumple con el requisito de transformación de datos en tiempo real, ya que se basa en el procesamiento por lotes, lo que introduce latencia y no es adecuado para un flujo de datos continuo.",
+            "Configurar Amazon Managed Streaming for Apache Kafka puede manejar la ingestión de datos en streaming de manera efectiva, pero añade complejidad en términos de gestión y sobrecarga operativa en comparación con Kinesis Data Firehose. Además, requeriría más configuración para integrarse con AWS Lambda para transformaciones y para entregar datos a Redshift."
+        ]
+    },
+    {
+        "Question Number": "53",
+        "Situation": "Una institución financiera opera aplicaciones críticas que requieren conectividad estable, de alto ancho de banda y baja latencia entre sus centros de datos locales y AWS para soportar el procesamiento de datos en tiempo real y actividades de trading. Quieren asegurarse de que todas las transferencias de datos se realicen a través de una conexión segura y privada que evite Internet público, protegiendo contra posibles riesgos de seguridad y variabilidad en el rendimiento.",
+        "Question": "¿Qué opción cumpliría mejor con sus requisitos?",
+        "Options": {
+            "1": "Usar una línea arrendada de alta velocidad de un proveedor de telecomunicaciones directamente a AWS",
+            "2": "Establecer un AWS Site-to-Site VPN sobre Internet público",
+            "3": "Desplegar AWS Direct Connect para una conexión de red privada y dedicada",
+            "4": "Configurar un protocolo de transferencia de archivos encriptado (FTP) para sincronizaciones de datos periódicas"
+        },
+        "Correct Answer": "Desplegar AWS Direct Connect para una conexión de red privada y dedicada",
+        "Explanation": "AWS Direct Connect proporciona una conexión dedicada y privada entre los centros de datos locales y AWS. Esta opción cumple con los requisitos de la institución financiera para conectividad estable, de alto ancho de banda y baja latencia, esenciales para aplicaciones críticas como el procesamiento de datos en tiempo real y el trading. Direct Connect evita Internet público, reduciendo significativamente los riesgos de seguridad y la variabilidad en el rendimiento, lo que lo convierte en la mejor opción para transferencias de datos seguras y fiables.",
+        "Other Options": [
+            "Usar una línea arrendada de alta velocidad de un proveedor de telecomunicaciones directamente a AWS puede proporcionar un alto ancho de banda, pero no garantiza el mismo nivel de integración y fiabilidad que AWS Direct Connect. Además, puede implicar costos más altos y complejidad en la configuración y gestión.",
+            "Establecer un AWS Site-to-Site VPN sobre Internet público ofrece cifrado y seguridad, pero no proporciona los requisitos de baja latencia y alto ancho de banda necesarios para aplicaciones en tiempo real. Las VPN también pueden estar sujetas a variabilidad en el rendimiento debido a su dependencia de Internet público.",
+            "Configurar un protocolo de transferencia de archivos encriptado (FTP) para sincronizaciones de datos periódicas no cumple con el requisito de procesamiento de datos en tiempo real y actividades de trading. Este método es más adecuado para el procesamiento por lotes en lugar de la transferencia continua de datos de baja latencia, que es crítica para las operaciones de la institución."
+        ]
+    },
+    {
+        "Question Number": "54",
+        "Situation": "Una empresa tiene dos cuentas de AWS: una cuenta de desarrollo y una cuenta de producción. Los desarrolladores en la cuenta de desarrollo necesitan acceso temporal a recursos específicos en la cuenta de producción para fines de prueba. La empresa quiere hacer cumplir el principio de menor privilegio y asegurarse de que los desarrolladores solo puedan acceder a los recursos necesarios por un tiempo limitado.",
+        "Question": "¿Qué enfoque debería usar la empresa para lograr este requisito?",
+        "Options": {
+            "1": "Crear usuarios de IAM en la cuenta de producción y adjuntar políticas que otorguen acceso a los recursos requeridos.",
+            "2": "Usar AWS Security Token Service (STS) para crear credenciales de seguridad temporales, permitiendo a los desarrolladores asumir un rol en la cuenta de producción con permisos para acceder a los recursos necesarios.",
+            "3": "Configurar acceso entre cuentas creando un grupo de IAM en la cuenta de desarrollo y adjuntando una política que otorgue acceso a recursos en la cuenta de producción.",
+            "4": "Usar AWS Organizations para replicar automáticamente permisos de la cuenta de desarrollo a la cuenta de producción para todos los desarrolladores."
+        },
+        "Correct Answer": "Usar AWS Security Token Service (STS) para crear credenciales de seguridad temporales, permitiendo a los desarrolladores asumir un rol en la cuenta de producción con permisos para acceder a los recursos necesarios.",
+        "Explanation": "Usar AWS Security Token Service (STS) para crear credenciales de seguridad temporales es el mejor enfoque para este escenario porque permite a los desarrolladores asumir un rol en la cuenta de producción con permisos específicos. Este método se adhiere al principio de menor privilegio al otorgar acceso solo a los recursos necesarios por un tiempo limitado. Las credenciales temporales proporcionadas por STS expiran después de un período especificado, asegurando que el acceso no sea permanente y reduciendo el riesgo de acceso no autorizado a los recursos de producción.",
+        "Other Options": [
+            "Crear usuarios de IAM en la cuenta de producción y adjuntar políticas que otorguen acceso a los recursos requeridos no es ideal porque implicaría crear cuentas de usuario permanentes, lo que contradice el principio de menor privilegio y no proporciona acceso temporal.",
+            "Configurar acceso entre cuentas creando un grupo de IAM en la cuenta de desarrollo y adjuntando una política que otorgue acceso a recursos en la cuenta de producción es incorrecto porque los grupos de IAM no admiten permisos entre cuentas directamente. En su lugar, se deben usar roles para el acceso entre cuentas.",
+            "Usar AWS Organizations para replicar automáticamente permisos de la cuenta de desarrollo a la cuenta de producción para todos los desarrolladores no es adecuado porque otorgaría un acceso más amplio del necesario, violando el principio de menor privilegio. Este enfoque no permite el control granular requerido para el acceso temporal."
+        ]
+    },
+    {
+        "Question Number": "55",
+        "Situation": "Una empresa quiere diseñar una arquitectura de aplicación escalable que pueda manejar altos volúmenes de tareas asíncronas y requiere que los componentes se comuniquen sin dependencias directas entre sí.",
+        "Question": "¿Qué servicio de AWS sería el más apropiado para implementar una arquitectura desacoplada y basada en eventos, y por qué?",
+        "Options": {
+            "1": "Amazon SQS",
+            "2": "Amazon RDS",
+            "3": "Amazon DynamoDB",
+            "4": "AWS Lambda"
+        },
+        "Correct Answer": "Amazon SQS",
+        "Explanation": "Amazon SQS (Simple Queue Service) está diseñado específicamente para desacoplar los componentes de una aplicación distribuida. Permite la comunicación asíncrona entre diferentes partes de una aplicación mediante el uso de colas de mensajes. Esto significa que los componentes pueden enviar mensajes a la cola sin necesidad de conocer los otros componentes que procesarán esos mensajes, lo que permite una arquitectura desacoplada. SQS puede manejar altos volúmenes de mensajes, lo que lo hace adecuado para aplicaciones que requieren escalabilidad y fiabilidad en el procesamiento de tareas asíncronas.",
+        "Other Options": [
+            "Amazon RDS (Relational Database Service) es un servicio de base de datos relacional gestionado que se utiliza principalmente para almacenar datos estructurados. No proporciona la arquitectura basada en eventos ni el desacoplamiento de componentes que ofrece SQS, ya que requiere conexiones directas entre la aplicación y la base de datos.",
+            "Amazon DynamoDB es un servicio de base de datos NoSQL que proporciona un rendimiento rápido y predecible con escalabilidad sin problemas. Aunque puede manejar altos volúmenes de datos, no está diseñado específicamente para gestionar tareas asíncronas o para desacoplar componentes en una arquitectura basada en eventos como SQS.",
+            "AWS Lambda es un servicio de computación sin servidor que ejecuta código en respuesta a eventos. Aunque puede ser parte de una arquitectura basada en eventos, no actúa como un servicio de mensajería en sí mismo. A menudo se utiliza junto con SQS u otros servicios para procesar mensajes, pero no proporciona el mecanismo de cola que permite un desacoplamiento entre componentes."
+        ]
+    },
+    {
+        "Question Number": "56",
+        "Situation": "Un arquitecto de soluciones necesita asegurarse de que solo ciertos roles de IAM dentro de la cuenta de AWS de la empresa puedan acceder a datos sensibles específicos almacenados en Amazon S3. La empresa sigue un estricto modelo de acceso de menor privilegio.",
+        "Question": "¿Cuál es el método MÁS apropiado para hacer cumplir este requisito?",
+        "Options": {
+            "1": "Usar políticas de bucket de S3 que otorguen acceso solo a roles de IAM específicos",
+            "2": "Habilitar MFA Delete en el bucket de S3",
+            "3": "Configurar una alarma de Amazon CloudWatch para intentos de acceso no autorizados",
+            "4": "Habilitar S3 Transfer Acceleration"
+        },
+        "Correct Answer": "Usar políticas de bucket de S3 que otorguen acceso solo a roles de IAM específicos",
+        "Explanation": "Usar políticas de bucket de S3 para otorgar acceso solo a roles de IAM específicos es el método más apropiado para hacer cumplir el requisito de limitar el acceso a datos sensibles. Las políticas de bucket permiten un control detallado sobre quién puede acceder a los datos almacenados en el bucket de S3, alineándose con el modelo de acceso de menor privilegio. Al especificar qué roles de IAM pueden acceder al bucket, el arquitecto de soluciones puede asegurarse de que solo los roles autorizados tengan los permisos necesarios para acceder a datos sensibles, mejorando así la seguridad.",
+        "Other Options": [
+            "Habilitar MFA Delete en el bucket de S3 es una característica de seguridad que previene la eliminación accidental de objetos en el bucket y requiere autenticación multifactor para las operaciones de eliminación. Aunque añade una capa de seguridad, no controla el acceso a los datos en sí, lo que lo hace menos relevante para el requisito de restringir el acceso basado en roles de IAM.",
+            "Configurar una alarma de Amazon CloudWatch para intentos de acceso no autorizados puede ayudar a monitorear y alertar sobre actividades sospechosas, pero no previene el acceso. Este enfoque se centra más en la detección que en la aplicación del control de acceso, que es la principal preocupación en este escenario.",
+            "Habilitar S3 Transfer Acceleration mejora la velocidad de transferencia de datos hacia y desde S3, pero no se relaciona con el control de acceso. Esta opción no aborda el requisito de restringir el acceso a datos sensibles basado en roles de IAM."
+        ]
+    },
+    {
+        "Question Number": "57",
+        "Situation": "Un portal de noticias en línea recibe millones de interacciones de usuarios diariamente, incluyendo clics, vistas y comparticiones. Estas interacciones necesitan ser ingeridas en tiempo real para análisis y entrega de contenido personalizado. La empresa espera que el volumen de interacciones crezca rápidamente durante el próximo año.",
+        "Question": "¿Qué patrón de ingestión de datos debería diseñar el arquitecto de soluciones para manejar este escenario de manera efectiva?",
+        "Options": {
+            "1": "Ingestión por lotes con transferencias de datos diarias",
+            "2": "Ingestión de streaming en tiempo real",
+            "3": "Cargas de datos manuales a través de la Consola de Administración de AWS",
+            "4": "Ingestión programada utilizando AWS Data Pipeline"
+        },
+        "Correct Answer": "Ingestión de streaming en tiempo real",
+        "Explanation": "La ingestión de streaming en tiempo real es el patrón más adecuado para este escenario porque el portal de noticias en línea requiere un procesamiento inmediato de las interacciones de los usuarios, como clics, vistas y comparticiones. Dado el esperado crecimiento rápido en el volumen de interacciones, un enfoque en tiempo real permite un flujo continuo de datos y análisis inmediatos, habilitando la entrega de contenido personalizado y conocimientos oportunos. Este método asegura que los datos se procesen a medida que llegan, lo cual es esencial para mantener una experiencia de usuario atractiva y adaptarse al comportamiento del usuario en tiempo real.",
+        "Other Options": [
+            "La ingestión por lotes con transferencias de datos diarias no es apropiada para este escenario porque implica recopilar datos durante un período y procesarlos de una vez. Esto llevaría a retrasos en el análisis y la entrega de contenido, lo que no es adecuado para una plataforma que depende de interacciones de usuarios en tiempo real.",
+            "Las cargas de datos manuales a través de la Consola de Administración de AWS son imprácticas para manejar millones de interacciones diarias. Este método es laborioso y no escala bien, lo que lo hace inadecuado para un entorno de alto volumen donde la automatización y la velocidad son críticas.",
+            "La ingestión programada utilizando AWS Data Pipeline puede proporcionar cierto nivel de automatización, pero aún opera en un horario predefinido en lugar de en tiempo real. Esto no satisfaría las necesidades del portal de noticias para un procesamiento inmediato de datos y podría resultar en análisis y entrega de contenido desactualizados."
+        ]
+    },
+    {
+        "Question Number": "58",
+        "Situation": "Una startup está construyendo una plataforma de análisis en tiempo real en AWS. La plataforma necesita ingerir datos de miles de dispositivos IoT, procesar los datos en tiempo real y almacenar los datos procesados para un análisis posterior. La solución debe ser altamente escalable y minimizar la sobrecarga operativa.",
+        "Question": "¿Qué combinación de servicios de AWS debería utilizar el arquitecto de soluciones para construir esta plataforma? (Elija DOS.)",
+        "Options": {
+            "1": "AWS Lambda",
+            "2": "Amazon Kinesis Data Streams",
+            "3": "Amazon RDS for MySQL",
+            "4": "Amazon S3",
+            "5": "Amazon QuickSight"
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "AWS Lambda",
+            "Amazon Kinesis Data Streams"
+        ],
+        "Explanation": "AWS Lambda es un servicio de computación sin servidor que te permite ejecutar tu código sin aprovisionar o gestionar servidores. Puede utilizarse para procesar los datos en tiempo real, lo cual es un requisito en el escenario dado. Amazon Kinesis Data Streams es un servicio de transmisión de datos en tiempo real escalable y duradero que puede capturar continuamente gigabytes de datos por segundo de cientos de miles de fuentes, como flujos de clics de sitios web, flujos de eventos de bases de datos, transacciones financieras, feeds de redes sociales, registros de TI y eventos de seguimiento de ubicación. Esto lo convierte en una opción adecuada para ingerir datos de miles de dispositivos IoT en tiempo real.",
+        "Other Options": [
+            "Amazon RDS for MySQL es un servicio de base de datos relacional. Aunque puede utilizarse para almacenar datos, no está diseñado para la ingestión y procesamiento de datos en tiempo real, que es un requisito en el escenario dado.",
+            "Amazon S3 es un servicio de almacenamiento. Aunque puede utilizarse para almacenar datos procesados, no admite la ingestión y procesamiento de datos en tiempo real.",
+            "Amazon QuickSight es un servicio de análisis empresarial. Aunque puede utilizarse para analizar datos, no admite la ingestión, procesamiento y almacenamiento de datos en tiempo real, que son requisitos en el escenario dado."
+        ]
+    },
+    {
+        "Question Number": "59",
+        "Situation": "Una empresa utiliza instancias de Amazon EC2 para alojar una aplicación heredada. La aplicación requiere acceso a archivos almacenados en un sistema de archivos de red y debe soportar múltiples conexiones concurrentes con baja latencia. La empresa necesita una solución gestionada que proporcione almacenamiento escalable con alta disponibilidad.",
+        "Question": "¿Qué servicio de AWS debería recomendar el arquitecto de soluciones?",
+        "Options": {
+            "1": "Amazon S3",
+            "2": "Amazon EFS (Elastic File System)",
+            "3": "Amazon FSx for Windows File Server",
+            "4": "Amazon EBS (Elastic Block Store)"
+        },
+        "Correct Answer": "Amazon EFS (Elastic File System)",
+        "Explanation": "Amazon EFS (Elastic File System) es un servicio de almacenamiento de archivos completamente gestionado, escalable y elástico que está diseñado para ser utilizado con instancias de Amazon EC2. Soporta múltiples conexiones concurrentes y proporciona acceso de baja latencia a los archivos, lo que lo hace ideal para aplicaciones que requieren acceso compartido a un sistema de archivos. EFS se escala automáticamente a medida que se añaden o eliminan archivos, asegurando alta disponibilidad y durabilidad, lo que se alinea perfectamente con los requisitos de la aplicación heredada descrita en la situación.",
+        "Other Options": [
+            "Amazon S3 es un servicio de almacenamiento de objetos que no es adecuado para aplicaciones que requieren una interfaz de sistema de archivos y acceso de baja latencia. Está diseñado para almacenar y recuperar grandes cantidades de datos no estructurados, pero no admite la semántica del sistema de archivos necesaria para el acceso concurrente por múltiples instancias.",
+            "Amazon FSx for Windows File Server proporciona un sistema de archivos de Windows completamente gestionado que soporta el protocolo SMB y es adecuado para aplicaciones basadas en Windows. Aunque ofrece alta disponibilidad y escalabilidad, está específicamente diseñado para entornos Windows y puede no ser necesario si la aplicación heredada no requiere características específicas de Windows.",
+            "Amazon EBS (Elastic Block Store) proporciona almacenamiento en bloques para instancias de EC2 y es adecuado para casos de uso de una sola instancia. No soporta múltiples conexiones concurrentes desde diferentes instancias, que es un requisito para la aplicación heredada. EBS tampoco es un sistema de archivos gestionado, ya que requiere gestión manual de volúmenes."
+        ]
+    },
+    {
+        "Question Number": "60",
+        "Situation": "Una empresa de análisis tiene varias instancias de Amazon EC2 dentro de una subred privada que requieren acceso a internet para actualizaciones de software y sincronización de datos externos. Para mantener bajos sus costos de red, están considerando opciones para configurar la Traducción de Direcciones de Red (NAT) para habilitar el acceso saliente a internet para estas instancias. La empresa quiere un enfoque rentable para proporcionar conectividad a internet sin desplegar infraestructura excesiva.",
+        "Question": "¿Qué enfoque sería el más rentable?",
+        "Options": {
+            "1": "Desplegar una puerta de enlace NAT en cada Zona de Disponibilidad, asegurando redundancia y equilibrando el tráfico entre múltiples zonas",
+            "2": "Usar una única instancia NAT para manejar el tráfico de todas las instancias de EC2 dentro de la subred privada, minimizando los costos de infraestructura",
+            "3": "Desplegar puertas de enlace NAT separadas para cada VPC, permitiendo que cada red virtual maneje sus propias necesidades de acceso a internet de manera independiente",
+            "4": "Usar puertas de enlace NAT con IPs Elásticas en múltiples regiones para proporcionar acceso a internet y asegurar alta disponibilidad"
+        },
+        "Correct Answer": "Usar una única instancia NAT para manejar el tráfico de todas las instancias de EC2 dentro de la subred privada, minimizando los costos de infraestructura",
+        "Explanation": "Usar una única instancia NAT es la solución más rentable para proporcionar acceso a internet a múltiples instancias de EC2 en una subred privada. Las instancias NAT son generalmente más baratas que las puertas de enlace NAT, y una sola instancia puede manejar el tráfico saliente para todas las instancias en la subred. Este enfoque minimiza los costos de infraestructura mientras permite la conectividad a internet necesaria para actualizaciones de software y sincronización de datos.",
+        "Other Options": [
+            "Desplegar una puerta de enlace NAT en cada Zona de Disponibilidad proporcionaría redundancia y balanceo de carga, pero aumentaría significativamente los costos debido a la mayor tarifa de las puertas de enlace NAT en comparación con las instancias NAT. Esta opción no es rentable para las necesidades de la empresa.",
+            "Desplegar puertas de enlace NAT separadas para cada VPC también llevaría a un aumento de costos, ya que cada puerta de enlace incurre en cargos. Este enfoque es innecesario si el objetivo es minimizar los costos de infraestructura mientras se proporciona acceso a internet.",
+            "Usar puertas de enlace NAT con IPs Elásticas en múltiples regiones aseguraría alta disponibilidad, pero sería muy costoso. Las puertas de enlace NAT se cobran por hora y por GB de datos procesados, lo que hace que esta opción sea impráctica para un requisito sensible a costos."
+        ]
+    },
+    {
+        "Question Number": "61",
+        "Situation": "Una empresa está utilizando múltiples cuentas de AWS para gestionar diferentes entornos, como desarrollo, pruebas y producción. El equipo de seguridad quiere imponer políticas de seguridad consistentes en todas las cuentas mientras permite la gestión y supervisión centralizadas.",
+        "Question": "¿Qué servicio de AWS debería utilizar la empresa para establecer un entorno seguro de múltiples cuentas y qué característica puede ayudar a imponer controles de seguridad específicos en cada cuenta?",
+        "Options": {
+            "1": "Utilizar AWS Identity and Access Management (IAM) con límites de permisos para cada cuenta.",
+            "2": "Utilizar AWS Control Tower con Service Control Policies (SCPs) para gestionar políticas de seguridad entre cuentas.",
+            "3": "Implementar AWS Shield para hacer cumplir las reglas de seguridad en las diferentes cuentas.",
+            "4": "Utilizar Amazon GuardDuty para gestionar y aplicar políticas de seguridad en las cuentas."
+        },
+        "Correct Answer": "Utilizar AWS Control Tower con Service Control Policies (SCPs) para gestionar políticas de seguridad entre cuentas.",
+        "Explanation": "AWS Control Tower está diseñado específicamente para ayudar a las organizaciones a configurar y gobernar un entorno seguro de múltiples cuentas de AWS. Proporciona una forma centralizada de gestionar cuentas e imponer políticas entre ellas. Las Service Control Policies (SCPs) son una característica de AWS Organizations que permiten definir límites de permisos para sus cuentas, asegurando que se apliquen controles de seguridad específicos de manera consistente en todas las cuentas. Esto lo convierte en la mejor opción para el requisito de la empresa de imponer políticas de seguridad consistentes mientras permite la gestión y supervisión centralizadas.",
+        "Other Options": [
+            "AWS Identity and Access Management (IAM) con límites de permisos es útil para gestionar permisos dentro de una sola cuenta, pero no proporciona una forma centralizada de imponer políticas entre múltiples cuentas. Por lo tanto, no es adecuado para el entorno de múltiples cuentas de la empresa.",
+            "AWS Shield es un servicio de protección DDoS gestionado que ayuda a proteger aplicaciones de ataques DDoS. Aunque mejora la seguridad, no proporciona un mecanismo para hacer cumplir políticas de seguridad entre múltiples cuentas, lo que lo hace irrelevante para las necesidades de la empresa.",
+            "Amazon GuardDuty es un servicio de detección de amenazas que monitoriza continuamente la actividad maliciosa y el comportamiento no autorizado. Aunque proporciona información sobre seguridad, no impone políticas de seguridad entre cuentas, lo cual es un requisito clave para la empresa."
+        ]
+    },
+    {
+        "Question Number": "62",
+        "Situation": "Una empresa está diseñando un sistema altamente disponible y tolerante a fallos que necesita manejar picos de tráfico y posibles fallos de componentes mientras mantiene un servicio consistente. El sistema utilizará microservicios y necesita asegurar la resiliencia y escalabilidad.",
+        "Question": "¿Qué patrón de diseño distribuido debería utilizar la empresa para lograr esto?",
+        "Options": {
+            "1": "Utilizar el patrón de cortacircuitos para asegurar que las fallas del servicio sean detectadas y gestionadas proactivamente, permitiendo que el sistema mantenga el rendimiento durante fallos parciales.",
+            "2": "Utilizar el patrón monolítico para reducir la complejidad y asegurar que todos los componentes estén estrechamente integrados y dependan unos de otros.",
+            "3": "Utilizar el patrón de reintento para intentar continuamente operaciones fallidas, incluso si el sistema está experimentando un alto tráfico o fallos de componentes.",
+            "4": "Utilizar el patrón con estado para asegurar que los servicios mantengan datos de sesión entre solicitudes, permitiéndoles manejar picos de tráfico."
+        },
+        "Correct Answer": "Utilizar el patrón de cortacircuitos para asegurar que las fallas del servicio sean detectadas y gestionadas proactivamente, permitiendo que el sistema mantenga el rendimiento durante fallos parciales.",
+        "Explanation": "El patrón de cortacircuitos está diseñado para detectar fallas y prevenir que el sistema realice llamadas a un servicio que probablemente fallará. Esto es particularmente útil en una arquitectura de microservicios donde los servicios son interdependientes. Al implementar un cortacircuito, el sistema puede fallar rápidamente y redirigir el tráfico o proporcionar opciones de respaldo, manteniendo así el rendimiento y la disponibilidad general del sistema durante fallos parciales. Este patrón mejora la resiliencia al permitir que el sistema se recupere de manera controlada de las fallas y gestione eficazmente los picos de tráfico.",
+        "Other Options": [
+            "El patrón monolítico no es adecuado para un sistema altamente disponible y tolerante a fallos que utiliza microservicios. Las arquitecturas monolíticas acoplan estrechamente todos los componentes, lo que dificulta escalar y gestionar servicios individuales de forma independiente, lo que contradice los objetivos de resiliencia y escalabilidad.",
+            "El patrón de reintento, aunque útil en ciertos escenarios, puede agravar los problemas durante un alto tráfico o fallos de componentes. Intentar continuamente operaciones fallidas sin una estrategia puede llevar a una carga aumentada en el sistema y posibles fallas en cascada, lo que no es ideal para mantener un servicio consistente durante fallas.",
+            "El patrón con estado puede complicar la escalabilidad y resiliencia en una arquitectura de microservicios. Mantener datos de sesión entre solicitudes puede llevar a desafíos en la distribución de carga y gestión de fallas, ya que los servicios con estado pueden no escalar fácilmente o recuperarse de fallas sin perder información de sesión."
+        ]
+    },
+    {
+        "Question Number": "63",
+        "Situation": "Una empresa está utilizando Amazon Kinesis para procesar datos de streaming en tiempo real. Quieren asegurarse de que solo los usuarios autorizados puedan acceder a los flujos de datos y que los datos estén cifrados tanto en tránsito como en reposo.",
+        "Question": "¿Qué acciones debería tomar la empresa para asegurar sus flujos de datos de Kinesis?",
+        "Options": {
+            "1": "Habilitar el cifrado del lado del servidor (SSE) utilizando AWS Key Management Service (KMS) para cifrar datos en reposo y utilizar políticas de IAM para controlar el acceso a los flujos.",
+            "2": "Configurar Kinesis Data Streams para utilizar cifrado solo en reposo, pero no habilitar el cifrado en tránsito, ya que no es necesario para las comunicaciones internas de AWS.",
+            "3": "Habilitar el emparejamiento de VPC entre Kinesis y otros servicios de AWS, asegurando que los datos se transmitan a través de conexiones de red privadas para mejorar la seguridad.",
+            "4": "Permitir acceso abierto a los flujos de Kinesis sin cifrado para asegurar que los datos puedan ser accedidos rápidamente por varias aplicaciones, y utilizar CloudTrail para monitorizar los registros de acceso."
+        },
+        "Correct Answer": "Habilitar el cifrado del lado del servidor (SSE) utilizando AWS Key Management Service (KMS) para cifrar datos en reposo y utilizar políticas de IAM para controlar el acceso a los flujos.",
+        "Explanation": "Habilitar el cifrado del lado del servidor (SSE) utilizando AWS Key Management Service (KMS) asegura que los datos almacenados en Kinesis Data Streams estén cifrados en reposo, proporcionando una capa de seguridad contra el acceso no autorizado. Además, utilizar políticas de IAM permite a la empresa definir quién puede acceder a los flujos y qué acciones pueden realizar, asegurando que solo los usuarios autorizados tengan acceso a datos sensibles. Esta combinación de cifrado y control de acceso es esencial para asegurar los datos en un entorno en la nube.",
+        "Other Options": [
+            "Configurar Kinesis Data Streams para utilizar cifrado solo en reposo, pero no habilitar cifrado en tránsito es insuficiente porque los datos pueden ser interceptados durante la transmisión. El cifrado en tránsito es crucial para proteger los datos mientras viajan por la red, especialmente en un contexto de streaming en tiempo real.",
+            "Habilitar el emparejamiento de VPC puede mejorar la seguridad al permitir la comunicación privada entre los servicios de AWS, pero no aborda la necesidad de cifrado en reposo o en tránsito. Sin cifrado, los datos aún podrían ser vulnerables al acceso no autorizado, lo que hace que esta opción sea incompleta para asegurar los flujos de datos de Kinesis.",
+            "Permitir acceso abierto a los flujos de Kinesis sin cifrado representa un riesgo de seguridad significativo, ya que expone datos sensibles a cualquier persona que pueda acceder a los flujos. Monitorizar los registros de acceso con CloudTrail no previene el acceso no autorizado; solo proporciona visibilidad después de que ha ocurrido. Este enfoque es contrario a las mejores prácticas para la seguridad de datos."
+        ]
+    },
+    {
+        "Question Number": "64",
+        "Situation": "Imagina que estás lanzando un sitio web global para transmitir contenido multimedia de alta calidad. Necesitas asegurarte de que tus usuarios experimenten una latencia mínima y una reproducción fluida, sin importar su ubicación geográfica. Para lograr esto, decides utilizar Amazon CloudFront para la entrega de contenido.",
+        "Question": "¿Qué componente de CloudFront es responsable de almacenar en caché el contenido más cerca de los usuarios para un acceso más rápido, y cómo contribuye a reducir la latencia?",
+        "Options": {
+            "1": "Distribución, porque proporciona la configuración principal y define el comportamiento de almacenamiento en caché.",
+            "2": "Edge Location, ya que almacena contenido en caché más cerca de los usuarios, lo que resulta en tiempos de acceso más rápidos para los datos solicitados con frecuencia.",
+            "3": "Regional Edge Cache, que funciona como una versión más grande de las Edge Locations para almacenar más datos y mejorar la eficiencia del almacenamiento en caché.",
+            "4": "Origin, ya que contiene el contenido original que es recuperado por CloudFront a solicitud del usuario."
+        },
+        "Correct Answer": "Edge Location, ya que almacena contenido en caché más cerca de los usuarios, lo que resulta en tiempos de acceso más rápidos para los datos solicitados con frecuencia.",
+        "Explanation": "Las Edge Locations son el componente clave de Amazon CloudFront que almacena en caché contenido en varias ubicaciones geográficas alrededor del mundo. Al almacenar copias de contenido más cerca de los usuarios, las Edge Locations reducen significativamente la distancia que los datos deben recorrer, lo que minimiza la latencia y mejora la velocidad de entrega del contenido. Esto es particularmente importante para la transmisión de medios de alta calidad, ya que los usuarios esperan un acceso rápido al contenido sin interrupciones.",
+        "Other Options": [
+            "La distribución es una configuración que define cómo CloudFront entrega contenido, incluyendo configuraciones para el comportamiento de almacenamiento en caché, pero no almacena contenido en caché directamente. Se trata más de la configuración general que del almacenamiento físico del contenido.",
+            "Regional Edge Cache sirve como un intermediario entre el origen y las Edge Locations, almacenando mayores cantidades de datos para mejorar la eficiencia del almacenamiento en caché. Sin embargo, no es el componente principal responsable de almacenar en caché el contenido más cercano a los usuarios; ese papel lo cumplen específicamente las Edge Locations.",
+            "Origin se refiere a la fuente original del contenido, como un bucket de S3 o un servidor web. Si bien es esencial para recuperar contenido cuando no está disponible en la caché, no contribuye a reducir la latencia ya que típicamente se encuentra más lejos de los usuarios finales en comparación con las Edge Locations."
+        ]
+    },
+    {
+        "Question Number": "65",
+        "Situation": "Estás diseñando un sistema de procesamiento de trabajos donde los mensajes deben ser procesados en un orden específico, y no se permiten duplicados. Sin embargo, quieres equilibrar esta necesidad de orden con una alta escalabilidad, ya que el volumen de mensajes puede variar mucho.",
+        "Question": "¿Qué tipo de cola de Amazon SQS deberías elegir para cumplir con estos requisitos, y por qué?",
+        "Options": {
+            "1": "Cola Estándar, porque permite un rendimiento ilimitado y está optimizada para alta escalabilidad sin un orden estricto.",
+            "2": "Cola FIFO, porque proporciona procesamiento exactamente una vez y preserva el orden estricto de los mensajes, lo cual es crucial para tus requisitos.",
+            "3": "Cola Estándar, porque ofrece entrega al menos una vez, lo que la hace adecuada para manejar volúmenes de mensajes variables.",
+            "4": "Cola FIFO, porque no impone límites en TPS y está optimizada para un orden de mejor esfuerzo, lo que la hace ideal para aplicaciones de alto volumen."
+        },
+        "Correct Answer": "Cola FIFO, porque proporciona procesamiento exactamente una vez y preserva el orden estricto de los mensajes, lo cual es crucial para tus requisitos.",
+        "Explanation": "Una Cola FIFO (Primero en Entrar, Primero en Salir) en Amazon SQS está diseñada específicamente para garantizar que los mensajes se procesen en el orden exacto en que se envían y que cada mensaje se procese exactamente una vez. Esto es esencial para escenarios donde el orden del procesamiento de mensajes es crítico y se deben evitar duplicados. Dado los requisitos de mantener un orden estricto y prevenir duplicados, una Cola FIFO es la opción más adecuada.",
+        "Other Options": [
+            "Cola Estándar, porque permite un rendimiento ilimitado y está optimizada para alta escalabilidad sin un orden estricto. Sin embargo, esta opción no cumple con el requisito de orden estricto y podría llevar a la duplicación de mensajes.",
+            "Cola FIFO, porque proporciona procesamiento exactamente una vez y preserva el orden estricto de los mensajes, lo cual es crucial para tus requisitos. Esta opción es en realidad correcta, pero se repite en la pregunta, lo que puede resultar engañoso.",
+            "Cola Estándar, porque ofrece entrega al menos una vez, lo que la hace adecuada para manejar volúmenes de mensajes variables. Si bien esta opción permite una alta escalabilidad, no garantiza el orden de los mensajes y puede resultar en duplicados, lo que no cumple con los requisitos."
+        ]
+    }
+]

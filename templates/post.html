@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ course.title }}{% endblock %}
+
+{% block meta_description %}{{ course.description }}{% endblock %}
+{% block og_title %}{{ course.title }}{% endblock %}
+{% block og_description %}{{ course.description }}{% endblock %}
+{% block og_image %}{{ course.image.url }}{% endblock %}
+
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'post.css' %}">
+</head>
+
+<section id="exam-detail">
+    <div class="content-wrapper">
+        <!-- Overlay with Title and Description -->
+        <div class="overlay">
+            <h2>{{ course.title }}</h2>
+            <p class="simple-description">{{ course.description }}</p>
+            <p class="enrollment-count">{{ enrollment_count }} Students Purchased</p>
+
+            <!-- Conditionally show purchase button or "Purchased" text -->
+            {% if is_purchased %}
+            <span class="purchased-text">Already Purchased!</span>
+            <a href="{% url 'exam_selection' course.id %}">
+                <button class="cart-button">Go Study</button>
+            </a>
+            {% else %}
+                <div class="button-group">
+                    <form action="{% url 'add_to_cart' course.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="cart-button">Add to Cart</button>
+                    </form>
+                    <form action="{% url 'purchase_course' course.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="purchase-button">Purchase for ${{course.price}}</button>
+                    </form>                    
+                </div>
+            {% endif %}
+        </div>
+    </div>
+     
+    <div class="details-wrapper">
+    <!-- Details Section with Image on Left and Exam Info on Right -->
+        <div class="details-section">
+            <!-- Certification Image -->
+            <div class="cert-image">
+                {% if course.image %}
+                    <img src="{{ course.image_logo.url }}" alt="{{ course.title }}">
+                {% else %}
+                    <img src="{% static 'default_cert_image.png' %}" alt="Default Certification Image">
+                {% endif %}
+            </div>
+
+            <!-- Exam Information -->
+            <div class="exam-info">
+                <p><strong>Language:</strong> {{ course.get_language_display }}</p>
+                <p><strong>Includes:</strong> {{ course.number_of_practices }}</p>
+                <p><strong>Exam Format:</strong> {{ course.exam_format }}</p>
+                <p><strong>Duration:</strong> {{ course.duration }}</p>
+                <p><strong>Difficulty Level:</strong> {{ course.difficulty }}</p>
+            </div>
+        </div>
+        <!-- Certification Details -->
+        <div class="cert-details">
+            <div class="course-section">
+                <h3>Course Content</h3>
+            </div>
+            <div class="course-content">
+                <div class="content-header" onclick="togglePracticeTests()">
+                    <span>Practice Exams</span>
+                    <span class="icon">&#9662;</span> <!-- Down Arrow Icon -->
+                </div>
+                <ul class="practice-tests" id="practiceTests">
+                    <!-- Review Mode Exams -->
+                    <li>
+                        <div class="test-title">
+                            <span class="icon">-</span>
+                            <span>{{ course.title }} - {{ course.practice_exam_translate}} #1</span>
+                        </div>
+                        <div class="test-info">
+                            <div class="mode-circle review-mode">Review</div>
+                            <div class="mode-circle test-mode">Test</div>
+                            <span>65 questions</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="test-title">
+                            <span class="icon">-</span>
+                            <span>{{ course.title }} - {{ course.practice_exam_translate}} #2</span>
+                        </div>
+                        <div class="test-info">
+                            <div class="mode-circle review-mode">Review</div>
+                            <div class="mode-circle test-mode">Test</div>
+                            <span>65 questions</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="test-title">
+                            <span class="icon">-</span>
+                            <span>{{ course.title }} - {{ course.practice_exam_translate}} #3</span>
+                        </div>
+                        <div class="test-info">
+                            <div class="mode-circle review-mode">Review</div>
+                            <div class="mode-circle test-mode">Test</div>
+                            <span>65 questions</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="test-title">
+                            <span class="icon">-</span>
+                            <span>{{ course.title }} - {{ course.practice_exam_translate}} #4</span>
+                        </div>
+                        <div class="test-info">
+                            <div class="mode-circle review-mode">Review</div>
+                            <div class="mode-circle test-mode">Test</div>
+                            <span>65 questions</span>
+                        </div>
+                    </li>
+                </ul>
+                <!-- Explanation Section -->
+                <div class="mode-explanation">
+                    <h3>Practice Exam Modes</h3>
+                    <div class="review-wrapper">
+                        <div class="mode-circle review-mode">Review</div>
+                        <p><strong>Review Mode:</strong> {{ course.review_mode_description}}</p>
+                    </div>
+                    <div class="review-wrapper">
+                        <div class="mode-circle test-mode">Test</div>
+                        <p><strong>Test Mode:</strong> {{ course.timed_mode_description}}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Render each section with headers -->
+            <div class="course-section">
+                <h3>Course Description</h3>
+                <p>{{ course.course_description|safe }}</p>
+            </div>
+
+            <div class="course-section">
+                <h3>Why This Course Stands Out</h3>
+                <p>{{ course.why_this_course_stands_out|safe }}</p>
+            </div>
+
+            <div class="course-section">
+                <h3>What You’ll Gain</h3>
+                <p>{{ course.what_you_will_gain|safe }}</p>
+            </div>
+
+            <div class="course-section">
+                <h3>Course Highlights</h3>
+                <p>{{ course.course_highlights|safe }}</p>
+            </div>
+
+            <div class="course-section">
+                <h3>Who Should Take This Course</h3>
+                <p>{{ course.who_should_take_this_course|safe }}</p>
+            </div>
+
+            <div class="course-section">
+                <h3>Course Requirements</h3>
+                <p>{{ course.course_requirements|safe }}</p>
+            </div>
+
+            <div class="course-section">
+                <h3>Join Today</h3>
+                <p>{{ course.join_today|safe }}</p>
+            </div>
+
+        </div>
+    </div>
+    
+    <!-- HTML Adjustments -->
+    <div class="reviews-section">
+        <h3>Reviews</h3>
+        <!-- Display existing reviews -->
+        <div class="reviews-list">
+            {% if reviews.exists %}
+                {% for review in reviews %}
+                    <div class="review-item">
+                        <div class="review-content">
+                            <p>{{ review.comment }}</p>
+                        </div>
+                        <div class="review-meta">
+                            <p><strong>{{ review.user.username }}</strong> - {{ review.created_at|date:"M d, Y" }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="no-reviews">No reviews yet. Be the first to review this course!</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="other-courses-section">
+        <h3>Other Courses in {{ course.get_language_display }}</h3>
+        <div class="other-courses-wrapper">
+            {% for other_course in other_courses %}
+                <div class="other-course-item">
+                    <a href="{% url 'exam_detail' other_course.id %}" style="text-decoration: none;">
+                        {% if other_course.image %}
+                            <img src="{{ other_course.image.url }}" alt="{{ other_course.title }}" class="other-course-image">
+                        {% else %}
+                            <img src="{% static 'default_cert_image.png' %}" alt="Default Certification Image" class="other-course-image">
+                        {% endif %}
+                        <div class="other-course-info">
+                            <h4>{{ other_course.title }}</h4>
+                            <p>{{ other_course.description|truncatewords:15 }}</p>
+                        </div>
+                        <!-- Post Footer Section -->
+                        <div class="other-course-footer">
+                            <img src="{% static 'mango_cert_logo_transparent.png' %}" alt="Logo" class="logo">
+                            <span class="price">${{ other_course.price }}</span>
+                        </div>
+                    </a>
+                </div>
+            {% empty %}
+                <p>No other courses available in this language.</p>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        // Toggle function for showing and hiding the practice tests
+        function togglePracticeTests() {
+            const practiceTests = document.getElementById('practiceTests');
+            const header = document.querySelector('.content-header');
+            
+            if (practiceTests.style.display === "none" || practiceTests.style.display === "") {
+                practiceTests.style.display = "block";
+                header.classList.add("active");
+            } else {
+                practiceTests.style.display = "none";
+                header.classList.remove("active");
+            }
+        }
+    </script>
+
+</section>
+{% endblock %}

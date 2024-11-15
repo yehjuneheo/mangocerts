@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="{% static 'login.css' %}">
+</head>
+    <div class="main-container">
+        {% if messages %}
+            <div class="alert-messages">
+                {% for message in messages %}
+                    <div class="alert alert-info">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="form-container">
+
+            <div class="form-body">
+                <h2 class="title">Register with</h2>
+                {% if form.errors %}
+                <p>Invalid login credentials. Please try again.</p>
+                {% endif %} 
+                <div class="social-login">
+                    <ul>
+                        <li class="google">
+                            <a href="{% provider_login_url 'google' %}">Google</a>
+                        </li>
+                    </ul>
+                </div><!-- SOCIAL LOGIN -->
+
+                <div class="or-divider">
+                    <span>or</span>
+                </div>
+
+                <form class="the-form" method="post">
+                    {% csrf_token %}
+                    
+                    <!-- Username Field -->
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" placeholder="Enter your username">
+                    {% if form.username.errors %}
+                        <div class="error">
+                            {% for error in form.username.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                
+                    <!-- First Name Field -->
+                    <label for="first_name">First Name</label>
+                    <input type="text" name="first_name" id="first_name" placeholder="Enter your first name">
+                    {% if form.first_name.errors %}
+                        <div class="error">
+                            {% for error in form.first_name.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                
+                    <!-- Last Name Field -->
+                    <label for="last_name">Last Name</label>
+                    <input type="text" name="last_name" id="last_name" placeholder="Enter your last name">
+                    {% if form.last_name.errors %}
+                        <div class="error">
+                            {% for error in form.last_name.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                
+                    <!-- Email Field -->
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" placeholder="Enter your email">
+                    {% if form.email.errors %}
+                        <div class="error">
+                            {% for error in form.email.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                
+                    <!-- Password Field -->
+                    <label for="password1">Password</label>
+                    <input type="password" name="password1" id="password1" placeholder="Enter your password" oninput="checkPasswordCriteria()">
+                    <div id="password-criteria">
+                        <p id="length" class="criteria">Must be at least 8 characters long</p>
+                        <p id="personal-info" class="criteria">Should not be similar to personal information</p>
+                        <p id="common-password" class="criteria">Should not be a commonly used password</p>
+                        <p id="numeric" class="criteria">Cannot be entirely numeric</p>
+                        <p id="match" class="criteria">Passwords must match</p>
+                    </div>
+                    {% if form.password1.errors %}
+                        <div class="error">
+                            {% for error in form.password1.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                
+                    <!-- Password Confirmation Field -->
+                    <label for="password2">Confirm Password</label>
+                    <input type="password" name="password2" id="password2" placeholder="Confirm your password" oninput="checkPasswordCriteria()">
+                    {% if form.password2.errors %}
+                        <div class="error">
+                            {% for error in form.password2.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                
+                    <input type="submit" value="Register">
+                </form>
+                
+            </div><!-- FORM BODY-->
+
+            <div class="form-footer">
+                <div>
+                    <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+                </div>
+            </div><!-- FORM FOOTER -->
+
+        </div><!-- FORM CONTAINER -->
+    </div>
+    <script>
+    function checkPasswordCriteria() {
+    const password = document.getElementById('password1').value;
+    const confirmPassword = document.getElementById('password2').value;
+
+    const lengthCriteria = document.getElementById('length');
+    const personalInfoCriteria = document.getElementById('personal-info');
+    const commonPasswordCriteria = document.getElementById('common-password');
+    const numericCriteria = document.getElementById('numeric');
+    const matchCriteria = document.getElementById('match');
+
+    // Length criteria
+    if (password.length >= 8) {
+        lengthCriteria.classList.add('met');
+    } else {
+        lengthCriteria.classList.remove('met');
+    }
+
+    // Personal info criteria (for demo, assume no personal info check - customize as needed)
+    const isPersonalInfo = /username|email/i.test(password); // Example pattern
+    if (!isPersonalInfo) {
+        personalInfoCriteria.classList.add('met');
+    } else {
+        personalInfoCriteria.classList.remove('met');
+    }
+
+    // Common password check (basic example, ideally use a list of common passwords)
+    const commonPasswords = ["password", "123456", "123456789", "qwerty"];
+    if (!commonPasswords.includes(password.toLowerCase())) {
+        commonPasswordCriteria.classList.add('met');
+    } else {
+        commonPasswordCriteria.classList.remove('met');
+    }
+
+    // Numeric criteria
+    if (!/^\d+$/.test(password)) {
+        numericCriteria.classList.add('met');
+    } else {
+        numericCriteria.classList.remove('met');
+    }
+
+    // Match criteria
+    if (password && password === confirmPassword) {
+        matchCriteria.classList.add('met');
+    } else {
+        matchCriteria.classList.remove('met');
+    }
+}
+
+    
+    </script>
+{% endblock %}

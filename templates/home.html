@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<!-- Main Introduction Section with Background Image -->
+<section id="main-intro">
+    <div class="overlay"></div>
+    <div class="intro-content">
+        <h2>Prepare for Success with Our IT Certification Exams</h2>
+        <p>Our platform provides comprehensive practice exams to help you succeed in your IT certification journey. Explore our offerings and take the next step in your career.</p>
+    </div>
+</section>
+
+<!-- Search Box Section -->
+<form method="get" action="{% url 'index' %}">
+    <section id="search">
+        <input type="text" name="q" placeholder="Search for exams..." value="{{ query }}"/>
+        <select id="language-select" name="language">
+            <option value="all" {% if language == "all" %}selected{% endif %}>All Languages</option>
+            <option value="en" {% if language == "en" %}selected{% endif %}>English</option>
+            <option value="cn" {% if language == "cn" %}selected{% endif %}>中文</option>
+            <option value="kr" {% if language == "kr" %}selected{% endif %}>한국어</option>
+            <option value="jp" {% if language == "jp" %}selected{% endif %}>日本語</option>
+            <option value="es" {% if language == "es" %}selected{% endif %}>Español</option>
+            <option value="pt" {% if language == "pt" %}selected{% endif %}>Português</option>
+            <option value="fr" {% if language == "fr" %}selected{% endif %}>Français</option>
+            <option value="id" {% if language == "id" %}selected{% endif %}>Bahasa Indonesia</option>
+            <option value="de" {% if language == "de" %}selected{% endif %}>Deutsch</option>
+            <option value="it" {% if language == "it" %}selected{% endif %}>Italiano</option>
+        </select>
+        <button type="submit">Search</button>
+    </section>
+</form>
+<!-- Posts Section -->
+<!-- Posts Section -->
+<!-- Posts Section -->
+<section id="posts">
+    {% if posts %}
+        <div class="posts-container">
+            {% for post in posts %}
+                <div class="post">
+                    <a href="{% url 'exam_detail' post.id %}" style="text-decoration: none;">
+                        {% if post.image %}
+                            <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                        {% else %}
+                            <img src="{% static 'temp.png' %}" alt="Default Thumbnail">
+                        {% endif %}
+                        <h2>{{ post.title }}</h2>
+                        <p>{{ post.description|truncatewords:20 }}</p>
+                        <!-- Post Footer Section -->
+                        <div class="post-footer">
+                            <img src="{% static 'mango_cert_logo_transparent.png' %}" alt="Logo" class="logo">
+                            <span class="price">${{ post.price }}</span>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="pagination">
+            <span class="page-links">
+                {% if posts.has_previous %}
+                    <a href="?page=1{% if query %}&q={{ query }}{% endif %}{% if language %}&language={{ language }}{% endif %}">&laquo; first</a>
+                    <a href="?page={{ posts.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if language %}&language={{ language }}{% endif %}">previous</a>
+                {% endif %}
+
+                <span class="page-current">
+                    Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+                </span>
+
+                {% if posts.has_next %}
+                    <a href="?page={{ posts.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if language %}&language={{ language }}{% endif %}">next</a>
+                    <a href="?page={{ posts.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}{% if language %}&language={{ language }}{% endif %}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+        <div class="no-posts">
+            <p>No practice exams found.</p>
+        </div>
+    {% endif %}
+</section>
+
+
+{% endblock %}

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title Block -->
+    <title>{% block title %}My Website{% endblock %}</title>
+    
+    <!-- Meta Description Block for SEO -->
+    <meta name="description" content="{% block meta_description %}Default description for My Website{% endblock %}">
+
+    <!-- Open Graph Meta Tags for Social Media Sharing -->
+    <meta property="og:title" content="{% block og_title %}My Website{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Default description for My Website{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% static 'default_image.png' %}{% endblock %}">
+    
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',  // Set your website's default language here
+                includedLanguages: 'en,es,fr,de,kr,jp,cn,pt,it,id', // Add languages you want to support
+                autoDisplay: true   // Automatically displays the translation toolbar
+            }, 'google_translate_element');
+        }
+        function setTranslateLanguage() {
+            const userLang = navigator.language || navigator.userLanguage; // Detects browser language
+            const googleTranslateSelect = document.querySelector(".goog-te-combo");
+
+            if (googleTranslateSelect && userLang) {
+                googleTranslateSelect.value = userLang.split('-')[0]; // Set the language code
+                googleTranslateSelect.dispatchEvent(new Event("change")); // Trigger change event
+            }
+        }
+
+        window.addEventListener("load", setTranslateLanguage);
+    </script>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <!-- Cookie Consent by Osano -->
+    <script type="text/javascript">
+        // static/js/cookie-consent.js
+        document.addEventListener('DOMContentLoaded', function () {
+            const consentPopup = document.getElementById('cookie-consent');
+            const acceptBtn = document.getElementById('accept-cookies');
+            const consentCookieName = 'cookie_consent';
+
+            // Function to get a cookie value
+            function getCookie(name) {
+                let value = `; ${document.cookie}`;
+                let parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+            }
+
+            // Function to set a cookie
+            function setCookie(name, value, days) {
+                let expires = "";
+                if (days) {
+                    let date = new Date();
+                    date.setTime(date.getTime() + (days*24*60*60*1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+            }
+
+            // Check if consent has already been given
+            if (!getCookie(consentCookieName)) {
+                consentPopup.style.display = 'block';
+            }
+
+            // Handle accept button click
+            acceptBtn.addEventListener('click', function () {
+                setCookie(consentCookieName, 'accepted', 365);
+                consentPopup.style.display = 'none';
+            });
+        });
+
+    </script>
+    
+</head>
+<body>
+
+    <!-- Cookie Consent Popup -->
+    <div id="cookie-consent" class="cookie-consent">
+        <div class="cookie-consent__message">
+            <p>
+                We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.
+            </p>
+            <button id="accept-cookies" class="cookie-consent__button">Accept</button>
+        </div>
+    </div>
+
+    <div id="google_translate_element" style="display:none;"></div>
+    <div class="page-container">
+        <header>
+            <div class="navbar">
+                <a href="{% url 'index' %}">
+                    <img src="{% static 'mango_cert_logo_transparent.png' %}" alt="Logo" class="logo">
+                </a>
+            
+                <div class="nav-container">
+                    <!-- Centered navigation links -->
+                    <nav>
+                        <ul class="nav-links" id="navMenu">
+                            <li><a href="{% url 'index' %}">Home</a></li>
+                            <li><a href="{% url 'blog_home' %}">Blogs</a></li>
+                            <li><a href="{% url 'about' %}">About</a></li>
+                            <li><a href="{% url 'my_learning' %}">My Learning</a></li>
+                            <li><a href="{% url 'my_cart' %}">My Cart</a></li>
+                            <li><a href="{% url 'my_account' %}">My Account</a></li>
+            
+                            <!-- User Info (Only Visible on Small Screens) -->
+                            {% if user.is_authenticated %}
+                                <li><span class="user-email">{{ user.email }}</span></li>
+                                <li><a href="{% url 'logout' %}" class="login-button">Logout</a></li>
+                            {% else %}
+                                <li><a href="{% url 'login' %}" class="login-button">Login</a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            
+                <!-- Hamburger Menu Button for Small Screens -->
+                <button class="hamburger" onclick="toggleMenu()">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+            
+        </header>
+            
+            
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+        <footer>
+            <img src="{% static 'mango_cert_logo_transparent.png' %}" alt="Website Logo" class="footer-logo">
+            <div class="footer-links">
+                <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
+                <a href="{% url 'terms_of_use' %}">Terms of Use</a>
+                <a href="{% url 'refund_policy' %}">Refund Policy</a>
+                <a href="{% url 'contact_us' %}">Contact Us</a>
+            </div>
+            <p>&copy; 2024 MangoCerts. All rights reserved. Practice Exams for IT Certifications.</p>
+        </footer>    
+    </div>
+    <script>
+    function toggleMenu() {
+        const navMenu = document.getElementById('navMenu');
+        navMenu.classList.toggle('active');
+    }
+    
+    </script>
+</body>
+</html>

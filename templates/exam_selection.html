@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Select Exam{% endblock %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="{% static 'practice.css' %}">
+    <style>
+        /* Updated styling */
+        .exam-selection-container {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .exam-selection-container h1 {
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            color: #2b6777;
+            text-align: center;
+        }
+
+        /* Exam Logo */
+        .exam-logo {
+            display: block;
+            margin: 0 auto 30px auto;
+            max-width: 200px;
+        }
+
+        /* Test List Grid */
+        .test-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 20px;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .test-item {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-item h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+
+        .mode-option {
+            margin-bottom: 15px;
+        }
+
+        .mode-button {
+            text-decoration: none;
+            color: white;
+            background-color: #2b6777;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        .mode-button:hover {
+            background-color: #1e4f5f;
+            transform: translateY(-2px);
+        }
+
+        .mode-description {
+            font-size: 0.95em;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .back-button {
+            display: block;
+            margin: 40px auto 0 auto;
+            padding: 12px 25px;
+            background-color: var(--accent-color);
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: background-color 0.3s;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background-color: var(--accent-hover-color);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 900px) {
+            .test-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<div class="exam-selection-container">
+    <h1>{{ translations.select_exam_mode }}</h1>
+    <!-- Exam Logo Image -->
+    {% if exam.image_logo %}
+        <img src="{{ exam.image_logo.url }}" alt="{{ exam.title }}" class="exam-logo">
+    {% endif %}
+    <ul class="test-list">
+        {% for test_num in test_numbers %}
+            <li class="test-item">
+                <h2>{{ translations.exam }} {{ test_num }}</h2>
+                <!-- Review Mode -->
+                <div class="mode-option">
+                    <a href="{% url 'start_exam' exam.id test_num 'review' %}" class="mode-button">
+                        {{ translations.review_mode }}
+                    </a>
+                    <p class="mode-description">{{ translations.review_mode_description }}</p>
+                </div>
+                <!-- Timed Mode -->
+                <div class="mode-option">
+                    <a href="{% url 'start_exam' exam.id test_num 'timed' %}" class="mode-button">
+                        {{ translations.timed_mode }}
+                    </a>
+                    <p class="mode-description">{{ translations.timed_mode_description }}</p>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'my_learning' %}">
+        <button class="back-button">{{ translations.back_to_my_learning }}</button>
+    </a>
+</div>
+
+{% endblock %}

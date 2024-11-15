@@ -1,0 +1,47 @@
+<!-- myapp/my_learning.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Learning{% endblock %}
+
+{% block content %}
+
+<section id="learning">
+    <h2>My Learning</h2>
+    
+    {% if course_progress %}
+        <div class="learning-items">
+            {% for item in course_progress %}
+            <div class="learning-item">
+                <a href="{% url 'exam_selection' item.course_item.course.id %}">
+                    {% if item.course_item.course.image_logo %}
+                        <img src="{{ item.course_item.course.image_logo.url }}" alt="{{ item.course_item.course.title }}" class="learning-item-image">
+                    {% else %}
+                        <img src="{% static 'temp.png' %}" alt="Default Course Image" class="learning-item-image">
+                    {% endif %}
+                    <div class="learning-item-details">
+                        <h3 class="learning-item-title">{{ item.course_item.course.title }}</h3>
+                        <p class="learning-item-description">{{ item.course_item.course.description|truncatewords:20 }}</p>
+                        <!-- Progress Bar -->
+                        <div class="progress-wrapper">
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: {{ item.progress_percentage }}%;"></div>
+                            </div>
+                            <span class="progress-percentage">{{ item.progress_percentage }}%</span>
+                        </div>                                            
+                    </div>
+                    <button type="submit" class="go-study-button">Go Study</button>
+                </a>
+                {% if not item.course_item.has_reviewed %}
+                <div class="write-review-container">
+                    <a href="{% url 'write_review' item.course_item.course.id %}" class="write-review-button">Write Review</a>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p id="empty">You have no courses in your learning list.</p>
+    {% endif %}
+</section>
+{% endblock %}

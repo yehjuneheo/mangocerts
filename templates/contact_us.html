@@ -1,0 +1,83 @@
+<!-- contact_us.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="{% static 'extra.css' %}">
+</head>
+
+<section id="contact-page">
+    <div class="contact-container">
+        {% if messages %}
+            <div class="alert-messages">
+                {% for message in messages %}
+                    <div class="alert alert-info">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <h1>Contact Us</h1>
+        <p>If you have any questions or need support, please reach out using the form below. We’re here to help!</p>
+        
+        <form method="POST" action="{% url 'contact_us' %}">
+            {% csrf_token %}
+            
+            <!-- Subject Field -->
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" placeholder="Enter the subject" required>
+            </div>
+
+            <!-- Topic Dropdown -->
+            <div class="form-group">
+                <label for="topic">Topic</label>
+                <select id="topic" name="topic" required onchange="showRefundOptions()">
+                    <option value="">Select a topic</option>
+                    <option value="General Inquiry">General Inquiry</option>
+                    <option value="Refund">Refund</option>
+                    <option value="Technical Support">Technical Support</option>
+                    <option value="Feedback">Feedback</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <!-- Purchased Courses Dropdown (for Refund requests) -->
+            <div class="form-group" id="refund-course-group" style="display: none;">
+                <label for="course">Select Purchased Course</label>
+                <select id="course" name="course">
+                    {% for course in purchased_courses %}
+                        <option value="{{ course.id }}">{{ course.course.title }}</option>
+                    {% empty %}
+                        <option value="">No purchased courses available</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Message Field -->
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="5" placeholder="Type your message here" required></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+</section>
+
+<script>
+    function showRefundOptions() {
+        const topic = document.getElementById('topic').value;
+        const refundCourseGroup = document.getElementById('refund-course-group');
+
+        // Show the purchased courses dropdown only if "Refund" is selected
+        if (topic === 'Refund') {
+            refundCourseGroup.style.display = 'block';
+        } else {
+            refundCourseGroup.style.display = 'none';
+        }
+    }
+</script>
+{% endblock %}
