@@ -39,9 +39,9 @@ DEBUG = True
 ALLOWED_HOSTS = ['mangocerts.com', '3.128.246.77', 'ec2-3-128-246-77.us-east-2.compute.amazonaws.com','127.0.0.1', 'localhost']
 CSRF_TRUSTED_ORIGINS = ['mangocerts.com', '3.128.246.77', 'ec2-3-128-246-77.us-east-2.compute.amazonaws.com', 'https://127.0.0.1', 'https://localhost']
 
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 
 
 # Application definition
