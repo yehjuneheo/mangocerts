@@ -30,18 +30,18 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 
 """!!!!!!!!!!!!!!DEPLOY WITH THIS!!!!!!!!!!!!!!!!!!!!"""
-DEBUG = False
-ALLOWED_HOSTS = ['mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com']
-CSRF_TRUSTED_ORIGINS = ['https://mangocerts.com', 'https://www.mangocerts.com', 'https://3.147.119.233']
+#DEBUG = False
+#ALLOWED_HOSTS = ['mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com']
+#CSRF_TRUSTED_ORIGINS = ['https://mangocerts.com', 'https://www.mangocerts.com', 'https://3.147.119.233']
 """!!!!!!!!!!!!!!DEPLOY WITH THIS!!!!!!!!!!!!!!!!!!!!"""
 
-#DEBUG = True
-#ALLOWED_HOSTS = ['mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com','127.0.0.1', 'localhost']
-#CSRF_TRUSTED_ORIGINS = ['mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com', 'https://127.0.0.1', 'https://localhost']
+DEBUG = True
+ALLOWED_HOSTS = ['mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com','127.0.0.1', 'localhost']
+CSRF_TRUSTED_ORIGINS = ['mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com', 'https://127.0.0.1', 'https://localhost']
 
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 
 
 # Application definition
