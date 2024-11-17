@@ -28,20 +28,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
 
+is_deploy = False
 
-"""!!!!!!!!!!!!!!DEPLOY WITH THIS!!!!!!!!!!!!!!!!!!!!"""
-#DEBUG = False
-#ALLOWED_HOSTS = ['mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com']
-#CSRF_TRUSTED_ORIGINS = ['https://mangocerts.com', 'https://www.mangocerts.com', 'https://3.147.119.233']
-"""!!!!!!!!!!!!!!DEPLOY WITH THIS!!!!!!!!!!!!!!!!!!!!"""
+if is_deploy:
+    DEBUG = False
+    ALLOWED_HOSTS = ['mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com']
+    CSRF_TRUSTED_ORIGINS = ['https://mangocerts.com', 'https://www.mangocerts.com', 'https://3.147.119.233']
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    USE_S3 = True
+    USE_RDS = True
+else:
+    DEBUG = True
+    ALLOWED_HOSTS = ['mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com','127.0.0.1', 'localhost']
+    CSRF_TRUSTED_ORIGINS = ['mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com', 'https://127.0.0.1', 'https://localhost']
 
-DEBUG = True
-ALLOWED_HOSTS = ['mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com','127.0.0.1', 'localhost']
-CSRF_TRUSTED_ORIGINS = ['mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com', 'https://127.0.0.1', 'https://localhost']
 
-SECURE_SSL_REDIRECT = False
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
+USE_S3 = True
+USE_RDS = True
+
 
 
 # Application definition
@@ -99,29 +105,25 @@ WSGI_APPLICATION = 'mywebsite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+
+if USE_RDS:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv("DATABASE_NAME"),      # Database name (from RDS setup)
+            'USER': os.getenv("DATABASE_USER"),      # Username (from RDS setup)
+            'PASSWORD': os.getenv("DATABASE_PASSWORD"),  # Password (from RDS setup)
+            'HOST': os.getenv("DATABASE_HOST"),      # RDS endpoint (e.g., my-db.abc123xyz.us-east-1.rds.amazonaws.com)
+            'PORT': os.getenv("DATABASE_PORT"),      # Default PostgreSQL port
+        }
     }
-}
-"""
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("DATABASE_NAME"),      # Database name (from RDS setup)
-        'USER': os.getenv("DATABASE_USER"),      # Username (from RDS setup)
-        'PASSWORD': os.getenv("DATABASE_PASSWORD"),  # Password (from RDS setup)
-        'HOST': os.getenv("DATABASE_HOST"),      # RDS endpoint (e.g., my-db.abc123xyz.us-east-1.rds.amazonaws.com)
-        'PORT': os.getenv("DATABASE_PORT"),      # Default PostgreSQL port
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
-
 
 
 # Password validation
@@ -190,8 +192,6 @@ STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
 STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
 
 
-
-USE_S3 = True
 AWS_READ_ACCESS_KEY_ID = os.getenv('AWS_READ_ACCESS_KEY_ID')
 AWS_READ_SECRET_ACCESS_KEY = os.getenv('AWS_READ_SECRET_ACCESS_KEY')
 
