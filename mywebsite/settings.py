@@ -45,6 +45,7 @@ else:
     CSRF_TRUSTED_ORIGINS = ['mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com', 'https://127.0.0.1', 'https://localhost']
 
 
+DEBUG=False
 USE_S3 = True
 USE_RDS = True
 
