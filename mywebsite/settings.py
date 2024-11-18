@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-is_deploy = False
+is_deploy = True
 
 if is_deploy:
     DEBUG = False
@@ -45,7 +45,6 @@ else:
     CSRF_TRUSTED_ORIGINS = ['mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com', 'https://127.0.0.1', 'https://localhost']
 
 
-DEBUG=False
 USE_S3 = True
 USE_RDS = True
 
