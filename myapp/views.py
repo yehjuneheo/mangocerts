@@ -151,7 +151,7 @@ def email_verification(request, uidb64, token):
 
 
 
-def exam_detail(request, id):
+def exam_detail(request, id, name, language):
     post = get_object_or_404(CertificationPost, id=id)
     is_purchased = False
 
@@ -250,7 +250,12 @@ def write_review(request, course_id):
             review = form.save(commit=False)
             review.user = request.user
             review.course = course
+
+            purchased = get_object_or_404(PurchasedCourse, user=request.user, course_id=course_id)
+            purchased.has_reviewed = True
+
             review.save()
+            purchased.save()
             return redirect('my_learning')
     else:
         form = ReviewForm()
@@ -309,7 +314,7 @@ def purchase_course(request, course_id):
     
     # Set Stripe API key
     stripe.api_key = settings.STRIPE_SECRET_KEY
-    YOUR_DOMAIN = 'https://mangocerts.com'  # Replace with your actual domain
+    YOUR_DOMAIN = settings.REDIRECT_DOMAIN  # Replace with your actual domain
 
     # Create a Stripe Checkout session
     checkout_session = stripe.checkout.Session.create(

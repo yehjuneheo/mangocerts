@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('exams/<int:id>/', views.exam_detail, name='exam_detail'),
+    path('exams/<int:id>/<str:name>/<str:language>/', views.exam_detail, name='exam_detail'),
     path('register/', views.register, name='register'),
     path('forgot-password/', views.forgot_password, name='forgot_password'),
     path('reset/<uidb64>/<token>/', views.reset_password_confirm, name='reset_password_confirm'),

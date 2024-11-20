@@ -93,6 +93,7 @@ class PurchasedCourse(models.Model):
     purchased_at = models.DateTimeField(auto_now_add=True)
     stripe_transaction_id = models.CharField(max_length=255, blank=True, null=True)  # New field
     completed_exams = models.JSONField(default=dict, blank=True)
+    has_reviewed = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user.username} - {self.course.title}"

@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-is_deploy = False
+is_deploy = True
 
 if is_deploy:
     DEBUG = False
@@ -39,16 +39,19 @@ if is_deploy:
     CSRF_COOKIE_SECURE = True
     USE_S3 = True
     USE_RDS = True
+    REDIRECT_DOMAIN = "https://mangocerts.com"
 else:
     DEBUG = True
     ALLOWED_HOSTS = ['mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com','127.0.0.1', 'localhost']
     SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
+    REDIRECT_DOMAIN = "http://127.0.0.1:8000"
 
 
 USE_S3 = True
 USE_RDS = True
+
 
 
 
