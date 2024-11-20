@@ -309,7 +309,7 @@ def purchase_course(request, course_id):
     
     # Set Stripe API key
     stripe.api_key = settings.STRIPE_SECRET_KEY
-    YOUR_DOMAIN = 'http://127.0.0.1:8000'  # Replace with your actual domain
+    YOUR_DOMAIN = 'https://mangocerts.com'  # Replace with your actual domain
 
     # Create a Stripe Checkout session
     checkout_session = stripe.checkout.Session.create(
