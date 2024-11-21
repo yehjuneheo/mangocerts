@@ -60,6 +60,7 @@ class CertificationPost(models.Model):
     duration = models.CharField(max_length=200, null=True)
     exam_format = models.CharField(max_length=200, null=True)
     number_of_practices = models.CharField(max_length=100, null=True)
+    default_count = models.IntegerField(default=4)
 
     def __str__(self):
         return self.title

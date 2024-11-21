@@ -158,7 +158,7 @@ def exam_detail(request, id, name, language):
     # Check if the user is authenticated before accessing purchased courses
     if request.user.is_authenticated:
         is_purchased = PurchasedCourse.objects.filter(user=request.user, course=post).exists()
-    enrollment_count = PurchasedCourse.objects.filter(course=post).count()
+    enrollment_count = PurchasedCourse.objects.filter(course=post).count() + post.default_count
     reviews = Review.objects.filter(course=post).order_by('-created_at')[:5]
     # Query for other courses in the same language
     other_courses = CertificationPost.objects.filter(language=post.language).exclude(id=id)[:4]  # Limit to 4 courses
