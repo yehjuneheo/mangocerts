@@ -28,12 +28,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-is_deploy = True
+is_deploy = False
 
 if is_deploy:
     DEBUG = False
-    ALLOWED_HOSTS = ['mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com']
-    CSRF_TRUSTED_ORIGINS = ['https://mangocerts.com', 'https://www.mangocerts.com', 'https://3.147.119.233']
+    ALLOWED_HOSTS = ['www.mangocerts.com', 'mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com']
+    CSRF_TRUSTED_ORIGINS = ['https://mangocerts.com', 'https://www.mangocerts.com', 'https://3.147.119.233', 'https://ec2-3-147-119-233.us-east-2.compute.amazonaws.com']
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
@@ -42,7 +42,7 @@ if is_deploy:
     REDIRECT_DOMAIN = "https://mangocerts.com"
 else:
     DEBUG = True
-    ALLOWED_HOSTS = ['mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com','127.0.0.1', 'localhost']
+    ALLOWED_HOSTS = ['mangocerts.com', '3.147.119.233', 'ec2-3-147-119-233.us-east-2.compute.amazonaws.com','127.0.0.1', 'localhost', ]
     SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
