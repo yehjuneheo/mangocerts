@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Certification Post Model
 class CertificationPost(models.Model):
@@ -61,6 +62,7 @@ class CertificationPost(models.Model):
     exam_format = models.CharField(max_length=200, null=True)
     number_of_practices = models.CharField(max_length=100, null=True)
     default_count = models.IntegerField(default=4)
+    passing_score = models.IntegerField(default=75)
 
     def __str__(self):
         return self.title
@@ -105,7 +107,11 @@ class Review(models.Model):
     course = models.ForeignKey(CertificationPost, on_delete=models.CASCADE)
     comment = models.TextField()
     rating = models.IntegerField(default=5)  # Rating out of 5
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.user} - {self.course}"
+    
 
 
 

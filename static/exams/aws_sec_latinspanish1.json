@@ -1,0 +1,1217 @@
+[
+    {
+        "Question Number": "1",
+        "Situation": "Una empresa está evaluando la seguridad de su arquitectura de red que involucra varias aplicaciones alojadas en AWS. El equipo de seguridad está particularmente interesado en comprender las diferencias entre TCP y UDP, así como el uso adecuado de puertos y protocolos para sus aplicaciones. Quieren asegurarse de que sus aplicaciones no solo sean eficientes, sino también seguras contra accesos no autorizados.",
+        "Question": "¿Cuál de las siguientes afirmaciones describe mejor las diferencias clave entre TCP y UDP en el contexto de la seguridad de la red y el rendimiento de las aplicaciones?",
+        "Options": {
+            "1": "UDP es orientado a conexión y adecuado para aplicaciones que requieren entrega garantizada, mientras que TCP es sin conexión y mejor para aplicaciones sensibles a la latencia.",
+            "2": "TCP opera en la capa de transporte asegurando la integridad de los datos, mientras que UDP opera en la capa de aplicación, proporcionando una sobrecarga mínima para aplicaciones que requieren entrega rápida.",
+            "3": "TCP es orientado a conexión, asegurando una transmisión de datos confiable, mientras que UDP es sin conexión y no garantiza la entrega, lo que lo hace adecuado para aplicaciones como la transmisión de video.",
+            "4": "TCP y UDP son protocolos orientados a conexión, pero TCP utiliza un apretón de manos de tres vías para establecer una conexión, mientras que UDP no requiere ningún mecanismo de apretón de manos."
+        },
+        "Correct Answer": "TCP es orientado a conexión, asegurando una transmisión de datos confiable, mientras que UDP es sin conexión y no garantiza la entrega, lo que lo hace adecuado para aplicaciones como la transmisión de video.",
+        "Explanation": "TCP (Protocolo de Control de Transmisión) está diseñado para asegurar una comunicación confiable a través de la verificación de errores y garantiza la entrega de datos, lo que lo hace ideal para aplicaciones que requieren una integridad de datos consistente. En contraste, UDP (Protocolo de Datagramas de Usuario) es más ligero, ofreciendo velocidades más rápidas al no establecer una conexión o garantizar la entrega, lo que es beneficioso para aplicaciones como la transmisión de video donde la velocidad se prioriza sobre la confiabilidad.",
+        "Other Options": [
+            "UDP no es orientado a conexión; es sin conexión, lo que permite una transmisión más rápida pero no garantiza la entrega de datos, lo que hace que esta afirmación sea incorrecta.",
+            "Esta afirmación caracteriza incorrectamente ambos protocolos; TCP es orientado a conexión y utiliza un apretón de manos de tres vías, mientras que UDP no establece una conexión, por lo que esta opción es incorrecta.",
+            "UDP opera en la capa de transporte, al igual que TCP, y ambos protocolos están en la misma capa; por lo tanto, esta afirmación describe incorrectamente la función de estos protocolos."
+        ]
+    },
+    {
+        "Question Number": "2",
+        "Situation": "Un equipo de ingeniería de datos está utilizando Amazon S3 para almacenar archivos de datos sensibles que requieren controles de acceso específicos. Están considerando usar Listas de Control de Acceso (ACL) de S3 para gestionar permisos en objetos individuales debido a su naturaleza de granularidad fina. Sin embargo, el equipo es consciente de las implicaciones de usar ACL junto con políticas de usuario de IAM y políticas de bucket. Quieren asegurarse de que su estrategia de control de acceso sea robusta y cumpla con las mejores prácticas de AWS.",
+        "Question": "¿Cuál de las siguientes afirmaciones sobre las Listas de Control de Acceso (ACL) de S3 y su interacción con las políticas de IAM y las políticas de bucket es correcta?",
+        "Options": {
+            "1": "Las ACL de S3 pueden permitir el acceso a objetos incluso cuando una política de usuario de IAM niega explícitamente el acceso a los recursos de S3.",
+            "2": "Las ACL de S3 son el método recomendado para gestionar el acceso a objetos de S3 sobre las políticas de bucket.",
+            "3": "Las ACL de S3 tienen prioridad sobre las políticas de IAM, permitiendo a los usuarios acceder a objetos incluso si se les niega por la política de IAM.",
+            "4": "Las ACL de S3 solo se pueden aplicar a nivel de bucket y no a objetos individuales dentro del bucket."
+        },
+        "Correct Answer": "Las ACL de S3 pueden permitir el acceso a objetos incluso cuando una política de usuario de IAM niega explícitamente el acceso a los recursos de S3.",
+        "Explanation": "Las ACL de S3 pueden otorgar acceso a objetos incluso si hay un DENY explícito en una política de usuario de IAM, porque el acceso puede ser permitido a través de configuraciones de acceso público u otras ACL, lo que puede crear una situación en la que el usuario puede acceder a un objeto directamente a través de su URL pública, eludiendo las restricciones de la política de IAM.",
+        "Other Options": [
+            "Las ACL de S3 no tienen prioridad sobre las políticas de IAM; las políticas de IAM se evalúan primero, y los DENYs explícitos bloquearán el acceso a menos que sean anulados por configuraciones de acceso público.",
+            "Las ACL de S3 se pueden aplicar a objetos individuales, permitiendo permisos específicos a nivel de objeto en lugar de solo a nivel de bucket.",
+            "Las ACL de S3 no son el método recomendado para gestionar el acceso a objetos de S3; AWS recomienda usar políticas de IAM y políticas de bucket para un mejor control y gestión."
+        ]
+    },
+    {
+        "Question Number": "3",
+        "Situation": "Una empresa de servicios financieros está migrando sus aplicaciones a AWS y necesita asegurar el acceso seguro a sus instancias de Amazon EC2. El ingeniero de seguridad tiene la tarea de gestionar el acceso SSH a instancias de Linux y el acceso RDP a instancias de Windows utilizando pares de claves. ¿Cuál de las siguientes estrategias debería implementar el ingeniero para mejorar la seguridad en este escenario?",
+        "Question": "¿Qué enfoque debería tomar el ingeniero de seguridad para gestionar eficazmente el acceso mientras mantiene el cumplimiento de las mejores prácticas de seguridad?",
+        "Options": {
+            "1": "Usar un solo par de claves para todas las instancias y compartir la clave privada entre varios usuarios del equipo.",
+            "2": "Generar pares de claves únicos para cada instancia y distribuir de manera segura las claves privadas a los usuarios autorizados.",
+            "3": "Crear un nuevo par de claves para cada instancia y almacenar las claves privadas en un bucket de S3 sin cifrar.",
+            "4": "Importar un solo par de claves en todas las instancias y almacenar la clave privada en los metadatos de una instancia de EC2."
+        },
+        "Correct Answer": "Generar pares de claves únicos para cada instancia y distribuir de manera segura las claves privadas a los usuarios autorizados.",
+        "Explanation": "Usar pares de claves únicos para cada instancia permite un mejor control de acceso y auditoría. Si una clave privada se ve comprometida, solo la instancia afectada está en riesgo, y el acceso se puede revocar fácilmente reemplazando el par de claves.",
+        "Other Options": [
+            "Almacenar claves privadas en un bucket de S3 sin cifrar expone datos sensibles a un posible acceso no autorizado. Esta práctica viola las mejores prácticas de seguridad y aumenta el riesgo de compromiso de claves.",
+            "Usar un solo par de claves para todas las instancias representa un riesgo de seguridad significativo. Si la clave se ve comprometida, todas las instancias que usan esa clave son vulnerables, y se vuelve difícil rastrear el acceso y gestionar permisos.",
+            "Almacenar la clave privada en los metadatos de una instancia de EC2 no es seguro, ya que los metadatos pueden ser accedidos por cualquier proceso que se ejecute en la instancia. Este método tampoco proporciona un mecanismo robusto para gestionar el acceso y revocar claves."
+        ]
+    },
+    {
+        "Question Number": "4",
+        "Situation": "Una empresa de servicios financieros está utilizando AWS CloudFormation para desplegar su infraestructura. Para mantener los estándares de cumplimiento y seguridad, la empresa busca asegurar que sus plantillas de CloudFormation estén endurecidas y que cualquier desviación de la configuración del estado deseado sea detectada y gestionada de manera efectiva.",
+        "Question": "¿Qué enfoque debería recomendar el Ingeniero de Seguridad para asegurar que las plantillas de CloudFormation sean seguras y que la detección de desviaciones se implemente de manera efectiva?",
+        "Options": {
+            "1": "Implementar scripts personalizados para verificar manualmente la integridad de las plantillas de CloudFormation después del despliegue.",
+            "2": "Restringir AWS CloudFormation para que solo use plantillas predefinidas almacenadas en un bucket de S3 sin detección de desviaciones.",
+            "3": "Habilitar funciones de AWS Lambda para remediar automáticamente cualquier desviación detectada en las pilas de CloudFormation.",
+            "4": "Utilizar AWS Config para monitorear los recursos de las pilas de CloudFormation y habilitar la detección de desviaciones para todas las pilas."
+        },
+        "Correct Answer": "Utilizar AWS Config para monitorear los recursos de las pilas de CloudFormation y habilitar la detección de desviaciones para todas las pilas.",
+        "Explanation": "Usar AWS Config para monitorear los recursos de las pilas de CloudFormation permite la verificación automatizada de cumplimiento y la detección de desviaciones, asegurando que cualquier cambio en los recursos sea rastreado y pueda ser remediado según sea necesario. Esto se alinea con las mejores prácticas para la gobernanza de seguridad y la infraestructura como código.",
+        "Other Options": [
+            "Los scripts personalizados pueden ser propensos a errores y laboriosos, careciendo de la automatización y las capacidades de monitoreo en tiempo real que proporciona AWS Config. Este enfoque no asegura el cumplimiento continuo.",
+            "Restringir AWS CloudFormation a plantillas predefinidas sin detección de desviaciones limita la flexibilidad y no aborda la necesidad de monitoreo y cumplimiento continuo, lo que lo convierte en una solución menos efectiva.",
+            "Si bien AWS Lambda puede ser utilizado para la remediación, depender únicamente de funciones de Lambda sin un mecanismo integral de detección de desviaciones no asegura un monitoreo proactivo de los estándares de cumplimiento y seguridad."
+        ]
+    },
+    {
+        "Question Number": "5",
+        "Situation": "Una empresa de servicios financieros está utilizando Amazon S3 para almacenar datos de clientes y desea implementar una estrategia automatizada de gestión del ciclo de vida de los datos para optimizar los costos de almacenamiento y asegurar el cumplimiento regulatorio. La empresa está interesada en transitar datos entre diferentes clases de almacenamiento según su antigüedad y patrones de uso, asegurando también que los datos sean eliminados después de un período de retención específico.",
+        "Question": "¿Qué servicio de AWS se puede utilizar para automatizar la gestión del ciclo de vida de los objetos de Amazon S3 para transitar entre clases de almacenamiento y eliminarlos después de un período de retención especificado?",
+        "Options": {
+            "1": "Amazon S3 Lifecycle Policies",
+            "2": "AWS CloudTrail",
+            "3": "AWS Backup",
+            "4": "AWS Config"
+        },
+        "Correct Answer": "Amazon S3 Lifecycle Policies",
+        "Explanation": "Las Amazon S3 Lifecycle Policies te permiten definir reglas para transitar automáticamente objetos a diferentes clases de almacenamiento o eliminarlos después de un período especificado. Esto es esencial para gestionar costos y cumplir con las políticas de retención de datos de manera efectiva.",
+        "Other Options": [
+            "AWS CloudTrail se utiliza principalmente para registrar y monitorear la actividad de la API en tu cuenta de AWS; no proporciona características de gestión del ciclo de vida para objetos de S3.",
+            "AWS Config es un servicio que te permite evaluar, auditar y evaluar las configuraciones de tus recursos de AWS, pero no gestiona directamente el ciclo de vida de los objetos de S3.",
+            "AWS Backup es un servicio de respaldo centralizado para servicios de AWS, pero no automatiza la gestión del ciclo de vida de los objetos de S3 específicamente para la transición de clases de almacenamiento o eliminación basada en la antigüedad."
+        ]
+    },
+    {
+        "Question Number": "6",
+        "Situation": "Un equipo de seguridad en una empresa ha detectado actividad sospechosa dentro de su entorno de AWS. Necesitan seguir las mejores prácticas para responder de manera eficiente a este incidente mientras minimizan el impacto en sus operaciones. El equipo está considerando varios servicios de AWS y mejores prácticas para utilizar durante su proceso de respuesta a incidentes.",
+        "Question": "¿Cuál de los siguientes servicios de AWS debería utilizar principalmente el equipo para el registro y monitoreo centralizados para facilitar sus esfuerzos de respuesta a incidentes?",
+        "Options": {
+            "1": "AWS Config",
+            "2": "Amazon GuardDuty",
+            "3": "AWS CloudTrail",
+            "4": "AWS Systems Manager"
+        },
+        "Correct Answer": "AWS CloudTrail",
+        "Explanation": "AWS CloudTrail está diseñado para proporcionar un registro completo de las llamadas a la API y los cambios en tu cuenta de AWS, lo que lo hace esencial para rastrear la actividad del usuario e identificar posibles incidentes de seguridad. Sirve como una herramienta principal para la respuesta a incidentes al permitir que los equipos revisen los registros y comprendan la secuencia de eventos que llevaron al incidente.",
+        "Other Options": [
+            "AWS Config se utiliza principalmente para monitorear cambios de configuración en los recursos de AWS y no proporciona el mismo nivel de registro detallado de llamadas a la API que CloudTrail.",
+            "Amazon GuardDuty es un servicio de detección de amenazas que monitorea actividad maliciosa y comportamiento no autorizado, pero no sirve como una solución de registro centralizado para rastrear todas las acciones realizadas en el entorno de AWS.",
+            "AWS Systems Manager ayuda a gestionar y automatizar tareas operativas en los recursos de AWS, pero no está enfocado en el registro y monitoreo para fines de respuesta a incidentes."
+        ]
+    },
+    {
+        "Question Number": "7",
+        "Situation": "Una empresa está experimentando problemas de autorización donde ciertos usuarios no pueden acceder a recursos a pesar de tener roles de IAM válidos. El equipo de seguridad necesita identificar la causa raíz de estos fallos de autorización. Planean utilizar herramientas de AWS para solucionar y resolver los problemas de manera efectiva.",
+        "Question": "¿Qué herramienta de AWS se puede utilizar para simular políticas de IAM y entender los permisos asociados con el rol de un usuario y solucionar denegaciones de acceso?",
+        "Options": {
+            "1": "AWS CloudFormation",
+            "2": "AWS Shield",
+            "3": "IAM Policy Simulator",
+            "4": "AWS Config"
+        },
+        "Correct Answer": "IAM Policy Simulator",
+        "Explanation": "El IAM Policy Simulator permite a los usuarios probar políticas de IAM para ver qué permisos se otorgan o se deniegan a un usuario o rol en particular. Esto ayuda a entender por qué el acceso podría estar fallando y asiste en la solución de problemas de autorización de manera efectiva.",
+        "Other Options": [
+            "AWS Config se utiliza principalmente para rastrear configuraciones de recursos de AWS y cumplimiento a lo largo del tiempo, no para simular políticas de IAM o solucionar problemas de acceso.",
+            "AWS Shield es un servicio de protección DDoS administrado que protege aplicaciones de ataques, pero no proporciona funcionalidad para solucionar problemas de autorización de IAM.",
+            "AWS CloudFormation es un servicio para crear y gestionar recursos de AWS a través de infraestructura como código, pero no ofrece herramientas para simular permisos de IAM o resolver denegaciones de acceso."
+        ]
+    },
+    {
+        "Question Number": "8",
+        "Situation": "Una empresa de servicios financieros necesita asegurarse de que todas las llamadas a la API realizadas a sus recursos de AWS estén registradas por razones de seguridad y cumplimiento. Actualmente están utilizando AWS Identity and Access Management (IAM) para permisos y quieren implementar una solución de registro que capture información detallada sobre las llamadas a la API. La empresa también quiere asegurarse de que pueden revisar estos registros para detectar intentos de acceso no autorizados.",
+        "Question": "¿Qué servicio de AWS debería habilitar el Ingeniero de Seguridad para registrar automáticamente las llamadas a la API realizadas a los recursos de AWS?",
+        "Options": {
+            "1": "Amazon CloudWatch Logs",
+            "2": "VPC Flow Logs",
+            "3": "AWS Config",
+            "4": "AWS CloudTrail"
+        },
+        "Correct Answer": "AWS CloudTrail",
+        "Explanation": "AWS CloudTrail es el servicio diseñado para registrar todas las llamadas a la API realizadas a los servicios de AWS. Proporciona registros detallados de todas las acciones realizadas por usuarios, roles o servicios de AWS, lo cual es esencial para el cumplimiento y la supervisión de seguridad.",
+        "Other Options": [
+            "Amazon CloudWatch Logs se utiliza principalmente para registrar y monitorear registros y métricas de aplicaciones, pero no captura llamadas a la API realizadas a los servicios de AWS como lo hace CloudTrail.",
+            "VPC Flow Logs capturan información sobre el tráfico IP que va y viene de las interfaces de red en una VPC, pero no registran llamadas a la API a los servicios de AWS.",
+            "AWS Config se utiliza para rastrear cambios de configuración y cumplimiento de los recursos de AWS, pero no registra las llamadas a la API realizadas a esos recursos."
+        ]
+    },
+    {
+        "Question Number": "9",
+        "Situation": "Una organización está implementando mecanismos de aislamiento de recursos en AWS para mejorar la seguridad y reducir el riesgo de acceso no autorizado a datos sensibles. El equipo de seguridad necesita asegurarse de que los recursos estén efectivamente aislados según su función y sensibilidad.",
+        "Question": "¿Cuál de las siguientes opciones ayudará a lograr un aislamiento efectivo de recursos en AWS? (Seleccione Dos)",
+        "Options": {
+            "1": "Implementar puntos de enlace de Amazon VPC para conectarse de manera segura a los servicios de AWS sin exponer recursos a Internet público.",
+            "2": "Utilizar grupos de seguridad de Amazon EC2 para permitir tráfico solo desde direcciones IP de confianza.",
+            "3": "Desplegar funciones de AWS Lambda en múltiples subredes para segregar cargas de trabajo según los requisitos de cumplimiento.",
+            "4": "Utilizar roles de AWS Identity and Access Management (IAM) para el control de acceso a recursos.",
+            "5": "Configurar AWS Organizations con Políticas de Control de Servicio para restringir el uso de servicios en cuentas miembros."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Implementar puntos de enlace de Amazon VPC para conectarse de manera segura a los servicios de AWS sin exponer recursos a Internet público.",
+            "Configurar AWS Organizations con Políticas de Control de Servicio para restringir el uso de servicios en cuentas miembros."
+        ],
+        "Explanation": "Implementar puntos de enlace de Amazon VPC permite una conectividad segura y privada a los servicios de AWS, asegurando que los recursos no necesiten atravesar Internet público, lo que mejora la seguridad. Configurar AWS Organizations con Políticas de Control de Servicio (SCPs) ayuda a hacer cumplir la gobernanza y restringir el acceso a ciertos servicios o acciones en cuentas miembros, proporcionando una capa adicional de aislamiento y control.",
+        "Other Options": [
+            "Si bien utilizar roles de IAM es importante para la gestión de acceso, no proporciona inherentemente aislamiento de recursos; principalmente gestiona permisos para usuarios y servicios.",
+            "Desplegar funciones de AWS Lambda en múltiples subredes puede ayudar con la segregación de cargas de trabajo, pero no aborda directamente el aislamiento de recursos a una escala más amplia en cuentas o servicios de AWS.",
+            "Utilizar grupos de seguridad de Amazon EC2 para restringir el tráfico es una buena práctica para el control de acceso a nivel de instancia, pero no proporciona aislamiento entre diferentes recursos o cuentas."
+        ]
+    },
+    {
+        "Question Number": "10",
+        "Situation": "Una empresa confía en AWS para alojar sus aplicaciones web, y el equipo de Seguridad está preocupado por posibles ataques DDoS. Necesitan una estrategia robusta para mitigar los riesgos y asegurar la disponibilidad del servicio durante tales incidentes.",
+        "Question": "¿Qué enfoque debería priorizar el equipo de Seguridad para mitigar efectivamente los ataques DDoS en sus aplicaciones web alojadas en AWS?",
+        "Options": {
+            "1": "Confiar únicamente en grupos de seguridad para filtrar el tráfico entrante y habilitar registros detallados para rastrear patrones de acceso sin ninguna otra medida de mitigación de DDoS.",
+            "2": "Restringir todo el tráfico entrante a las aplicaciones web permitiendo solo el acceso desde direcciones IP conocidas y deshabilitando el acceso público a todos los recursos.",
+            "3": "Implementar AWS Shield Advanced para proporcionar protección mejorada contra DDoS y configurar políticas de escalado para aumentar automáticamente los recursos durante un ataque.",
+            "4": "Usar un único punto de entrada para todo el tráfico de la aplicación web y configurar AWS WAF para bloquear todas las solicitudes que superen un cierto límite de tasa."
+        },
+        "Correct Answer": "Implementar AWS Shield Advanced para proporcionar protección mejorada contra DDoS y configurar políticas de escalado para aumentar automáticamente los recursos durante un ataque.",
+        "Explanation": "Implementar AWS Shield Advanced proporciona una protección robusta contra ataques DDoS sofisticados, mientras que configurar políticas de escalado asegura que los recursos puedan ajustarse dinámicamente para absorber picos de tráfico y mantener la disponibilidad.",
+        "Other Options": [
+            "Restringir el tráfico entrante a direcciones IP conocidas puede limitar el acceso a usuarios legítimos y no es una solución integral para ataques DDoS, que a menudo involucran múltiples fuentes.",
+            "Usar un único punto de entrada puede crear un cuello de botella y no proporciona una solución escalable. Bloquear solicitudes basándose únicamente en límites de tasa podría bloquear accidentalmente tráfico legítimo.",
+            "Confiar únicamente en grupos de seguridad ignora la necesidad de una protección integral contra DDoS. Si bien el registro es importante, no mitiga activamente los ataques ni maneja picos de tráfico."
+        ]
+    },
+    {
+        "Question Number": "11",
+        "Situation": "Una empresa está utilizando AWS Firewall Manager para hacer cumplir políticas de seguridad en múltiples cuentas dentro de su Organización de AWS. El equipo de Seguridad ha definido reglas para bloquear tipos específicos de tráfico y quiere asegurarse de que estas reglas se apliquen de manera consistente en toda la organización. Sin embargo, notan que algunas cuentas no están cumpliendo con las políticas establecidas en Firewall Manager.",
+        "Question": "¿Cuál es la razón MÁS probable de la inconsistencia en la aplicación de políticas entre las cuentas?",
+        "Options": {
+            "1": "Las políticas de Firewall Manager no se han aplicado a todas las unidades organizativas.",
+            "2": "Las cuentas no son parte de la misma Organización de AWS.",
+            "3": "Faltan los roles de IAM requeridos para Firewall Manager en esas cuentas.",
+            "4": "Las cuentas están utilizando diferentes Regiones de AWS, lo que impide la aplicación de políticas."
+        },
+        "Correct Answer": "Las políticas de Firewall Manager no se han aplicado a todas las unidades organizativas.",
+        "Explanation": "Para que las políticas de Firewall Manager sean efectivas en una organización, deben aplicarse explícitamente a todas las unidades organizativas relevantes. Si algunas cuentas no son parte de las unidades organizativas aplicadas, no recibirán la aplicación de políticas.",
+        "Other Options": [
+            "Si las cuentas son parte de la misma Organización de AWS, esto no impide la aplicación de políticas; el problema radica en la aplicación de las políticas.",
+            "Las políticas de AWS Firewall Manager se pueden aplicar en múltiples regiones, por lo que usar diferentes regiones no afecta la aplicación de políticas.",
+            "Si bien los roles de IAM son necesarios para Firewall Manager, el problema se relaciona específicamente con la aplicación de las políticas y no con la existencia de los roles."
+        ]
+    },
+    {
+        "Question Number": "12",
+        "Situation": "Una organización está implementando una arquitectura de aplicación de múltiples capas en AWS, que incluye un Elastic Load Balancer (ELB) frente a varias instancias de EC2. El equipo de seguridad quiere asegurarse de que pueden detectar y responder a posibles amenazas monitoreando fuentes de telemetría relevantes.",
+        "Question": "¿Qué fuente de telemetría debería priorizar el equipo de seguridad para obtener información sobre patrones de tráfico y posibles ataques dirigidos a la capa de aplicación?",
+        "Options": {
+            "1": "Traffic Mirroring",
+            "2": "Registros de Acceso del Elastic Load Balancer",
+            "3": "Registros de CloudTrail",
+            "4": "Registros de Flujo de VPC"
+        },
+        "Correct Answer": "Registros de Acceso del Elastic Load Balancer",
+        "Explanation": "Los Registros de Acceso del Elastic Load Balancer proporcionan información detallada sobre las solicitudes enviadas al balanceador de carga, incluyendo la IP de origen, la ruta de la solicitud y el estado de la respuesta. Estos datos son cruciales para analizar patrones de tráfico de la capa de aplicación e identificar anomalías o posibles ataques dirigidos a la aplicación misma.",
+        "Other Options": [
+            "Los Registros de Flujo de VPC capturan información sobre el tráfico IP que va y viene de las interfaces de red en su VPC. Si bien son útiles, no proporcionan información detallada sobre el tráfico de la capa de aplicación gestionado por el ELB.",
+            "Los Registros de CloudTrail registran las llamadas a la API realizadas en su cuenta de AWS, lo cual es valioso para auditoría y gobernanza, pero no se centra en la capa de aplicación o patrones de tráfico de red relevantes para amenazas.",
+            "Traffic Mirroring permite capturar paquetes en tránsito para analizar el tráfico de red. Sin embargo, requiere configuración adicional y podría no proporcionar el mismo nivel de detalle sobre solicitudes específicas de la aplicación como los Registros de Acceso del ELB."
+        ]
+    },
+    {
+        "Question Number": "13",
+        "Situation": "Una empresa está construyendo un sitio web de cara al público en AWS y necesita garantizar la seguridad de los datos de los usuarios mientras optimiza el rendimiento y la disponibilidad.",
+        "Question": "¿Cuál de las siguientes estrategias es la más efectiva para asegurar la parte frontal de un sitio web público alojado en AWS?",
+        "Options": {
+            "1": "Utilizar AWS WAF para filtrar el tráfico web malicioso e implementar Amazon CloudFront para la entrega de contenido.",
+            "2": "Configurar roles de AWS IAM para los usuarios que acceden al sitio web y cifrar los datos almacenados en Amazon RDS.",
+            "3": "Desplegar AWS Shield Advanced para proteger contra ataques DDoS y usar Amazon S3 para el almacenamiento de contenido estático.",
+            "4": "Implementar AWS Config para monitorear las configuraciones de recursos y usar AWS CloudTrail para registrar las llamadas a la API."
+        },
+        "Correct Answer": "Utilizar AWS WAF para filtrar el tráfico web malicioso e implementar Amazon CloudFront para la entrega de contenido.",
+        "Explanation": "Esta opción combina efectivamente el uso de AWS WAF para proteger contra explotaciones web comunes y Amazon CloudFront para entregar contenido de manera segura y eficiente, mejorando el rendimiento y la disponibilidad mientras asegura el sitio web de amenazas.",
+        "Other Options": [
+            "Si bien desplegar AWS Shield Advanced es beneficioso para la protección contra DDoS, usar Amazon S3 solo para contenido estático no proporciona una seguridad adecuada para un sitio web de cara al público sin medidas adicionales como WAF.",
+            "Configurar roles de AWS IAM para el acceso de usuarios y cifrar datos en RDS es importante para la seguridad del backend, pero no aborda las necesidades específicas de asegurar la parte frontal de un sitio web público.",
+            "Implementar AWS Config y CloudTrail se centra en el cumplimiento y la auditoría, que son importantes pero no mejoran directamente la seguridad de la parte frontal de un sitio web público."
+        ]
+    },
+    {
+        "Question Number": "14",
+        "Situation": "Una empresa de servicios financieros está implementando cifrado para datos sensibles de clientes almacenados en AWS. Se enfocan particularmente en gestionar sus claves de cifrado de manera efectiva para cumplir con los requisitos regulatorios. La empresa planea utilizar AWS Key Management Service (KMS) y quiere implementar estrategias de rotación de claves que se alineen con las mejores prácticas. Están considerando varias opciones para la gestión y rotación de claves según el tipo de claves que utilizarán.",
+        "Question": "¿Cuál de las siguientes afirmaciones describe con precisión las opciones de rotación de claves disponibles al usar AWS KMS para Claves Gestionadas por el Cliente?",
+        "Options": {
+            "1": "Las Claves Gestionadas por el Cliente con material de clave importado permiten la rotación automática, similar a las Claves Gestionadas por AWS.",
+            "2": "Las Claves Gestionadas por AWS rotan automáticamente cada cinco años, y el material de clave de respaldo antiguo no se retiene.",
+            "3": "Las Claves Gestionadas por el Cliente admiten rotación automática cada año, aunque esta función está deshabilitada por defecto.",
+            "4": "La rotación manual es la única opción disponible para las Claves Gestionadas por el Cliente con material de clave importado."
+        },
+        "Correct Answer": "Las Claves Gestionadas por el Cliente admiten rotación automática cada año, aunque esta función está deshabilitada por defecto.",
+        "Explanation": "Las Claves Gestionadas por el Cliente en AWS KMS se pueden configurar para rotación automática cada año, aunque esta función está deshabilitada por defecto. Esto significa que las organizaciones pueden habilitarla manualmente para asegurar una rotación regular de claves, lo cual es una mejor práctica para la seguridad y el cumplimiento.",
+        "Other Options": [
+            "Las Claves Gestionadas por AWS no rotan automáticamente cada cinco años; en cambio, rotan automáticamente cada tres años, y el material de clave de respaldo antiguo se retiene.",
+            "Las Claves Gestionadas por el Cliente con material de clave importado no admiten rotación automática en absoluto, lo que significa que toda la rotación debe hacerse manualmente.",
+            "Si bien la rotación manual es efectivamente la única opción para las Claves Gestionadas por el Cliente con material de clave importado, esta afirmación no aborda las capacidades de rotación de las Claves Gestionadas por el Cliente estándar."
+        ]
+    },
+    {
+        "Question Number": "15",
+        "Situation": "Una organización está implementando una estrategia de clasificación de datos para asegurar que los datos sensibles sean identificados y protegidos adecuadamente. Quieren utilizar servicios de AWS para automatizar la clasificación de datos almacenados en Amazon S3. La organización tiene el requisito de clasificar los datos según etiquetas predefinidas como 'Confidencial', 'Interno' y 'Público'.",
+        "Question": "¿Qué servicio de AWS puede utilizar la organización para automatizar el proceso de clasificación de datos para objetos S3 según las etiquetas especificadas?",
+        "Options": {
+            "1": "AWS Config",
+            "2": "AWS Shield",
+            "3": "Amazon Inspector",
+            "4": "AWS Macie"
+        },
+        "Correct Answer": "AWS Macie",
+        "Explanation": "AWS Macie está diseñado para descubrir, clasificar y proteger automáticamente datos sensibles almacenados en Amazon S3. Utiliza aprendizaje automático y coincidencia de patrones para identificar y etiquetar datos de acuerdo con los requisitos de clasificación de la organización, lo que lo convierte en la opción más apropiada para este escenario.",
+        "Other Options": [
+            "AWS Config se utiliza principalmente para el cumplimiento y la gobernanza de recursos, no para la clasificación de datos. Realiza un seguimiento de las configuraciones y cambios de recursos, pero no clasifica datos dentro de los buckets de S3.",
+            "Amazon Inspector es un servicio de evaluación de seguridad diseñado para identificar vulnerabilidades en aplicaciones desplegadas en AWS. No proporciona funcionalidad para la clasificación de datos o etiquetado de objetos S3.",
+            "AWS Shield es un servicio de protección DDoS gestionado que ayuda a salvaguardar aplicaciones de ataques de denegación de servicio distribuidos. No se relaciona con la clasificación o gestión de datos dentro de S3."
+        ]
+    },
+    {
+        "Question Number": "16",
+        "Situation": "Una empresa está desarrollando una aplicación de compras móviles que permitirá a los usuarios iniciar sesión utilizando sus cuentas de redes sociales, como Facebook o Google. Quieren implementar una forma segura de gestionar la autenticación de usuarios y el acceso a los recursos de AWS. El equipo de desarrollo está considerando usar Amazon Cognito para este propósito.",
+        "Question": "¿Cuál es el PRINCIPAL beneficio de usar Amazon Cognito para habilitar el acceso de usuarios a través de proveedores de identidad social en la aplicación de compras móviles?",
+        "Options": {
+            "1": "Cognito requiere que los usuarios creen una nueva cuenta y contraseña para la aplicación.",
+            "2": "Cognito solo admite autenticación a través de proveedores de identidad de AWS.",
+            "3": "Cognito proporciona una forma de sincronizar los datos de los usuarios en múltiples dispositivos sin problemas.",
+            "4": "Cognito permite que la aplicación almacene credenciales de AWS en el dispositivo para acceso directo."
+        },
+        "Correct Answer": "Cognito proporciona una forma de sincronizar los datos de los usuarios en múltiples dispositivos sin problemas.",
+        "Explanation": "Amazon Cognito actúa como un intermediario de identidad, permitiendo a los usuarios autenticarse a través de proveedores de identidad social mientras sincroniza los datos de los usuarios en los dispositivos, mejorando la experiencia del usuario en la aplicación de compras móviles.",
+        "Other Options": [
+            "Almacenar credenciales de AWS en el dispositivo presenta riesgos de seguridad y no se recomienda; Cognito elimina la necesidad de esto al proporcionar tokens STS temporales en su lugar.",
+            "Si bien sincronizar los datos de los usuarios es un beneficio clave, no es la razón PRINCIPAL para usar Cognito para inicios de sesión sociales; más bien, la integración con proveedores de identidad social lo es.",
+            "Cognito en realidad admite una amplia gama de proveedores de identidad, incluidos los sociales como Facebook y Google, lo que hace que esta opción sea incorrecta."
+        ]
+    },
+    {
+        "Question Number": "17",
+        "Situation": "Una empresa está implementando una nueva aplicación que requiere acceso a los buckets de Amazon S3 y las tablas de DynamoDB. La aplicación está alojada en una VPC, y el equipo de seguridad quiere asegurarse de que todo el tráfico hacia estos servicios permanezca dentro de la red de AWS para mejorar la seguridad. Están considerando varias opciones de salida para lograr este objetivo.",
+        "Question": "¿Qué opción de salida debería implementar el equipo de seguridad para garantizar que todo el tráfico hacia Amazon S3 y DynamoDB permanezca dentro de la red de AWS y no requiera direcciones IP públicas?",
+        "Options": {
+            "1": "Establecer una conexión de emparejamiento de VPC con una VPC externa.",
+            "2": "Crear un Gateway Endpoint para S3 y DynamoDB en la VPC.",
+            "3": "Adjuntar un Internet Gateway a la VPC y configurar NAT para los servicios.",
+            "4": "Configurar un Interface Endpoint para S3 y DynamoDB en la VPC."
+        },
+        "Correct Answer": "Crear un Gateway Endpoint para S3 y DynamoDB en la VPC.",
+        "Explanation": "Usar un Gateway Endpoint para S3 y DynamoDB permite que el tráfico hacia estos servicios permanezca dentro de la red de AWS sin requerir direcciones IP públicas. Esta configuración mejora la seguridad al garantizar que toda la comunicación se maneje internamente.",
+        "Other Options": [
+            "Configurar un Interface Endpoint para S3 y DynamoDB es innecesario porque estos servicios admiten Gateway Endpoints, y usarlos es más eficiente para mantener el tráfico interno.",
+            "Adjuntar un Internet Gateway y configurar NAT expondría los servicios a Internet, lo que contradice el requisito de mantener el tráfico dentro de la red de AWS.",
+            "Establecer una conexión de emparejamiento de VPC con una VPC externa no se relaciona directamente con mantener el tráfico interno para S3 y DynamoDB y podría complicar la comunicación."
+        ]
+    },
+    {
+        "Question Number": "18",
+        "Situation": "Una empresa está haciendo la transición a AWS y necesita establecer conectividad segura entre su centro de datos local y su VPC. Quieren asegurarse de que la conexión sea confiable y pueda manejar un alto ancho de banda, al mismo tiempo que proporciona cifrado para los datos en tránsito. La empresa está considerando usar AWS Direct Connect y gateways VPN para este propósito.",
+        "Question": "¿Cuál de las siguientes arquitecturas proporcionaría la conectividad MÁS segura y confiable entre el centro de datos local y la VPC de AWS?",
+        "Options": {
+            "1": "Desplegar una VPN Site-to-Site directamente a los servidores locales sin Direct Connect.",
+            "2": "Establecer una conexión VPN a través de Internet público como la conexión principal.",
+            "3": "Usar AWS Direct Connect con una VPN de respaldo para redundancia y cifrado.",
+            "4": "Implementar solo una conexión Direct Connect, sin medidas adicionales de cifrado."
+        },
+        "Correct Answer": "Usar AWS Direct Connect con una VPN de respaldo para redundancia y cifrado.",
+        "Explanation": "Usar AWS Direct Connect proporciona una conexión dedicada que es más confiable y puede manejar un alto ancho de banda en comparación con las conexiones a Internet estándar. Agregar una VPN como respaldo asegura que los datos estén cifrados en tránsito y proporciona redundancia en caso de que el enlace de Direct Connect falle, mejorando así la seguridad y confiabilidad general.",
+        "Other Options": [
+            "Establecer una conexión VPN a través de Internet público carece de la confiabilidad y los beneficios de ancho de banda de Direct Connect, y aunque puede proporcionar cifrado, no es la solución más segura en comparación con la combinación de Direct Connect y VPN.",
+            "Implementar solo una conexión Direct Connect no proporciona ningún cifrado para los datos en tránsito, lo que podría exponer datos sensibles a riesgos. Sin una VPN, la conexión carece de la capa adicional de seguridad.",
+            "Desplegar una VPN Site-to-Site directamente a los servidores locales sin Direct Connect no aprovecha los beneficios de una conexión dedicada y puede resultar en mayor latencia y menor rendimiento, haciéndola menos adecuada para aplicaciones de alto ancho de banda."
+        ]
+    },
+    {
+        "Question Number": "19",
+        "Situation": "Un ingeniero de seguridad en la nube tiene la tarea de diseñar una estructura de Organización de AWS que garantice un control de acceso seguro y cumplimiento en múltiples cuentas de AWS. El ingeniero necesita implementar Políticas de Control de Servicio (SCP) para gestionar los permisos de manera efectiva, asegurándose de que ciertas cuentas solo puedan realizar acciones específicas. El ingeniero también debe garantizar que se apliquen las mejores prácticas de registro y seguridad en toda la organización.",
+        "Question": "¿Qué enfoque debería tomar el ingeniero de seguridad para asegurar que la organización mantenga un control estricto sobre los permisos mientras permite el acceso necesario para las cuentas miembros?",
+        "Options": {
+            "1": "Usar Políticas de Control de Servicio para denegar explícitamente el acceso a todas las acciones por defecto a nivel raíz, luego adjuntar declaraciones de Permitir a cuentas específicas según sus necesidades.",
+            "2": "Implementar una Política de Control de Servicio a nivel raíz que permita todas las acciones y adjuntar declaraciones de Denegar específicas para restringir el acceso a servicios sensibles en cada Unidad Organizativa.",
+            "3": "Aplicar Políticas de Control de Servicio que solo permitan ciertas acciones a nivel raíz y usar roles de AWS Identity and Access Management (IAM) para otorgar permisos adicionales a las cuentas miembros.",
+            "4": "Crear una Unidad Organizativa para cada departamento y aplicar una Política de Control de Servicio vacía para permitir acceso total, luego personalizar los permisos a nivel de cuenta según sea necesario."
+        },
+        "Correct Answer": "Usar Políticas de Control de Servicio para denegar explícitamente el acceso a todas las acciones por defecto a nivel raíz, luego adjuntar declaraciones de Permitir a cuentas específicas según sus necesidades.",
+        "Explanation": "Usar Políticas de Control de Servicio para denegar explícitamente el acceso por defecto a nivel raíz establece una base de seguridad, asegurando que no se permitan acciones a menos que se permitan explícitamente. Este enfoque minimiza el riesgo de acceso no autorizado y asegura que solo se otorguen los permisos necesarios a cuentas específicas.",
+        "Other Options": [
+            "Implementar una Política de Control de Servicio a nivel raíz que permita todas las acciones crearía riesgos de seguridad significativos, ya que permitiría a todas las cuentas acceso sin restricciones, socavando el propósito de las SCP.",
+            "Crear una Unidad Organizativa con una Política de Control de Servicio vacía no impondría ninguna restricción, permitiendo acceso total a todas las cuentas y potencialmente llevando a problemas de cumplimiento.",
+            "Aplicar Políticas de Control de Servicio que solo permitan ciertas acciones a nivel raíz no gestiona efectivamente los permisos, ya que podría dejar inadvertidamente disponibles otras acciones, comprometiendo la seguridad."
+        ]
+    },
+    {
+        "Question Number": "20",
+        "Situation": "Una organización opera varios recursos de AWS y necesita implementar monitoreo de seguridad para detectar amenazas potenciales. El equipo de seguridad quiere definir métricas y umbrales específicos que generen alertas cuando se detecten actividades sospechosas, como un aumento en las llamadas a la API o intentos de acceso no autorizados.",
+        "Question": "¿Qué enfoque debería tomar el equipo de seguridad para establecer de manera efectiva métricas y umbrales para alertas en su entorno de AWS?",
+        "Options": {
+            "1": "Implementar AWS Config para monitorear cambios de configuración y establecer notificaciones para cualquier cambio que ocurra fuera de un conjunto de reglas de cumplimiento predefinido.",
+            "2": "Configurar AWS CloudWatch Logs para capturar datos de registro y revisar manualmente los registros semanalmente en busca de anomalías que puedan requerir una investigación adicional.",
+            "3": "Configurar AWS GuardDuty para analizar automáticamente archivos de registro y generar alertas basadas en hallazgos relacionados con actividades maliciosas conocidas.",
+            "4": "Utilizar AWS CloudTrail para registrar todas las llamadas a la API y configurar Alarmas de Amazon CloudWatch basadas en tasas específicas de llamadas a la API que superen un umbral definido."
+        },
+        "Correct Answer": "Utilizar AWS CloudTrail para registrar todas las llamadas a la API y configurar Alarmas de Amazon CloudWatch basadas en tasas específicas de llamadas a la API que superen un umbral definido.",
+        "Explanation": "Utilizar AWS CloudTrail permite a la organización registrar todas las llamadas a la API realizadas dentro del entorno de AWS, proporcionando un rastro de auditoría completo de las acciones realizadas. Al integrar esto con Alarmas de Amazon CloudWatch, el equipo de seguridad puede definir métricas específicas (por ejemplo, número de llamadas a la API) y establecer umbrales para activar alertas cuando ocurra actividad sospechosa, permitiendo respuestas oportunas a amenazas potenciales.",
+        "Other Options": [
+            "Implementar AWS Config se centra principalmente en monitorear configuraciones de recursos y cumplimiento en lugar de monitorear el comportamiento de las llamadas a la API, lo que lo hace menos efectivo para detectar actividades sospechosas relacionadas con el uso de la API.",
+            "Configurar AWS GuardDuty es beneficioso para la detección de amenazas, pero no está diseñado principalmente para establecer métricas y umbrales específicos basados en tasas de llamadas a la API; analiza registros y alerta basándose en hallazgos relacionados con amenazas conocidas.",
+            "Configurar AWS CloudWatch Logs para capturar datos de registro y revisar manualmente los registros semanalmente es ineficiente y reactivo. Este enfoque no proporciona alertas en tiempo real y puede resultar en respuestas tardías a incidentes de seguridad potenciales."
+        ]
+    },
+    {
+        "Question Number": "21",
+        "Situation": "Un oficial de cumplimiento en una empresa de servicios financieros necesita asegurarse de que todos los eventos de seguridad en el entorno de AWS estén registrados y monitoreados de manera efectiva. El oficial tiene como objetivo implementar una solución que no solo capture estos registros, sino que también proporcione información significativa para auditorías de seguridad. El oficial está considerando el mejor enfoque para establecer herramientas automatizadas para este propósito.",
+        "Question": "¿Cuál de las siguientes estrategias sería la MÁS efectiva para establecer herramientas y scripts automatizados que realicen auditorías regulares de eventos de seguridad en este escenario?",
+        "Options": {
+            "1": "Usar AWS Config para monitorear cambios de configuración en los recursos y establecer Amazon SNS para notificar al oficial de cumplimiento sobre cualquier violación de cumplimiento.",
+            "2": "Configurar AWS GuardDuty para monitorear continuamente actividades maliciosas e integrar hallazgos con AWS Security Hub para crear información personalizada para auditorías de seguridad.",
+            "3": "Desplegar funciones de AWS Lambda que consulten periódicamente los registros de AWS CloudTrail, analicen los registros en busca de incidentes de seguridad y envíen alertas al oficial de cumplimiento basándose en umbrales predefinidos.",
+            "4": "Configurar AWS CloudTrail para registrar toda la actividad de la cuenta e integrarlo con Amazon CloudWatch para monitoreo y alerta en tiempo real de eventos relacionados con la seguridad."
+        },
+        "Correct Answer": "Configurar AWS CloudTrail para registrar toda la actividad de la cuenta e integrarlo con Amazon CloudWatch para monitoreo y alerta en tiempo real de eventos relacionados con la seguridad.",
+        "Explanation": "Configurar AWS CloudTrail para registrar toda la actividad de la cuenta proporciona una vista completa de las llamadas a la API y las acciones de los usuarios dentro del entorno de AWS. Integrarlo con Amazon CloudWatch permite monitoreo y alerta en tiempo real, convirtiéndolo en una solución efectiva para auditar eventos de seguridad.",
+        "Other Options": [
+            "Usar AWS Config se centra principalmente en el cumplimiento de la configuración de recursos en lugar de registrar eventos de seguridad, que es la principal preocupación para realizar auditorías de seguridad.",
+            "Desplegar funciones de AWS Lambda para análisis periódico de registros puede ser útil, pero puede no proporcionar capacidades de monitoreo en tiempo real y podría introducir latencia en la respuesta a incidentes de seguridad.",
+            "Si bien AWS GuardDuty es efectivo para la detección de amenazas, no proporciona un rastro de auditoría completo de la actividad de la cuenta como lo hace AWS CloudTrail, y usarlo solo puede no cubrir todos los eventos de seguridad necesarios."
+        ]
+    },
+    {
+        "Question Number": "22",
+        "Situation": "Una empresa está implementando una solución de autenticación multifactor (MFA) para su cuenta de AWS. El equipo de seguridad necesita asegurarse de que la configuración de MFA cumpla con las mejores prácticas de AWS y que los usuarios puedan recuperarse de la pérdida de su segundo factor.",
+        "Question": "¿Cuál de las siguientes afirmaciones sobre MFA en AWS IAM es verdadera?",
+        "Options": {
+            "1": "Se pueden obtener credenciales temporales utilizando STS con autenticación U2F.",
+            "2": "El usuario root puede recuperar un segundo factor perdido verificando la propiedad del correo electrónico y del número de teléfono.",
+            "3": "Los usuarios federados deben usar dispositivos TOTP de hardware para MFA.",
+            "4": "Los usuarios solo pueden usar MFA basado en SMS para sus cuentas."
+        },
+        "Correct Answer": "El usuario root puede recuperar un segundo factor perdido verificando la propiedad del correo electrónico y del número de teléfono.",
+        "Explanation": "La afirmación correcta destaca que el usuario root de AWS tiene un método de recuperación para dispositivos MFA perdidos al verificar el correo electrónico y el número de teléfono asociados, lo que se alinea con los protocolos de seguridad de AWS.",
+        "Other Options": [
+            "Esto es incorrecto porque AWS ya no admite SMS para MFA; hay métodos alternativos como U2F y TOTP disponibles.",
+            "Esto es incorrecto porque U2F no se puede usar para obtener credenciales temporales a través de STS; STS solo funciona con TOTP virtual o de hardware.",
+            "Esto es incorrecto ya que los usuarios federados no tienen que usar dispositivos TOTP de hardware; pueden usar otras formas de MFA admitidas por AWS."
+        ]
+    },
+    {
+        "Question Number": "23",
+        "Situation": "Un equipo de seguridad está investigando una serie de solicitudes de API inusuales realizadas a su entorno de AWS. Sospechan que una cuenta de usuario IAM comprometida podría ser responsable del acceso no autorizado. Para llevar a cabo un análisis de causa raíz de manera efectiva, necesitan identificar la fuente de estas solicitudes y las acciones realizadas.",
+        "Question": "¿Cuál de las siguientes técnicas es más efectiva para realizar un análisis de causa raíz de solicitudes de API no autorizadas en AWS?",
+        "Options": {
+            "1": "Utilizar Amazon GuardDuty para analizar el tráfico de red e identificar amenazas potenciales relacionadas con la cuenta comprometida.",
+            "2": "Evaluar la configuración de federación de identidad para asegurarse de que los mecanismos de autenticación externos sean seguros.",
+            "3": "Verificar AWS Config en busca de violaciones de cumplimiento relacionadas con las políticas de IAM asociadas a la cuenta de usuario.",
+            "4": "Revisar los registros de AWS CloudTrail para rastrear las llamadas a la API e identificar al usuario y la dirección IP de origen."
+        },
+        "Correct Answer": "Revisar los registros de AWS CloudTrail para rastrear las llamadas a la API e identificar al usuario y la dirección IP de origen.",
+        "Explanation": "Revisar los registros de AWS CloudTrail permite un rastreo detallado de las llamadas a la API, ayudando a identificar las acciones específicas realizadas por la cuenta comprometida, incluida la identidad del usuario y la dirección IP de origen. Esto es crítico para un análisis de causa raíz efectivo, ya que proporciona evidencia directa de lo que ocurrió.",
+        "Other Options": [
+            "Utilizar Amazon GuardDuty es útil para la detección de amenazas en tiempo real, pero no proporciona los detalles específicos de las llamadas a la API pasadas requeridos para el análisis de causa raíz.",
+            "Verificar AWS Config es importante para el monitoreo de cumplimiento, pero no rastrea directamente el historial de llamadas a la API ni identifica la causa inmediata del acceso no autorizado.",
+            "Evaluar la configuración de federación de identidad es importante para la seguridad, pero no proporciona información inmediata sobre las solicitudes de API específicas o las acciones realizadas por la cuenta comprometida."
+        ]
+    },
+    {
+        "Question Number": "24",
+        "Situation": "Una empresa de servicios financieros está implementando un proceso automatizado de gestión del ciclo de vida de datos para sus buckets de S3. Quieren asegurarse de que los datos sensibles se retengan solo por un período específico y luego se transfieran automáticamente a almacenamiento de menor costo o se eliminen para cumplir con los requisitos regulatorios.",
+        "Question": "¿Cuál opción de configuración del ciclo de vida es la MÁS apropiada para este escenario para garantizar que los datos se gestionen de manera eficiente y segura?",
+        "Options": {
+            "1": "Configurar una política de ciclo de vida para transferir objetos a S3 Glacier después de 30 días y eliminarlos después de 90 días.",
+            "2": "Establecer una configuración de ciclo de vida para eliminar objetos después de 30 días sin ninguna transición a otras clases de almacenamiento.",
+            "3": "Implementar una política de ciclo de vida que transfiera objetos a S3 Intelligent-Tiering después de 30 días y los elimine después de 365 días.",
+            "4": "Crear una regla de ciclo de vida para mover objetos a S3 Standard-IA después de 30 días y retenerlos indefinidamente."
+        },
+        "Correct Answer": "Configurar una política de ciclo de vida para transferir objetos a S3 Glacier después de 30 días y eliminarlos después de 90 días.",
+        "Explanation": "Esta opción gestiona eficazmente los datos sensibles al transferirlos a una clase de almacenamiento de menor costo (S3 Glacier) después de 30 días, lo cual es adecuado para datos a los que se accede con poca frecuencia, y asegura que los datos se eliminen después de 90 días, cumpliendo con los requisitos regulatorios para la retención y eliminación de datos.",
+        "Other Options": [
+            "Esta opción no cumple con el requisito de eliminar datos sensibles después de un período específico, ya que retiene objetos indefinidamente una vez transferidos a S3 Standard-IA.",
+            "Si bien esta opción transfiere objetos a S3 Intelligent-Tiering, el período de retención de 365 días es demasiado largo para datos sensibles, que deberían eliminarse antes para cumplir con los requisitos regulatorios.",
+            "Esta opción elimina objetos después de 30 días, pero no incluye ninguna transición a almacenamiento de menor costo, lo que no es rentable para datos que deben ser retenidos por un período."
+        ]
+    },
+    {
+        "Question Number": "25",
+        "Situation": "Una empresa de servicios financieros está implementando estrategias de protección de datos para la información sensible de los clientes. El equipo de seguridad está evaluando técnicas para asegurar la integridad de los datos durante la transmisión y el almacenamiento.",
+        "Question": "¿Qué técnicas de verificación de integridad debería implementar el equipo para mejorar la protección de datos? (Seleccione Dos)",
+        "Options": {
+            "1": "Estándar de cifrado AES",
+            "2": "Algoritmo de hash SHA-256",
+            "3": "Firmas digitales",
+            "4": "HMAC (Código de Autenticación de Mensajes Basado en Hash)",
+            "5": "TLS (Seguridad en la Capa de Transporte)"
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Algoritmo de hash SHA-256",
+            "Firmas digitales"
+        ],
+        "Explanation": "SHA-256 es un algoritmo de hash criptográfico ampliamente utilizado que proporciona un valor de hash único de tamaño fijo para los datos de entrada dados, asegurando la integridad de los datos al permitir la verificación de cambios en los datos. Las firmas digitales utilizan un algoritmo de hash y cifrado asimétrico para verificar la autenticidad e integridad de un mensaje o documento, lo que las hace cruciales para la protección de datos.",
+        "Other Options": [
+            "El estándar de cifrado AES se utiliza principalmente para la confidencialidad de los datos, no específicamente para la verificación de integridad.",
+            "HMAC (Código de Autenticación de Mensajes Basado en Hash) es un método para asegurar tanto la integridad como la autenticidad, pero la pregunta se centra específicamente en técnicas de verificación de integridad en lugar de autenticación.",
+            "TLS (Seguridad en la Capa de Transporte) asegura los canales de comunicación, pero no sirve específicamente como una técnica de verificación de integridad para datos en reposo."
+        ]
+    },
+    {
+        "Question Number": "26",
+        "Situation": "Una organización está buscando optimizar costos y mejorar su postura de seguridad identificando recursos no utilizados o infrautilizados en su entorno de AWS. Quieren aprovechar los servicios de AWS para gestionar esta tarea de manera eficiente.",
+        "Question": "¿Qué servicio de AWS debería utilizar la organización para identificar recursos no utilizados de manera efectiva?",
+        "Options": {
+            "1": "Utilizar AWS Cost Explorer para analizar patrones de gasto y localizar recursos infrautilizados.",
+            "2": "Implementar AWS Config para monitorear continuamente las configuraciones de recursos y el cumplimiento.",
+            "3": "Usar AWS Trusted Advisor para recibir recomendaciones sobre recursos no utilizados o inactivos que pueden ser eliminados.",
+            "4": "Desplegar AWS CloudTrail para rastrear llamadas a la API e identificar recursos que no han sido accedidos recientemente."
+        },
+        "Correct Answer": "Usar AWS Trusted Advisor para recibir recomendaciones sobre recursos no utilizados o inactivos que pueden ser eliminados.",
+        "Explanation": "AWS Trusted Advisor proporciona información y recomendaciones sobre las mejores prácticas para cuentas de AWS, incluyendo la identificación de recursos no utilizados como instancias EC2 inactivas, volúmenes EBS no adjuntos e instancias RDS infrautilizadas. Esto lo convierte en una herramienta efectiva para optimizar el uso de recursos y reducir costos.",
+        "Other Options": [
+            "AWS Cost Explorer se centra principalmente en analizar patrones de gasto y no identifica directamente recursos no utilizados. Si bien puede ayudar a entender las tendencias de costos, no está diseñado para localizar recursos inactivos específicamente.",
+            "AWS Config es útil para monitorear configuraciones de recursos y cumplimiento, pero no identifica directamente recursos no utilizados o inactivos. Rastrean cambios en la configuración y el cumplimiento con políticas en lugar de la utilización de recursos.",
+            "AWS CloudTrail registra llamadas a la API y puede mostrar qué recursos no han sido accedidos, pero no proporciona un mecanismo directo para identificar recursos inactivos o no utilizados. Se centra más en la seguridad y la auditoría que en la gestión de recursos."
+        ]
+    },
+    {
+        "Question Number": "27",
+        "Situation": "Un ingeniero de seguridad tiene la tarea de implementar una solución de registro para una aplicación alojada en AWS. La aplicación genera grandes volúmenes de registros, y el ingeniero necesita asegurarse de que estos registros se almacenen de manera segura, sean fácilmente accesibles para análisis y sean inmutables para prevenir manipulaciones. El ingeniero está considerando varios servicios de AWS para cumplir con estos requisitos.",
+        "Question": "¿Cuál de los siguientes servicios de AWS se puede utilizar para cumplir con los requisitos de registro y monitoreo del ingeniero? (Seleccione Dos)",
+        "Options": {
+            "1": "Amazon S3 con versionado habilitado",
+            "2": "AWS Config con historial de configuraciones",
+            "3": "AWS Lambda con salida de registro a CloudWatch",
+            "4": "Amazon CloudWatch Logs con políticas de retención de registros",
+            "5": "AWS CloudTrail con historial de eventos"
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Amazon CloudWatch Logs con políticas de retención de registros",
+            "Amazon S3 con versionado habilitado"
+        ],
+        "Explanation": "Amazon CloudWatch Logs proporciona monitoreo en tiempo real y políticas de retención de registros que permiten a los usuarios gestionar los datos de registro de manera efectiva, mientras que Amazon S3 con versionado habilitado asegura que los registros se almacenen de manera inmutable, previniendo cualquier manipulación y permitiendo la recuperación fácil de versiones anteriores.",
+        "Other Options": [
+            "AWS CloudTrail se centra principalmente en rastrear llamadas a la API y la actividad del usuario en lugar de servir como una solución integral de registro para los registros de aplicaciones.",
+            "AWS Config está diseñado para rastrear cambios en la configuración a lo largo del tiempo y no es adecuado para manejar registros de aplicaciones directamente.",
+            "AWS Lambda es un servicio de computación y, aunque puede enviar registros a CloudWatch, no sirve como un servicio dedicado de registro o monitoreo por sí solo."
+        ]
+    },
+    {
+        "Question Number": "28",
+        "Situation": "Una empresa está evaluando su infraestructura de AWS para asegurarse de que sus recursos estén debidamente asegurados y sean accesibles según lo requerido. El Ingeniero de Seguridad quiere analizar la accesibilidad de los componentes de su VPC y evaluar posibles vulnerabilidades de seguridad. El ingeniero está considerando usar herramientas de AWS para esta tarea.",
+        "Question": "¿Qué herramienta debería usar el Ingeniero de Seguridad para analizar la accesibilidad de los recursos dentro de una VPC e identificar cualquier mala configuración o vulnerabilidades?",
+        "Options": {
+            "1": "Usar AWS CloudTrail para rastrear llamadas a la API y cambios en los recursos de AWS.",
+            "2": "Usar Amazon CloudWatch para recopilar métricas y registros para monitorear el tráfico de red.",
+            "3": "Usar VPC Reachability Analyzer para visualizar las rutas de accesibilidad e identificar malas configuraciones.",
+            "4": "Usar AWS Config para monitorear cambios en la configuración de los recursos y evaluar el cumplimiento."
+        },
+        "Correct Answer": "Usar VPC Reachability Analyzer para visualizar las rutas de accesibilidad e identificar malas configuraciones.",
+        "Explanation": "VPC Reachability Analyzer está diseñado específicamente para analizar la accesibilidad de los recursos dentro de una VPC. Ayuda a visualizar la conectividad entre recursos e identificar cualquier mala configuración que pueda bloquear el acceso. Esto lo convierte en la herramienta más adecuada para la tarea descrita.",
+        "Other Options": [
+            "AWS Config se centra en rastrear cambios de configuración y cumplimiento en lugar de un análisis directo de accesibilidad.",
+            "Amazon CloudWatch se utiliza principalmente para monitorear y registrar métricas y no proporciona un análisis directo de la accesibilidad dentro de una VPC.",
+            "AWS CloudTrail se centra en registrar llamadas a la API y cambios en los recursos de AWS, lo que no ayuda directamente en el análisis de la accesibilidad de los recursos dentro de una VPC."
+        ]
+    },
+    {
+        "Question Number": "29",
+        "Situation": "Una empresa utiliza AWS Key Management Service (KMS) para gestionar claves de cifrado para datos sensibles almacenados en Amazon S3. El equipo de seguridad ha implementado políticas de claves para las Claves Maestras del Cliente (CMKs) para controlar el acceso a las claves. Como parte de una auditoría de seguridad, el equipo necesita asegurarse de que las políticas de claves estén configuradas correctamente para permitir que solo usuarios y roles específicos de IAM gestionen las claves y realicen acciones criptográficas.",
+        "Question": "¿Cuál de las siguientes configuraciones de políticas de claves asegurará que solo usuarios y roles específicos de IAM puedan gestionar las claves de KMS y realizar operaciones criptográficas, cumpliendo con las mejores prácticas de AWS?",
+        "Options": {
+            "1": "Establecer una política de claves que permita permisos kms:CreateGrant y kms:ListAliases para usuarios específicos de IAM, mientras se niegan todas las demás acciones para todos los usuarios.",
+            "2": "Implementar una política de claves que permita acciones kms:* para usuarios y roles específicos de IAM, mientras se niega explícitamente el acceso a todos los demás principales en la cuenta.",
+            "3": "Definir una política de claves que otorgue permisos kms:Encrypt y kms:Decrypt a todos los usuarios de IAM en la cuenta y permita a los roles de IAM gestionar la clave.",
+            "4": "Crear una política de claves que permita acciones kms:* para el usuario root de la cuenta de AWS y roles específicos de IAM, asegurando que no se permita el acceso a otros principales."
+        },
+        "Correct Answer": "Implementar una política de claves que permita acciones kms:* para usuarios y roles específicos de IAM, mientras se niega explícitamente el acceso a todos los demás principales en la cuenta.",
+        "Explanation": "Esta opción permite correctamente que los usuarios y roles de IAM especificados gestionen las claves de KMS y realicen operaciones criptográficas, mientras se asegura que el acceso esté restringido para todos los demás principales. Esto se adhiere al principio de menor privilegio y sigue las mejores prácticas de AWS para la gestión de claves.",
+        "Other Options": [
+            "Esta opción otorga permisos al usuario root y a roles específicos de IAM, lo cual no es ideal ya que no restringe el acceso para todos los demás principales. La mejor práctica es limitar los permisos tanto como sea posible.",
+            "Esta opción permite permisos a todos los usuarios de IAM, lo que contradice el requisito de restringir el acceso a usuarios y roles específicos. Esto podría llevar a una exposición no intencionada de datos sensibles.",
+            "Esta opción solo otorga permisos limitados y niega todas las demás acciones, lo cual no es suficiente para gestionar claves, ya que restringe permisos necesarios como kms:Encrypt y kms:Decrypt para los usuarios designados."
+        ]
+    },
+    {
+        "Question Number": "30",
+        "Situation": "Una empresa de servicios financieros está aprovechando AWS Service Catalog para gestionar su cartera de servicios de AWS aprobados para cumplimiento y gobernanza. Quieren asegurarse de que solo los productos definidos puedan ser desplegados por sus equipos de ingeniería y que todas las configuraciones cumplan con las mejores prácticas de seguridad. El equipo de seguridad tiene la tarea de implementar controles estrictos sobre el uso de servicios mientras permite flexibilidad dentro de la cartera aprobada.",
+        "Question": "¿Qué combinación de acciones debería tomar el equipo de seguridad para hacer cumplir efectivamente la gobernanza sobre el uso de los servicios de AWS? (Seleccione Dos)",
+        "Options": {
+            "1": "Implementar una función de AWS Lambda para eliminar automáticamente cualquier recurso que no sea parte de la cartera aprobada de AWS Service Catalog.",
+            "2": "Habilitar restricciones de AWS Service Catalog para hacer cumplir configuraciones y límites específicos para cada producto en la cartera.",
+            "3": "Configurar una política de AWS Organizations para restringir el acceso a nivel de cuenta a los servicios de AWS fuera de la cartera aprobada.",
+            "4": "Usar AWS Config para monitorear el cumplimiento de los recursos con una plantilla de configuración específica que se alinee con las mejores prácticas de seguridad.",
+            "5": "Crear una cartera en AWS Service Catalog que contenga solo productos aprobados y definir políticas de IAM que restrinjan el acceso a estos productos."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Crear una cartera en AWS Service Catalog que contenga solo productos aprobados y definir políticas de IAM que restrinjan el acceso a estos productos.",
+            "Habilitar restricciones de AWS Service Catalog para hacer cumplir configuraciones y límites específicos para cada producto en la cartera."
+        ],
+        "Explanation": "Crear una cartera en AWS Service Catalog con solo productos aprobados asegura que los equipos de ingeniería tengan acceso solo a los servicios que han sido evaluados para cumplimiento y seguridad. Definir políticas de IAM restringe el acceso a estos productos aprobados, haciendo cumplir la gobernanza a nivel de permisos. Además, habilitar restricciones permite hacer cumplir configuraciones y límites específicos, asegurando que los despliegues se alineen con las mejores prácticas de seguridad.",
+        "Other Options": [
+            "Usar AWS Config para monitorear el cumplimiento es una buena práctica, pero no impone restricciones sobre el despliegue de recursos directamente. Solo monitorear no previene el uso de servicios no aprobados.",
+            "Implementar una función de AWS Lambda para eliminar recursos no aprobados puede proporcionar una medida reactiva, pero no previene el despliegue inicial de esos recursos. Este enfoque también podría llevar a interrupciones no intencionadas en el servicio.",
+            "Configurar una política de AWS Organizations puede ayudar a restringir el acceso a nivel de cuenta, pero no gestiona directamente la cartera de servicios disponible a través de AWS Service Catalog. El enfoque debería estar en gestionar el catálogo de servicios en lugar de políticas a nivel de cuenta."
+        ]
+    },
+    {
+        "Question Number": "31",
+        "Situation": "Una empresa está utilizando un AWS Application Load Balancer (ALB) para gestionar el tráfico HTTPS entrante. El equipo de seguridad ha ordenado que el ALB solo debe soportar ciertos protocolos de cifrado y que todas las solicitudes entrantes deben ser autenticadas. El equipo también quiere asegurarse de que pueden registrar todas las solicitudes de acceso para fines de auditoría. ¿Qué combinación de configuraciones cumplirá con estos requisitos? (Seleccione Dos)",
+        "Question": "¿Qué combinación de soluciones cumplirá con estos requisitos de seguridad? (Seleccione Dos)",
+        "Options": {
+            "1": "Especificar una política de seguridad en el ALB para restringir los conjuntos de cifrado.",
+            "2": "Integrar el ALB con Amazon Cognito para la autenticación de usuarios.",
+            "3": "Configurar el ALB para usar certificados autofirmados para la terminación TLS.",
+            "4": "Habilitar el registro de acceso a un bucket de S3 para el ALB.",
+            "5": "Deshabilitar la autenticación en el ALB para simplificar el acceso."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Especificar una política de seguridad en el ALB para restringir los conjuntos de cifrado.",
+            "Integrar el ALB con Amazon Cognito para la autenticación de usuarios."
+        ],
+        "Explanation": "Especificar una política de seguridad en el ALB permite restringir los conjuntos de cifrado que se admiten, mejorando así la seguridad al garantizar que solo se utilicen métodos de cifrado fuertes. Integrar el ALB con Amazon Cognito proporciona un método robusto para la autenticación de usuarios, asegurando que solo los usuarios autorizados puedan acceder a la aplicación.",
+        "Other Options": [
+            "Esta opción es incorrecta ya que habilitar el registro de acceso a un bucket de S3 es una buena práctica para el monitoreo, pero no aborda directamente el requisito de restringir los protocolos de cifrado o autenticar a los usuarios.",
+            "Deshabilitar la autenticación en el ALB va en contra del requisito de autenticar las solicitudes entrantes, lo cual es esencial para mantener la seguridad.",
+            "Usar certificados autofirmados no se recomienda para entornos de producción ya que no proporciona el mismo nivel de confianza que los certificados emitidos por una Autoridad de Certificación confiable, y puede llevar a vulnerabilidades de seguridad."
+        ]
+    },
+    {
+        "Question Number": "32",
+        "Situation": "Una empresa está implementando una solución de registro centralizado para sus aplicaciones alojadas en AWS. El Ingeniero de Seguridad tiene la tarea de asegurarse de que todos los registros de varios servicios de AWS se ingieran en un sistema de monitoreo para análisis y cumplimiento. El Ingeniero necesita identificar las fuentes de registros y cómo ingerirlas de manera efectiva para un monitoreo de seguridad óptimo.",
+        "Question": "¿Cuál de los siguientes enfoques es el MÁS efectivo para asegurar una ingesta integral de registros de múltiples servicios de AWS en una solución de registro centralizado?",
+        "Options": {
+            "1": "Configurar AWS CloudTrail para capturar llamadas a la API y enviar registros a Amazon S3 para almacenamiento y análisis.",
+            "2": "Configurar un dominio de Amazon Elasticsearch Service para ingerir directamente registros de varios servicios de AWS para búsqueda y visualización.",
+            "3": "Usar Amazon CloudWatch Logs para agregar registros de instancias EC2, funciones Lambda y VPC Flow Logs en tiempo real.",
+            "4": "Implementar AWS Config para rastrear cambios de configuración y enviar registros a Amazon Kinesis Data Firehose para procesamiento adicional."
+        },
+        "Correct Answer": "Usar Amazon CloudWatch Logs para agregar registros de instancias EC2, funciones Lambda y VPC Flow Logs en tiempo real.",
+        "Explanation": "Usar Amazon CloudWatch Logs permite la agregación en tiempo real de registros de múltiples servicios de AWS como EC2, Lambda y VPC Flow Logs, convirtiéndolo en una solución integral para monitoreo y análisis. Este enfoque proporciona información inmediata y soporta mecanismos de alerta, mejorando las capacidades de monitoreo de seguridad.",
+        "Other Options": [
+            "Si bien configurar AWS CloudTrail captura llamadas a la API, no proporciona registros de todos los servicios y se centra principalmente en la actividad de la API, lo que lo hace menos integral para la ingesta general de registros.",
+            "Implementar AWS Config se centra en rastrear cambios en las configuraciones de recursos en lugar de la ingesta de registros de varios servicios, por lo que no cumple con el requisito de monitoreo integral de registros.",
+            "Configurar Amazon Elasticsearch Service para la ingesta directa puede funcionar, pero requiere configuración y gestión adicionales, y no agrega registros de todos los servicios de AWS tan eficientemente como CloudWatch Logs."
+        ]
+    },
+    {
+        "Question Number": "33",
+        "Situation": "Tienes una aplicación web que utiliza Amazon DynamoDB para el almacenamiento y recuperación de datos. Estás implementando un control de acceso granular para asegurarte de que los usuarios solo puedan acceder a sus propios datos. Has configurado AWS Cognito para la autenticación de usuarios y asignado roles para permitir el acceso a la tabla de DynamoDB. Sin embargo, notas que algunos usuarios pueden acceder a datos que no deberían tener permiso para ver. Necesitas asegurarte de que tus controles de acceso estén configurados correctamente para prevenir el acceso no autorizado.",
+        "Question": "¿Cuál es la forma más efectiva de restringir el acceso a DynamoDB para que los usuarios solo puedan recuperar elementos donde la clave de partición coincida con su ID de usuario?",
+        "Options": {
+            "1": "Crear una tabla de DynamoDB separada para cada usuario para asegurar la aislamiento de datos.",
+            "2": "Usar la clave de condición dynamodb:LeadingKeys en la política de IAM para permitir el acceso solo a los elementos que coincidan con el ID del usuario.",
+            "3": "Usar políticas de IAM para restringir el acceso a la tabla basado en la identidad de Cognito del usuario.",
+            "4": "Implementar políticas basadas en recursos en la tabla de DynamoDB para limitar el acceso basado en roles de usuario."
+        },
+        "Correct Answer": "Usar la clave de condición dynamodb:LeadingKeys en la política de IAM para permitir el acceso solo a los elementos que coincidan con el ID del usuario.",
+        "Explanation": "Usar la clave de condición dynamodb:LeadingKeys en la política de IAM permite un control de acceso granular, habilitando que especifiques que los usuarios solo pueden acceder a elementos donde la clave de partición coincida con su identidad. Este es el enfoque más efectivo y escalable para asegurar la privacidad y seguridad de los datos.",
+        "Other Options": [
+            "Si bien usar políticas de IAM para restringir el acceso basado en la identidad de Cognito del usuario es una buena práctica, no proporciona el nivel de control granular necesario para restringir el acceso a elementos específicos dentro de la tabla.",
+            "Las políticas basadas en recursos no son aplicables para DynamoDB ya que no las soporta. El control de acceso debe ser gestionado a través de roles y políticas de IAM.",
+            "Crear una tabla de DynamoDB separada para cada usuario no es práctico ni escalable. Complica la gestión de datos y no aprovecha las capacidades de DynamoDB para una recuperación eficiente de datos."
+        ]
+    },
+    {
+        "Question Number": "34",
+        "Situation": "Una empresa está desarrollando una aplicación que requiere acceso a una tabla de DynamoDB desde múltiples microservicios desplegados en diferentes cuentas de AWS. El equipo de seguridad necesita asegurarse de que solo los microservicios apropiados puedan acceder a la tabla sin exponerla públicamente.",
+        "Question": "¿Cuál de los siguientes enfoques debería implementar el equipo de seguridad para restringir el acceso a la tabla de DynamoDB mientras asegura una comunicación inter-cuentas segura?",
+        "Options": {
+            "1": "Crear un endpoint público para la tabla de DynamoDB para simplificar el acceso a todos los microservicios.",
+            "2": "Implementar VPC Peering entre las cuentas para permitir el acceso directo a la tabla de DynamoDB.",
+            "3": "Usar roles de IAM con acceso entre cuentas y adjuntar políticas de recursos a la tabla de DynamoDB.",
+            "4": "Usar autorizadores de AWS Lambda para manejar el control de acceso a la tabla de DynamoDB."
+        },
+        "Correct Answer": "Usar roles de IAM con acceso entre cuentas y adjuntar políticas de recursos a la tabla de DynamoDB.",
+        "Explanation": "Usar roles de IAM con acceso entre cuentas y adjuntar políticas de recursos a la tabla de DynamoDB permite un control de acceso detallado, asegurando que solo los microservicios especificados puedan acceder a la tabla mientras se mantiene la seguridad y se evita la exposición pública.",
+        "Other Options": [
+            "Crear un endpoint público para la tabla de DynamoDB la expondría a Internet, lo que aumenta los riesgos de seguridad y no proporciona el control de acceso necesario para los microservicios.",
+            "Implementar VPC Peering podría permitir el acceso directo entre cuentas, pero no proporciona inherentemente el mecanismo de control de acceso requerido para la tabla de DynamoDB, haciéndolo menos seguro y más complicado de gestionar.",
+            "Usar autorizadores de AWS Lambda es un método principalmente adecuado para API Gateway y no se aplica directamente al control de acceso a recursos para tablas de DynamoDB, lo que lo convierte en una opción inadecuada en este contexto."
+        ]
+    },
+    {
+        "Question Number": "35",
+        "Situation": "Un equipo de DevOps está configurando un AWS CodePipeline para automatizar su proceso de despliegue. Quieren asegurarse de que el pipeline pueda ser activado por un evento de push en un repositorio de GitHub y también notificarles sobre los cambios en el estado del pipeline a través de CloudWatch Events. Además, requieren que se establezcan los permisos necesarios a nivel de recurso para cada etapa del pipeline.",
+        "Question": "¿Cuál de las siguientes configuraciones cumplirá con estos requisitos mientras asegura que se sigan las mejores prácticas de seguridad?",
+        "Options": {
+            "1": "Desplegar el pipeline usando AWS CloudFormation y configurarlo para enviar notificaciones a Amazon SNS para cambios de estado, evitando OAuth por razones de seguridad.",
+            "2": "Configurar un webhook en GitHub para activar el pipeline, pero monitorear los cambios de estado mediante polling del estado del pipeline usando funciones Lambda en lugar de CloudWatch Events.",
+            "3": "Usar un token de OAuth de GitHub para activar el pipeline directamente, y configurar CloudWatch Events para monitorear los cambios de estado mientras se aplican permisos a nivel de recurso para cada etapa.",
+            "4": "Iniciar manualmente el pipeline desde la Consola de Administración de AWS cada vez que haya un cambio en GitHub, y usar roles de IAM para gestionar permisos para las acciones del pipeline."
+        },
+        "Correct Answer": "Usar un token de OAuth de GitHub para activar el pipeline directamente, y configurar CloudWatch Events para monitorear los cambios de estado mientras se aplican permisos a nivel de recurso para cada etapa.",
+        "Explanation": "Esta opción integra correctamente GitHub a través de OAuth para activar el pipeline, asegura que se usen CloudWatch Events para monitorear los cambios de estado del pipeline y enfatiza los permisos a nivel de recurso en cada etapa, lo que se alinea con las mejores prácticas de seguridad.",
+        "Other Options": [
+            "Esta opción no es ideal porque iniciar manualmente el pipeline desde la consola es ineficiente y no integra mecanismos de activación automatizados, lo que va en contra del propósito de usar CodePipeline para flujos de trabajo de CI/CD.",
+            "Si bien configurar un webhook es un enfoque válido, usar funciones Lambda para hacer polling del estado del pipeline es menos eficiente en comparación con usar CloudWatch Events, que puede proporcionar notificaciones en tiempo real sin intervención manual.",
+            "Aunque desplegar a través de CloudFormation es una buena práctica, evitar OAuth para la integración con GitHub limita las capacidades de automatización del pipeline. Además, usar Amazon SNS no aborda directamente el requisito de notificaciones de cambios de estado."
+        ]
+    },
+    {
+        "Question Number": "36",
+        "Situation": "Una aplicación personalizada desplegada en AWS no está reportando sus estadísticas de uso a Amazon CloudWatch. La aplicación depende de una serie de archivos de registro para generar métricas, pero las métricas no están apareciendo en CloudWatch como se esperaba. La aplicación se está ejecutando en una instancia de EC2, y la instancia tiene el rol de IAM necesario adjunto para enviar registros a CloudWatch. El Administrador necesita diagnosticar la configuración de la aplicación para restaurar el reporte de métricas.",
+        "Question": "¿Cuáles de las siguientes son acciones válidas para analizar y remediar la configuración de la aplicación? (Seleccione Dos)",
+        "Options": {
+            "1": "Asegurarse de que el agente de CloudWatch esté instalado y configurado en la instancia de EC2.",
+            "2": "Verificar si la instancia de EC2 tiene suficientes recursos de CPU y memoria asignados.",
+            "3": "Verificar que los archivos de registro se estén generando en el directorio esperado.",
+            "4": "Confirmar que el rol de IAM adjunto a la instancia tiene los permisos correctos para CloudWatch.",
+            "5": "Reiniciar la instancia de EC2 para refrescar sus conexiones de red."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Verificar que los archivos de registro se estén generando en el directorio esperado.",
+            "Asegurarse de que el agente de CloudWatch esté instalado y configurado en la instancia de EC2."
+        ],
+        "Explanation": "Verificar que los archivos de registro se estén generando en el directorio esperado es crucial, ya que la ausencia de registros significaría que no se pueden reportar métricas. Asegurarse de que el agente de CloudWatch esté instalado y configurado correctamente también es esencial, ya que es responsable de enviar registros y métricas a CloudWatch. Sin estas configuraciones correctas, la aplicación no reportará sus estadísticas.",
+        "Other Options": [
+            "Verificar si la instancia de EC2 tiene suficientes recursos de CPU y memoria asignados no está directamente relacionado con el problema de registro y reporte de métricas. Si bien las limitaciones de recursos pueden afectar el rendimiento de la aplicación, no afectan necesariamente la capacidad de generar o reportar registros.",
+            "Confirmar que el rol de IAM adjunto a la instancia tiene los permisos correctos para CloudWatch es importante, pero dado que se indica que el rol ya está adjunto, esta opción no aborda el problema inmediato de configuración de generación de registros.",
+            "Reiniciar la instancia de EC2 para refrescar sus conexiones de red es innecesario para resolver el problema de métricas faltantes. Esta acción no aborda directamente ninguna configuración relacionada con los archivos de registro o el agente de CloudWatch."
+        ]
+    },
+    {
+        "Question Number": "37",
+        "Situation": "Una empresa necesita asegurar su aplicación web utilizando certificados SSL. Han registrado su dominio con Route 53 y quieren utilizar AWS Certificate Manager (ACM) para gestionar sus certificados SSL de manera eficiente. El equipo está considerando el mejor método para validar su dominio para la solicitud del certificado SSL.",
+        "Question": "¿Cuál de los siguientes métodos puede utilizar el equipo para validar su dominio al solicitar un certificado SSL de AWS Certificate Manager?",
+        "Options": {
+            "1": "Agregar un registro CNAME a la configuración de DNS para la validación a través de Route 53.",
+            "2": "Utilizar un servicio de terceros para validar la propiedad del dominio.",
+            "3": "Modificar la configuración de DNS para incluir un registro TXT para la validación.",
+            "4": "Responder a un correo electrónico enviado a una dirección asociada con el dominio para la validación."
+        },
+        "Correct Answer": "Responder a un correo electrónico enviado a una dirección asociada con el dominio para la validación.",
+        "Explanation": "La validación por correo electrónico es un método válido ofrecido por AWS Certificate Manager que requiere que el propietario del dominio responda a un correo electrónico enviado a una dirección de correo electrónico reconocida bajo el dominio. Este método es sencillo y no requiere cambios en los registros DNS, lo que lo hace adecuado para muchos usuarios.",
+        "Other Options": [
+            "Si bien modificar la configuración de DNS para incluir un registro TXT puede ser un método válido para la validación del dominio, no es el método específico descrito en la pregunta relacionado con las opciones de ACM para solicitudes de certificados SSL.",
+            "Agregar un registro CNAME es, de hecho, un método utilizado para la validación DNS, pero la pregunta solicita específicamente los métodos de validación disponibles, y la respuesta correcta proporcionada se centra en la validación por correo electrónico.",
+            "Utilizar un servicio de terceros para la validación del dominio no es un método soportado por AWS Certificate Manager. ACM requiere métodos de validación DNS o por correo electrónico para confirmar la propiedad del dominio."
+        ]
+    },
+    {
+        "Question Number": "38",
+        "Situation": "Una organización utiliza AWS Identity and Access Management (IAM) para controlar el acceso a sus recursos de AWS. Recientemente, los usuarios han comenzado a informar errores de denegación de acceso al intentar utilizar un bucket específico de S3 a pesar de tener los permisos necesarios definidos en sus políticas de IAM. El Ingeniero de Seguridad tiene la tarea de identificar y resolver estos problemas de autorización.",
+        "Question": "¿Cuál de las siguientes acciones debería tomar el Ingeniero de Seguridad para diagnosticar y resolver efectivamente los errores de denegación de acceso reportados por los usuarios?",
+        "Options": {
+            "1": "Verificar las políticas de IAM adjuntas a los usuarios para confirmar que contienen los permisos requeridos.",
+            "2": "Examinar los registros de AWS CloudTrail para ver si los eventos de denegación de acceso proporcionan más contexto sobre las fallas.",
+            "3": "Validar que los usuarios estén utilizando la región de AWS correcta al acceder al bucket de S3.",
+            "4": "Revisar la política del bucket de S3 para asegurarse de que permite el acceso a los roles de IAM en uso."
+        },
+        "Correct Answer": "Examinar los registros de AWS CloudTrail para ver si los eventos de denegación de acceso proporcionan más contexto sobre las fallas.",
+        "Explanation": "Examinar los registros de AWS CloudTrail es esencial, ya que proporcionan información detallada sobre las llamadas a la API de AWS, incluidas aquellas que fueron denegadas. Esto puede ayudar al Ingeniero a entender la causa de los errores de denegación de acceso, como si las solicitudes fueron bloqueadas por políticas de IAM o políticas del bucket de S3.",
+        "Other Options": [
+            "Revisar la política del bucket de S3 es importante, pero puede no proporcionar una visión definitiva sobre por qué se está denegando el acceso, ya que el problema también podría derivarse de políticas de IAM en conflicto.",
+            "Verificar las políticas de IAM adjuntas a los usuarios es una buena práctica, pero si las políticas son correctas y se otorgan permisos, puede que no conduzca a una resolución sin entender el contexto de la denegación de acceso.",
+            "Validar la región de AWS de los usuarios no está directamente relacionado con los errores de autorización. Los problemas de denegación de acceso suelen estar vinculados a políticas de IAM o políticas del bucket de S3 en lugar de la configuración de la región."
+        ]
+    },
+    {
+        "Question Number": "39",
+        "Situation": "Un equipo de seguridad es responsable de monitorear la utilización de recursos de AWS para asegurar el cumplimiento y detectar posibles anomalías de seguridad. Quieren implementar una solución que detecte automáticamente patrones inusuales en el uso de recursos y alerte al equipo.",
+        "Question": "¿Qué servicio de AWS debería utilizar el equipo para lograr la detección automática de anomalías basada en las tendencias de utilización de recursos?",
+        "Options": {
+            "1": "AWS Config para monitorear cambios de configuración y cumplimiento de recursos.",
+            "2": "Amazon GuardDuty para analizar la actividad de la cuenta y detectar amenazas.",
+            "3": "Amazon CloudWatch con funcionalidad de detección de anomalías habilitada en métricas.",
+            "4": "AWS CloudTrail para registrar llamadas a la API y rastrear la actividad del usuario."
+        },
+        "Correct Answer": "Amazon CloudWatch con funcionalidad de detección de anomalías habilitada en métricas.",
+        "Explanation": "Amazon CloudWatch proporciona capacidades de detección de anomalías integradas que pueden analizar métricas a lo largo del tiempo e identificar desviaciones de patrones esperados. Esto es esencial para detectar automáticamente tendencias inusuales en la utilización de recursos.",
+        "Other Options": [
+            "AWS Config se centra en rastrear cambios de configuración y asegurar el cumplimiento, pero no proporciona detección de anomalías para tendencias de utilización de recursos.",
+            "Amazon GuardDuty está diseñado para la detección de amenazas y proporciona información sobre actividad maliciosa, pero no se centra específicamente en anomalías de utilización de recursos.",
+            "AWS CloudTrail registra las llamadas a la API realizadas en la cuenta, lo cual es útil para auditoría, pero no ofrece detección automática de anomalías para patrones de uso de recursos."
+        ]
+    },
+    {
+        "Question Number": "40",
+        "Situation": "Una empresa de servicios financieros está implementando AWS Identity and Access Management (IAM) para asegurar que sus usuarios solo tengan los permisos necesarios para realizar sus funciones laborales. La empresa necesita hacer cumplir el principio de menor privilegio en sus cuentas de AWS.",
+        "Question": "¿Qué combinación de acciones se debe tomar para aplicar efectivamente el principio de menor privilegio? (Seleccione Dos)",
+        "Options": {
+            "1": "Revisar y ajustar regularmente las políticas de IAM para eliminar permisos innecesarios otorgados a los usuarios.",
+            "2": "Utilizar roles de IAM con permisos definidos para cada aplicación y asignarlos a los usuarios según sus requisitos laborales.",
+            "3": "Crear un único usuario de IAM con permisos administrativos para gestionar todos los recursos en las cuentas de AWS.",
+            "4": "Implementar políticas de IAM que otorguen a los usuarios solo los permisos necesarios para realizar sus tareas específicas.",
+            "5": "Asignar permisos de IAM basados en el principio de máximo privilegio para asegurar que los usuarios puedan acceder a todos los recursos."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Utilizar roles de IAM con permisos definidos para cada aplicación y asignarlos a los usuarios según sus requisitos laborales.",
+            "Implementar políticas de IAM que otorguen a los usuarios solo los permisos necesarios para realizar sus tareas específicas."
+        ],
+        "Explanation": "Utilizar roles de IAM con permisos definidos permite una clara separación de deberes y asegura que los usuarios tengan acceso solo a los recursos que necesitan para sus aplicaciones. Además, implementar políticas de IAM que estén adaptadas a tareas específicas refuerza el principio de menor privilegio al limitar los permisos de los usuarios al mínimo necesario para sus roles.",
+        "Other Options": [
+            "Crear un único usuario de IAM con permisos administrativos viola el principio de menor privilegio, ya que otorga acceso excesivo a un solo usuario, lo que puede llevar a riesgos de seguridad.",
+            "Asignar permisos de IAM basados en el máximo privilegio socava el principio de menor privilegio, ya que proporciona a los usuarios un acceso más amplio del necesario, aumentando la superficie de ataque.",
+            "Si bien revisar regularmente las políticas de IAM es una buena práctica, por sí sola no hace cumplir el menor privilegio. Sin implementar roles y políticas específicas que limiten el acceso, los usuarios pueden seguir teniendo permisos excesivos."
+        ]
+    },
+    {
+        "Question Number": "41",
+        "Situation": "Una empresa está desplegando una aplicación web en AWS que consiste en un front-end alojado en Amazon S3, un back-end en Amazon EC2 y una base de datos en Amazon RDS. El Ingeniero de Seguridad necesita asegurar que la arquitectura de la aplicación sea segura contra vulnerabilidades comunes mientras mantiene el rendimiento y la escalabilidad.",
+        "Question": "¿Cuál es la forma MÁS EFECTIVA de implementar la seguridad de infraestructura para esta arquitectura de aplicación web en capas?",
+        "Options": {
+            "1": "Utilizar Listas de Control de Acceso de Red (NACL) para restringir el acceso a la base de datos RDS.",
+            "2": "Crear roles de IAM para instancias de EC2 que permitan el acceso a S3 y RDS de manera segura.",
+            "3": "Utilizar Amazon CloudFront como una red de entrega de contenido para almacenar en caché activos estáticos.",
+            "4": "Desplegar cortafuegos de aplicaciones web (WAF) frente a la aplicación para filtrar tráfico malicioso."
+        },
+        "Correct Answer": "Desplegar cortafuegos de aplicaciones web (WAF) frente a la aplicación para filtrar tráfico malicioso.",
+        "Explanation": "Desplegar cortafuegos de aplicaciones web (WAF) frente a la aplicación proporciona una robusta capa de seguridad al filtrar y monitorear las solicitudes HTTP a la aplicación, protegiendo así contra ataques comunes basados en la web como inyección SQL y scripting entre sitios. Esto es esencial para mantener la integridad y seguridad de la aplicación en su conjunto.",
+        "Other Options": [
+            "Utilizar Listas de Control de Acceso de Red (NACL) puede ayudar a restringir el acceso a nivel de subred, pero no proporciona protección a nivel de aplicación contra vulnerabilidades que un WAF aborda específicamente.",
+            "Utilizar Amazon CloudFront es beneficioso para el rendimiento y la escalabilidad, pero no aborda directamente las preocupaciones de seguridad de infraestructura relacionadas con las vulnerabilidades de la aplicación.",
+            "Crear roles de IAM para instancias de EC2 mejora la seguridad al gestionar permisos, pero no protege la aplicación de amenazas externas, lo que lo hace menos efectivo para asegurar la arquitectura general en comparación con un WAF."
+        ]
+    },
+    {
+        "Question Number": "42",
+        "Situation": "El equipo de seguridad necesita asegurar que todas las actividades de la cuenta de AWS relacionadas con la gestión de acceso de usuarios sean registradas para fines de cumplimiento y auditoría. Quieren utilizar servicios de AWS para capturar y almacenar estos registros de manera efectiva, asegurándose de que incluyan los detalles necesarios para la investigación.",
+        "Question": "¿Qué servicio de AWS proporciona registros completos que incluyen información sobre la identidad del usuario, el tiempo de acceso y las acciones realizadas en los recursos de AWS?",
+        "Options": {
+            "1": "AWS IAM, ya que gestiona el acceso y los permisos de los usuarios a los recursos de AWS.",
+            "2": "Amazon CloudWatch, ya que rastrea el rendimiento de la aplicación y métricas de salud operativa.",
+            "3": "AWS Config, ya que registra cambios de configuración y el estado de cumplimiento de los recursos de AWS.",
+            "4": "AWS CloudTrail, ya que registra todas las llamadas a la API realizadas en la cuenta de AWS, detallando la identidad del usuario y las acciones realizadas."
+        },
+        "Correct Answer": "AWS CloudTrail, ya que registra todas las llamadas a la API realizadas en la cuenta de AWS, detallando la identidad del usuario y las acciones realizadas.",
+        "Explanation": "AWS CloudTrail proporciona registros detallados de todas las llamadas a la API realizadas dentro de una cuenta de AWS, incluyendo la identidad del usuario que realizó la llamada, el tiempo de la llamada, la dirección IP de origen y los recursos afectados. Esto lo convierte en el servicio ideal para registrar actividades de gestión de acceso de usuarios.",
+        "Other Options": [
+            "AWS Config se centra en rastrear cambios de configuración y estados de cumplimiento de los recursos de AWS en lugar de registrar llamadas a la API relacionadas con el acceso de usuarios.",
+            "Amazon CloudWatch se utiliza principalmente para monitorear y registrar métricas relacionadas con el rendimiento de la aplicación y no registra actividades de llamadas a la API.",
+            "AWS IAM es responsable de gestionar los permisos de los usuarios y el acceso a los recursos de AWS, pero no proporciona capacidades de registro para las acciones realizadas por los usuarios."
+        ]
+    },
+    {
+        "Question Number": "43",
+        "Situation": "Una startup está implementando una nueva aplicación web en AWS y quiere minimizar su superficie de ataque mientras asegura el cumplimiento de las mejores prácticas de seguridad. El equipo está considerando varias estrategias para asegurar su entorno de AWS.",
+        "Question": "¿Cuál de las siguientes estrategias debería implementar el equipo para reducir efectivamente la superficie de ataque de sus recursos de AWS?",
+        "Options": {
+            "1": "Usar Amazon Inspector para escanear la aplicación en busca de vulnerabilidades, habilitar AWS Shield para protección DDoS y configurar políticas de bucket S3 para permitir acceso público.",
+            "2": "Implementar AWS WAF para filtrar el tráfico web malicioso, implementar grupos de seguridad con reglas de menor privilegio y revisar regularmente los roles de IAM en busca de permisos innecesarios.",
+            "3": "Utilizar AWS CloudTrail para registrar llamadas a la API, implementar Amazon Macie para identificar datos sensibles y configurar AWS Config para evaluar el cumplimiento de la configuración.",
+            "4": "Configurar una arquitectura multi-región para distribuir recursos en diferentes ubicaciones geográficas, usar Route 53 para el enrutamiento DNS e implementar CloudFront para la entrega de contenido."
+        },
+        "Correct Answer": "Implementar AWS WAF para filtrar el tráfico web malicioso, implementar grupos de seguridad con reglas de menor privilegio y revisar regularmente los roles de IAM en busca de permisos innecesarios.",
+        "Explanation": "Este enfoque aborda directamente la reducción de la superficie de ataque al filtrar el tráfico malicioso, hacer cumplir controles de acceso estrictos y asegurar que los permisos se limiten a lo que es necesario para cada recurso, mitigando así las amenazas potenciales de manera efectiva.",
+        "Other Options": [
+            "Si bien usar Amazon Inspector y AWS Shield puede mejorar la seguridad, permitir el acceso público a las políticas de bucket S3 contradice el objetivo de reducir la superficie de ataque y expone los recursos a amenazas potenciales.",
+            "Una arquitectura multi-región y CloudFront pueden mejorar la disponibilidad y el rendimiento, pero no mitigan directamente las superficies de ataque. Estas estrategias se centran más en la redundancia y la entrega que en la seguridad.",
+            "Registrar llamadas a la API e identificar datos sensibles son importantes para el monitoreo y el cumplimiento, pero no reducen activamente la superficie de ataque. Estas medidas son reactivas en lugar de proactivas para minimizar la exposición."
+        ]
+    },
+    {
+        "Question Number": "44",
+        "Situation": "Una empresa está implementando AWS Key Management Service (KMS) para gestionar y asegurar claves criptográficas para sus aplicaciones. El equipo de seguridad necesita asegurarse de que las políticas de IAM y las configuraciones de concesión adecuadas estén en su lugar para controlar el acceso a las claves gestionadas por el cliente (CMKs). Quieren permitir que servicios específicos de AWS usen las claves mientras previenen llamadas directas a la API no autorizadas. Además, necesitan entender las implicaciones de los tokens de concesión y las mejores prácticas de gestión de claves.",
+        "Question": "¿Qué estrategia debería adoptar el equipo de seguridad para asegurarse de que solo los servicios autorizados de AWS puedan usar las CMKs mientras se previene el acceso directo a la API?",
+        "Options": {
+            "1": "Adjuntar políticas basadas en recursos a las CMKs que incluyan la clave de condición kms:ViaService para restringir el acceso a servicios específicos de AWS.",
+            "2": "Implementar una política de clave gestionada por el cliente que niegue el acceso a todos los servicios de AWS por defecto, requiriendo permisos explícitos para cada servicio.",
+            "3": "Crear concesiones para cada servicio de AWS que requiera acceso a las CMKs, permitiéndoles usar las claves sin ninguna restricción.",
+            "4": "Usar políticas de IAM que permitan todas las acciones en las CMKs y restrinjan el acceso únicamente en función de la identidad del usuario."
+        },
+        "Correct Answer": "Adjuntar políticas basadas en recursos a las CMKs que incluyan la clave de condición kms:ViaService para restringir el acceso a servicios específicos de AWS.",
+        "Explanation": "Usar políticas basadas en recursos con la clave de condición kms:ViaService permite un control detallado sobre qué servicios de AWS pueden usar las CMKs, previniendo efectivamente el acceso directo a la API desde fuentes no autorizadas. Esta es una mejor práctica para asegurar las claves de KMS mientras se asegura el acceso necesario para servicios legítimos.",
+        "Other Options": [
+            "Usar políticas de IAM que permitan todas las acciones en las CMKs y restrinjan el acceso únicamente en función de la identidad del usuario no previene efectivamente el acceso no autorizado a los servicios y podría llevar a riesgos de seguridad potenciales.",
+            "Crear concesiones para cada servicio de AWS que requiera acceso a las CMKs, permitiéndoles usar las claves sin ninguna restricción, no impone controles y podría exponer las claves a un uso no intencionado.",
+            "Implementar una política de clave gestionada por el cliente que niegue el acceso a todos los servicios de AWS por defecto, requiriendo permisos explícitos para cada servicio, puede crear complejidad operativa y dificultad en la gestión del acceso a través de múltiples servicios."
+        ]
+    },
+    {
+        "Question Number": "45",
+        "Situation": "Una empresa de servicios financieros está obligada a implementar mecanismos de protección de datos para asegurar que los datos sensibles de los clientes almacenados en Amazon S3 no puedan ser modificados o eliminados por usuarios no autorizados. La empresa está considerando varios servicios de AWS para hacer cumplir estos requisitos mientras asegura el cumplimiento de los estándares regulatorios.",
+        "Question": "¿Cuál es la solución más efectiva para proteger la integridad de los datos sensibles en Amazon S3 y prevenir modificaciones?",
+        "Options": {
+            "1": "Configurar una política de clave KMS que restrinja el acceso al bucket S3 y permita que solo roles de IAM específicos realicen modificaciones.",
+            "2": "Habilitar S3 Object Lock en modo de cumplimiento en el bucket S3 y configurar un período de retención para prevenir la eliminación o modificación de objetos.",
+            "3": "Usar AWS Backup para crear copias de seguridad regulares de los datos del bucket S3, permitiendo la restauración en caso de modificaciones accidentales.",
+            "4": "Implementar versionado de S3 para mantener múltiples versiones de objetos en el bucket S3, permitiendo la recuperación de estados anteriores."
+        },
+        "Correct Answer": "Habilitar S3 Object Lock en modo de cumplimiento en el bucket S3 y configurar un período de retención para prevenir la eliminación o modificación de objetos.",
+        "Explanation": "Habilitar S3 Object Lock en modo de cumplimiento es la solución más efectiva ya que asegura que una vez que un objeto está bloqueado, no puede ser eliminado o modificado hasta que expire el período de retención especificado, manteniendo así la integridad de los datos y el cumplimiento de los estándares regulatorios.",
+        "Other Options": [
+            "Implementar el versionado de S3 permite recuperar versiones anteriores de objetos, pero no previene modificaciones o eliminaciones de la versión actual, por lo que no protege completamente la integridad de los datos.",
+            "Usar AWS Backup ayuda a crear copias de seguridad, pero no previene modificaciones directas a los datos en el bucket S3, lo cual es un requisito para proteger la integridad de los datos.",
+            "Configurar una política de clave KMS puede restringir el acceso al bucket S3, pero no previene inherentemente modificaciones a los objetos mismos, lo que lo hace insuficiente para el requisito específico de proteger la integridad de los datos."
+        ]
+    },
+    {
+        "Question Number": "46",
+        "Situation": "Un equipo de desarrollo está implementando una nueva aplicación en AWS que requiere acceso a credenciales sensibles de la base de datos. Necesitan una solución que pase estos secretos de manera segura a las instancias de cómputo sin codificarlos en el código de la aplicación. La solución también debe permitir una fácil rotación de las credenciales.",
+        "Question": "¿Cuál de las siguientes soluciones proporciona la forma MÁS segura de gestionar y pasar secretos a las cargas de trabajo de cómputo en este escenario?",
+        "Options": {
+            "1": "Usar AWS Systems Manager Parameter Store para almacenar las credenciales de la base de datos y recuperarlas de forma segura utilizando la AWS CLI.",
+            "2": "Incrustar las credenciales de la base de datos directamente en el código de la aplicación y usar roles de IAM para el control de acceso.",
+            "3": "Usar AWS Secrets Manager para almacenar las credenciales de la base de datos y recuperarlas en tiempo de ejecución utilizando el AWS SDK.",
+            "4": "Almacenar las credenciales de la base de datos en un bucket de S3 con acceso restringido y leerlas desde la aplicación al iniciar."
+        },
+        "Correct Answer": "Usar AWS Secrets Manager para almacenar las credenciales de la base de datos y recuperarlas en tiempo de ejecución utilizando el AWS SDK.",
+        "Explanation": "AWS Secrets Manager está diseñado específicamente para gestionar información sensible como las credenciales de la base de datos. Proporciona características integradas para el almacenamiento seguro, la recuperación y la rotación automática de secretos, asegurando que los datos sensibles no estén codificados o expuestos.",
+        "Other Options": [
+            "Almacenar las credenciales de la base de datos en un bucket de S3, incluso con acceso restringido, no es seguro. Los buckets de S3 pueden estar mal configurados, exponiendo potencialmente información sensible a accesos no autorizados.",
+            "Incrustar credenciales directamente en el código de la aplicación es una mala práctica de seguridad. Hace que los secretos sean vulnerables a la exposición a través de filtraciones de código y no proporciona una forma fácil de rotarlos de manera segura.",
+            "Si bien AWS Systems Manager Parameter Store puede almacenar información sensible, carece de algunas de las características avanzadas de Secrets Manager, como la rotación automática y las políticas de acceso integradas, lo que lo hace menos adecuado para gestionar credenciales de bases de datos."
+        ]
+    },
+    {
+        "Question Number": "47",
+        "Situation": "Una institución financiera está implementando una solución integral de monitoreo de seguridad en AWS para garantizar el cumplimiento de los requisitos regulatorios. El equipo de seguridad quiere centralizar las alertas y hallazgos de seguridad de varios servicios de AWS para obtener una vista unificada de su postura de seguridad. Están considerando usar AWS Security Hub junto con otros servicios para cumplir con este objetivo.",
+        "Question": "¿Qué enfoque debería tomar el equipo de seguridad para configurar AWS Security Hub de manera efectiva para el monitoreo de seguridad centralizado?",
+        "Options": {
+            "1": "Habilitar AWS Security Hub e integrarlo con Amazon CloudWatch para el registro. Asegurarse de que todas las cuentas de AWS estén vinculadas a un solo Security Hub.",
+            "2": "Habilitar AWS Security Hub y configurar AWS Config para rastrear cambios en los recursos. Usar AWS Systems Manager para verificaciones de cumplimiento.",
+            "3": "Habilitar AWS Security Hub y usar AWS IAM Access Analyzer para monitorear configuraciones de acceso. Vincular hallazgos a un panel centralizado para revisión.",
+            "4": "Habilitar AWS Security Hub y configurarlo para recibir hallazgos de servicios de AWS como Amazon GuardDuty, Amazon Inspector y Amazon Macie. Asegurarse de que las fuentes de datos estén conectadas correctamente."
+        },
+        "Correct Answer": "Habilitar AWS Security Hub y configurarlo para recibir hallazgos de servicios de AWS como Amazon GuardDuty, Amazon Inspector y Amazon Macie. Asegurarse de que las fuentes de datos estén conectadas correctamente.",
+        "Explanation": "Este enfoque asegura que AWS Security Hub agregue hallazgos de múltiples servicios de seguridad de AWS, proporcionando una vista integral de la postura de seguridad. Permite al equipo de seguridad responder a amenazas de manera efectiva y cumplir con los requisitos de cumplimiento.",
+        "Other Options": [
+            "Si bien integrar AWS Security Hub con Amazon CloudWatch para el registro puede proporcionar algunas ideas, no centraliza específicamente los hallazgos de seguridad de varios servicios de AWS, lo cual es esencial para una solución integral de monitoreo de seguridad.",
+            "Usar AWS IAM Access Analyzer es útil para monitorear configuraciones de acceso, pero no se integra directamente con AWS Security Hub para proporcionar una vista centralizada de los hallazgos de seguridad de otros servicios.",
+            "Rastrear cambios en los recursos con AWS Config y usar AWS Systems Manager para verificaciones de cumplimiento son importantes para la gobernanza, pero no proporcionan las capacidades de monitoreo de seguridad centralizado que ofrece AWS Security Hub al integrarse con servicios de seguridad."
+        ]
+    },
+    {
+        "Question Number": "48",
+        "Situation": "Un administrador de red está solucionando problemas de rendimiento en una aplicación que se ejecuta en instancias de Amazon EC2. Para obtener información sobre los patrones de tráfico e identificar posibles cuellos de botella, el administrador decide capturar muestras de tráfico para su análisis.",
+        "Question": "¿Cuál de los siguientes métodos sería la forma MÁS efectiva de capturar y analizar muestras de tráfico de instancias de EC2 de manera segura?",
+        "Options": {
+            "1": "Configurar un host bastión para SSH en las instancias de EC2 y capturar manualmente el tráfico usando tcpdump.",
+            "2": "Implementar AWS Traffic Mirroring en las instancias de EC2 relevantes para capturar y analizar el tráfico.",
+            "3": "Desplegar un dispositivo de red externo para capturar el tráfico y enviarlo a un servicio de registro centralizado.",
+            "4": "Usar VPC Flow Logs para registrar información sobre el tráfico IP que va hacia y desde las instancias de EC2."
+        },
+        "Correct Answer": "Implementar AWS Traffic Mirroring en las instancias de EC2 relevantes para capturar y analizar el tráfico.",
+        "Explanation": "AWS Traffic Mirroring permite capturar e inspeccionar el tráfico de red en tiempo real desde sus instancias de EC2, proporcionando información detallada para solucionar problemas de rendimiento mientras se mantienen las mejores prácticas de seguridad.",
+        "Other Options": [
+            "VPC Flow Logs proporcionan visibilidad limitada del tráfico pero no capturan datos a nivel de paquete, lo que los hace menos efectivos para un análisis profundo en comparación con Traffic Mirroring.",
+            "Usar un host bastión y tcpdump requiere intervención manual y no escala bien, lo que lo hace ineficiente para capturar tráfico en múltiples instancias.",
+            "Desplegar un dispositivo de red externo introduce complejidad adicional, potencial latencia y riesgos de seguridad, y no es necesario cuando AWS Traffic Mirroring está disponible."
+        ]
+    },
+    {
+        "Question Number": "49",
+        "Situation": "Una empresa almacena datos sensibles de clientes en Amazon S3 y quiere asegurarse de que todos los datos en reposo estén cifrados utilizando un algoritmo de cifrado fuerte. El equipo de seguridad es responsable de configurar los ajustes necesarios para cumplir con los requisitos de cumplimiento.",
+        "Question": "¿Cuál de las siguientes opciones es la que el equipo de seguridad probablemente implementará para garantizar que todos los datos almacenados en Amazon S3 estén cifrados en reposo?",
+        "Options": {
+            "1": "Habilitar la versión de bucket y establecer una política de ciclo de vida",
+            "2": "Configurar el cifrado del lado del servidor con claves gestionadas por Amazon S3 (SSE-S3)",
+            "3": "Usar notificaciones de eventos de Amazon S3 para activar funciones de Lambda",
+            "4": "Implementar políticas de AWS Identity and Access Management (IAM) para el control de acceso"
+        },
+        "Correct Answer": "Configurar el cifrado del lado del servidor con claves gestionadas por Amazon S3 (SSE-S3)",
+        "Explanation": "Configurar el cifrado del lado del servidor con claves gestionadas por Amazon S3 (SSE-S3) garantiza que todos los objetos almacenados en el bucket de S3 estén automáticamente cifrados en reposo utilizando algoritmos de cifrado fuertes. Este es un enfoque directo para cumplir con los requisitos de protección de datos para información sensible.",
+        "Other Options": [
+            "Habilitar la versión de bucket y establecer una política de ciclo de vida no proporciona inherentemente cifrado para los datos en reposo. Estas características gestionan las versiones de los objetos y la gestión del ciclo de vida, pero no aseguran los datos a través del cifrado.",
+            "Implementar políticas de AWS Identity and Access Management (IAM) para el control de acceso se centra en gestionar permisos y no proporciona cifrado para los datos en reposo. Si bien el control de acceso es crucial, no aborda el cifrado de los datos almacenados.",
+            "Usar notificaciones de eventos de Amazon S3 para activar funciones de Lambda está relacionado con arquitecturas impulsadas por eventos y no se refiere al cifrado de datos en reposo. Este enfoque se trata más de automatización y procesamiento que de asegurar los datos."
+        ]
+    },
+    {
+        "Question Number": "50",
+        "Situation": "Una empresa de servicios financieros está utilizando Amazon CloudFront como una red de entrega de contenido para su aplicación web. Para mejorar la postura de seguridad en torno a sus servicios de borde, el Arquitecto de Seguridad quiere implementar registro, monitoreo y alertas para todas las solicitudes que pasen a través de CloudFront. La empresa necesita asegurarse de que puede detectar ataques potenciales en tiempo real.",
+        "Question": "¿Qué combinación de opciones debería implementarse en este escenario? (Seleccione dos)",
+        "Options": {
+            "1": "Configurar una función de AWS Lambda para analizar los registros de CloudFront en tiempo real en busca de actividad sospechosa.",
+            "2": "Habilitar el registro de AWS CloudTrail para la distribución de CloudFront para rastrear llamadas a la API y cambios.",
+            "3": "Activar AWS Shield Advanced para proteger contra ataques de Denegación de Servicio Distribuida (DDoS).",
+            "4": "Integrar Amazon CloudWatch con CloudFront para crear métricas y alertas para altas tasas de solicitudes o errores 5xx.",
+            "5": "Usar reglas de AWS Config para monitorear la configuración de las distribuciones de CloudFront para cumplimiento."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Integrar Amazon CloudWatch con CloudFront para crear métricas y alertas para altas tasas de solicitudes o errores 5xx.",
+            "Activar AWS Shield Advanced para proteger contra ataques de Denegación de Servicio Distribuida (DDoS)."
+        ],
+        "Explanation": "Integrar Amazon CloudWatch con CloudFront permite la creación de métricas y alertas que pueden ayudar a detectar picos inusuales en el tráfico o errores, que son indicativos de ataques potenciales. Activar AWS Shield Advanced proporciona protección mejorada contra DDoS, asegurando que la aplicación permanezca disponible durante tales ataques.",
+        "Other Options": [
+            "Habilitar el registro de AWS CloudTrail para CloudFront es útil para auditar llamadas a la API, pero no proporciona monitoreo en tiempo real ni métricas sobre patrones de tráfico o ataques potenciales.",
+            "Usar reglas de AWS Config es beneficioso para asegurar el cumplimiento con los estándares de configuración, pero no monitorea directamente el tráfico en tiempo real ni detecta ataques.",
+            "Configurar una función de AWS Lambda para analizar los registros de CloudFront en tiempo real en busca de actividad sospechosa es una buena práctica, pero agrega complejidad y puede no proporcionar detección inmediata en comparación con el uso de métricas de CloudWatch."
+        ]
+    },
+    {
+        "Question Number": "51",
+        "Situation": "Una empresa está implementando una nueva aplicación web en AWS que necesita ser altamente disponible y segura contra amenazas comunes. La aplicación será accesible a través de Internet y debe manejar niveles variables de tráfico. El Arquitecto de Seguridad tiene la tarea de implementar un enfoque de seguridad en múltiples capas que combine servicios de seguridad de borde y balanceo de carga para una protección y rendimiento óptimos.",
+        "Question": "¿Qué solución proporciona la defensa en capas MÁS efectiva para la aplicación web contra amenazas como ataques DDoS y exploits web?",
+        "Options": {
+            "1": "Utilizar Amazon CloudFront como una red de entrega de contenido (CDN) e implementar AWS WAF para filtrar el tráfico entrante antes de que llegue al balanceador de carga.",
+            "2": "Desplegar la aplicación directamente en instancias de EC2 y configurar grupos de seguridad para restringir el acceso solo a direcciones IP específicas.",
+            "3": "Usar AWS Global Accelerator para enrutar el tráfico a la aplicación e implementar Amazon Route 53 para la gestión de DNS sin medidas de seguridad adicionales.",
+            "4": "Configurar un Elastic Load Balancer (ELB) para distribuir el tráfico entre instancias de EC2 y confiar en la configuración estándar de grupos de seguridad para protección."
+        },
+        "Correct Answer": "Utilizar Amazon CloudFront como una red de entrega de contenido (CDN) e implementar AWS WAF para filtrar el tráfico entrante antes de que llegue al balanceador de carga.",
+        "Explanation": "Utilizar Amazon CloudFront junto con AWS WAF proporciona una robusta capa de seguridad al filtrar y bloquear solicitudes maliciosas antes de que lleguen a la capa de aplicación, mitigando efectivamente ataques DDoS y exploits web. Este enfoque de defensa en capas mejora la seguridad y el rendimiento.",
+        "Other Options": [
+            "Desplegar la aplicación directamente en instancias de EC2 solo con acceso restringido a través de grupos de seguridad no proporciona una protección adecuada contra amenazas web o ataques DDoS, ya que carece de las defensas proactivas ofrecidas por servicios de borde como CloudFront y WAF.",
+            "Usar AWS Global Accelerator y Route 53 sin medidas de seguridad adicionales no proporciona ninguna forma de firewall de aplicación web o protección contra DDoS, dejando la aplicación vulnerable a amenazas comunes.",
+            "Confiar únicamente en Elastic Load Balancer y configuraciones estándar de grupos de seguridad no aborda ataques potenciales a nivel de aplicación o amenazas DDoS, ya que no incorpora ningún filtrado avanzado o capacidades de CDN."
+        ]
+    },
+    {
+        "Question Number": "52",
+        "Situation": "Un administrador de sistemas tiene la tarea de configurar el acceso SSH seguro a instancias EC2 recién provisionadas utilizando un par de claves administrado por el cliente. El administrador es usuario de Mac y debe asegurarse de que el par de claves se importe correctamente mientras se adhiere a las mejores prácticas de AWS.",
+        "Question": "¿Cuál es la secuencia correcta de pasos para que el administrador importe con éxito un par de claves para el acceso SSH a las instancias EC2?",
+        "Options": {
+            "1": "Generar una clave privada con openssl, cambiar permisos, generar la clave pública y luego importar la clave pública a EC2.",
+            "2": "Generar una clave privada usando openssl, generar la clave pública, cambiar los permisos de la clave privada e importar la clave pública a EC2.",
+            "3": "Generar una clave privada con openssl, importar la clave pública a EC2, cambiar los permisos de la clave privada y luego generar una clave pública.",
+            "4": "Generar una clave pública usando openssl, importar la clave pública a EC2, generar una clave privada y cambiar permisos."
+        },
+        "Correct Answer": "Generar una clave privada usando openssl, generar la clave pública, cambiar los permisos de la clave privada e importar la clave pública a EC2.",
+        "Explanation": "Los pasos correctos implican generar primero una clave privada, luego generar una clave pública a partir de ella, ajustar los permisos de la clave privada por razones de seguridad y, finalmente, importar la clave pública en EC2 para habilitar el acceso SSH.",
+        "Other Options": [
+            "Esta opción ordena incorrectamente los pasos al cambiar permisos antes de generar la clave pública, lo cual no es consistente con el proceso requerido.",
+            "Esta opción comienza incorrectamente con la generación de la clave pública, que solo debe hacerse después de que se haya creado la clave privada.",
+            "Esta opción importa incorrectamente la clave pública antes de cambiar los permisos de la clave privada, lo que puede representar un riesgo de seguridad."
+        ]
+    },
+    {
+        "Question Number": "53",
+        "Situation": "Una organización ha configurado múltiples grupos de seguridad para sus instancias de Amazon EC2. El equipo de seguridad ha notado que varios grupos de seguridad permiten acceso entrante sin restricciones a ciertos puertos, lo que representa un riesgo para la postura de seguridad general. El equipo quiere identificar y eliminar el acceso a la red innecesario para mejorar la seguridad.",
+        "Question": "¿Cuál de las siguientes acciones debería tomar el equipo de seguridad para abordar el acceso a la red innecesario en este escenario?",
+        "Options": {
+            "1": "Implementar AWS WAF para filtrar el tráfico entrante y bloquear todas las solicitudes de fuentes desconocidas.",
+            "2": "Eliminar todos los grupos de seguridad asociados con las instancias de EC2 para prevenir cualquier acceso a la red.",
+            "3": "Revisar todas las reglas de los grupos de seguridad y modificarlas para restringir el acceso solo a direcciones IP de confianza y puertos necesarios.",
+            "4": "Habilitar AWS Shield Advanced para proporcionar protección mejorada contra ataques DDoS en todas las interfaces de red."
+        },
+        "Correct Answer": "Revisar todas las reglas de los grupos de seguridad y modificarlas para restringir el acceso solo a direcciones IP de confianza y puertos necesarios.",
+        "Explanation": "Esta acción aborda directamente la necesidad de identificar y restringir el acceso a la red innecesario al revisar las reglas de los grupos de seguridad existentes y asegurarse de que solo se permita el tráfico legítimo. Equilibra la seguridad con la flexibilidad operativa.",
+        "Other Options": [
+            "Esta opción no es viable ya que eliminar todos los grupos de seguridad resultaría en ningún acceso a la red para las instancias de EC2, lo que podría interrumpir las operaciones de servicio legítimas.",
+            "Si bien AWS Shield Advanced proporciona protección contra ataques DDoS, no aborda específicamente el problema del acceso a la red innecesario y no modifica las reglas de los grupos de seguridad.",
+            "Implementar AWS WAF puede ayudar a filtrar el tráfico entrante, pero no resuelve el problema central de las reglas de grupos de seguridad demasiado permisivas y podría llevar a configuraciones incorrectas."
+        ]
+    },
+    {
+        "Question Number": "54",
+        "Situation": "Un analista de seguridad ha detectado actividad inusual asociada con una cuenta de usuario IAM específica, lo que indica una posible violación de credenciales. El analista necesita implementar una estrategia para invalidar las credenciales comprometidas y rotarlas de manera segura para prevenir un acceso no autorizado adicional.",
+        "Question": "¿Cuál de las siguientes acciones debería tomar el analista para gestionar de manera efectiva la invalidación y rotación de credenciales en este escenario?",
+        "Options": {
+            "1": "Usar AWS Secrets Manager para rotar las credenciales del usuario IAM y actualizar automáticamente las aplicaciones asociadas con las nuevas credenciales.",
+            "2": "Eliminar manualmente al usuario IAM y crear un nuevo usuario con los mismos permisos, luego actualizar todas las aplicaciones con las nuevas claves de acceso.",
+            "3": "Deshabilitar al usuario IAM y generar una nueva clave de acceso, luego rotar la nueva clave de acceso usando AWS Systems Manager Parameter Store.",
+            "4": "Cambiar la contraseña del usuario IAM y habilitar la autenticación multifactor (MFA) para mejorar la seguridad contra ataques adicionales."
+        },
+        "Correct Answer": "Usar AWS Secrets Manager para rotar las credenciales del usuario IAM y actualizar automáticamente las aplicaciones asociadas con las nuevas credenciales.",
+        "Explanation": "Usar AWS Secrets Manager permite la rotación automatizada de credenciales mientras actualiza todas las aplicaciones que dependen de estas credenciales sin problemas. Esto minimiza el tiempo de inactividad y reduce el riesgo de acceso no autorizado tras una violación.",
+        "Other Options": [
+            "Eliminar manualmente al usuario IAM no es una forma eficiente de manejar la violación de credenciales, ya que implica una carga significativa y puede llevar a la inactividad de la aplicación. Crear un nuevo usuario con los mismos permisos no aborda el problema inmediato de la invalidación de credenciales.",
+            "Deshabilitar al usuario IAM por sí solo no invalida las claves de acceso existentes, que aún pueden ser utilizadas hasta que se eliminen explícitamente. Generar una nueva clave de acceso sin un proceso de rotación automatizado no asegura efectivamente el entorno.",
+            "Cambiar la contraseña y habilitar MFA mejora la seguridad, pero no aborda la invalidación y rotación de las claves de acceso. Esta opción no mitiga completamente el riesgo de violación relacionado con las claves de acceso."
+        ]
+    },
+    {
+        "Question Number": "55",
+        "Situation": "Una empresa está migrando sus aplicaciones a AWS y necesita entender las responsabilidades de seguridad como parte del Modelo de Responsabilidad Compartida. Quieren asegurarse de que están cumpliendo con sus obligaciones mientras aprovechan eficazmente las medidas de seguridad de AWS.",
+        "Question": "En el contexto del Modelo de Responsabilidad Compartida, ¿cuál de las siguientes responsabilidades es principalmente responsabilidad del cliente al utilizar los servicios de AWS?",
+        "Options": {
+            "1": "Configurar los servicios gestionados por AWS para cumplir con los requisitos de cumplimiento sin intervención del cliente.",
+            "2": "Gestionar la seguridad de las aplicaciones que se ejecutan en AWS, incluyendo la aplicación de parches de seguridad y actualizaciones.",
+            "3": "Asegurar que los centros de datos de AWS estén físicamente seguros y protegidos contra accesos no autorizados.",
+            "4": "Mantener la seguridad del hardware y software subyacentes utilizados en los servicios de AWS."
+        },
+        "Correct Answer": "Gestionar la seguridad de las aplicaciones que se ejecutan en AWS, incluyendo la aplicación de parches de seguridad y actualizaciones.",
+        "Explanation": "El cliente es responsable de la seguridad de sus aplicaciones y datos dentro del entorno de AWS, lo que incluye gestionar los parches de seguridad y actualizaciones para sus aplicaciones y configuraciones.",
+        "Other Options": [
+            "Esta opción es incorrecta porque la seguridad física de los centros de datos de AWS es responsabilidad de AWS, no del cliente.",
+            "Esta opción es incorrecta ya que los servicios gestionados por AWS son configurados y gestionados por AWS, pero los clientes aún deben asegurarse de que sus aplicaciones cumplan con sus propios requisitos de seguridad y cumplimiento.",
+            "Esta opción es incorrecta porque el mantenimiento del hardware y software subyacentes utilizados en los servicios de AWS es responsabilidad exclusiva de AWS."
+        ]
+    },
+    {
+        "Question Number": "56",
+        "Situation": "Una organización está implementando una nueva estrategia de cifrado utilizando AWS KMS para asegurar datos sensibles. El equipo de seguridad está particularmente interesado en utilizar Claves Gestionadas por el Cliente (CMKs) para mantener el control total sobre sus claves de cifrado. Quieren entender las implicaciones de usar diferentes tipos de CMKs y el proceso para gestionarlas de manera efectiva.",
+        "Question": "¿Cuál de las siguientes afirmaciones sobre las Claves Gestionadas por el Cliente (CMKs) en AWS KMS es VERDADERA?",
+        "Options": {
+            "1": "Las Claves Gestionadas por el Cliente pueden ser exportadas y compartidas con otras cuentas de AWS para acceso entre cuentas.",
+            "2": "Las Claves Gestionadas por el Cliente proporcionan control total al cliente, incluyendo la capacidad de deshabilitar y programar la eliminación.",
+            "3": "Las Claves Gestionadas por el Cliente son gestionadas automáticamente por AWS y no requieren intervención del cliente.",
+            "4": "Las Claves Gestionadas por el Cliente pueden ser eliminadas inmediatamente después de su creación sin ningún período de espera."
+        },
+        "Correct Answer": "Las Claves Gestionadas por el Cliente proporcionan control total al cliente, incluyendo la capacidad de deshabilitar y programar la eliminación.",
+        "Explanation": "Las Claves Gestionadas por el Cliente (CMKs) efectivamente dan control total al cliente, permitiéndoles gestionar las acciones del ciclo de vida de las claves, incluyendo la desactivación y la programación de eliminación. Estas claves están destinadas a clientes que desean mantener un mayor nivel de control sobre sus procesos de gestión de claves.",
+        "Other Options": [
+            "Las Claves Gestionadas por el Cliente no pueden ser exportadas; están diseñadas para ser utilizadas únicamente dentro de la cuenta de AWS que las creó, asegurando que las claves permanezcan bajo el control del cliente.",
+            "Las Claves Gestionadas por el Cliente no pueden ser eliminadas inmediatamente; primero deben ser deshabilitadas y tener un período de espera de 7 a 30 días antes de que se pueda realizar la eliminación.",
+            "Las Claves Gestionadas por el Cliente no son gestionadas automáticamente por AWS; son gestionadas por el cliente, quien es responsable de su ciclo de vida y seguridad."
+        ]
+    },
+    {
+        "Question Number": "57",
+        "Situation": "Un equipo está gestionando un bucket de S3 que contiene datos sensibles. Han configurado el versionado para asegurar que todas las versiones de los objetos, incluyendo las eliminadas, permanezcan disponibles. También están considerando usar bloqueo de objetos y políticas de ciclo de vida para gestionar la retención y eliminación de datos. El equipo quiere asegurarse de que ciertos objetos no puedan ser eliminados o sobrescritos hasta una fecha específica, mientras implementan un proceso de eliminación seguro para versiones más antiguas de los objetos.",
+        "Question": "¿Qué combinación de características debería implementar el equipo para cumplir con sus requisitos de protección de versiones de objetos y gestión del ciclo de vida de los datos?",
+        "Options": {
+            "1": "Usar el versionado de S3 con MFA Delete habilitado, y crear una política de ciclo de vida para trasladar versiones más antiguas a S3 Glacier.",
+            "2": "Configurar SSE-KMS para cifrado y habilitar el versionado; las políticas de ciclo de vida eliminarán versiones expiradas sin configuraciones adicionales.",
+            "3": "Habilitar S3 Object Lock en modo de Cumplimiento y configurar políticas de ciclo de vida para eliminar versiones más antiguas después de un período establecido.",
+            "4": "Habilitar S3 Object Lock en modo de Gobernanza con Retención Legal, y usar políticas de ciclo de vida para expirar automáticamente versiones antiguas."
+        },
+        "Correct Answer": "Habilitar S3 Object Lock en modo de Cumplimiento y configurar políticas de ciclo de vida para eliminar versiones más antiguas después de un período establecido.",
+        "Explanation": "Habilitar S3 Object Lock en modo de Cumplimiento asegura que las versiones de los objetos no puedan ser eliminadas o sobrescritas hasta que expire el período de retención especificado. Combinar esto con políticas de ciclo de vida permite al equipo automatizar la eliminación de versiones más antiguas después de un período definido, cumpliendo con los requisitos de protección y gestión.",
+        "Other Options": [
+            "Usar el versionado de S3 con MFA Delete habilitado añade una capa extra de seguridad para la eliminación, pero no previene la sobrescritura. Además, trasladar versiones más antiguas a S3 Glacier no cumple con el requisito de retener esas versiones hasta una fecha específica.",
+            "Habilitar S3 Object Lock en modo de Gobernanza con Retención Legal permite cierta flexibilidad, pero no previene la eliminación por parte de usuarios con el permiso s3:BypassGovernanceMode. Las políticas de ciclo de vida para expirar versiones antiguas no se alinean con el requisito de protegerlas hasta una fecha específica.",
+            "Configurar SSE-KMS para cifrado asegura que los datos estén cifrados, pero no proporciona ninguna protección de versiones ni gestión del ciclo de vida. Se necesitan políticas de ciclo de vida para eliminar versiones expiradas, pero sin bloqueo de objetos, no hay garantía contra la eliminación prematura o sobrescritura."
+        ]
+    },
+    {
+        "Question Number": "58",
+        "Situation": "Una empresa está migrando su aplicación heredada a una arquitectura de microservicios utilizando contenedores de AWS. El equipo de desarrollo ha elegido utilizar Amazon Elastic Container Service (ECS) con Fargate para el despliegue sin servidor. Necesitan asegurarse de que sus contenedores puedan comunicarse de manera segura con otros servicios de AWS mientras cumplen con las mejores prácticas de seguridad.",
+        "Question": "¿Cuál es el mejor enfoque para que el equipo de desarrollo permita que sus contenedores accedan a los recursos de AWS de manera segura sin codificar credenciales en el código de la aplicación?",
+        "Options": {
+            "1": "Usar roles de IAM para tareas para otorgar los permisos necesarios a los contenedores sin incluir credenciales en el código.",
+            "2": "Crear un usuario de IAM con permisos para acceder a los recursos de AWS y asignar las credenciales a las variables de entorno del contenedor.",
+            "3": "Almacenar las claves de acceso de AWS y las claves secretas en un archivo de configuración dentro del contenedor para acceder a los recursos de AWS.",
+            "4": "Utilizar AWS Secrets Manager para almacenar las credenciales y recuperarlas en el código de la aplicación cuando sea necesario."
+        },
+        "Correct Answer": "Usar roles de IAM para tareas para otorgar los permisos necesarios a los contenedores sin incluir credenciales en el código.",
+        "Explanation": "Usar roles de IAM para tareas permite que los contenedores de ECS accedan de manera segura a los recursos de AWS sin necesidad de gestionar credenciales explícitamente. Este enfoque cumple con las mejores prácticas de seguridad de AWS al aprovechar credenciales de seguridad temporales que son rotadas y gestionadas automáticamente por AWS.",
+        "Other Options": [
+            "Almacenar las claves de acceso de AWS y las claves secretas en un archivo de configuración es un riesgo de seguridad, ya que expone información sensible y puede llevar a accesos no autorizados si el contenedor se ve comprometido.",
+            "Crear un usuario de IAM y asignar credenciales como variables de entorno no se recomienda porque implica gestionar credenciales a largo plazo, lo que aumenta el riesgo de exposición y es contrario a las mejores prácticas de seguridad.",
+            "Si bien utilizar AWS Secrets Manager es una buena práctica para gestionar información sensible, no elimina la necesidad de gestionar credenciales de acceso, y puede introducir complejidad adicional sin proporcionar el mismo nivel de seguridad que usar roles de IAM para tareas."
+        ]
+    },
+    {
+        "Question Number": "59",
+        "Situation": "Un equipo de seguridad quiere mejorar sus capacidades de monitoreo implementando una solución de registro centralizado para un entorno de AWS. Necesitan asegurarse de tener suficiente detalle en sus registros para rastrear la actividad de los usuarios y los cambios en el sistema de manera efectiva. Están considerando diferentes niveles de registro y configuraciones de verbosidad para capturar la cantidad adecuada de información sin abrumar el sistema.",
+        "Question": "¿Qué configuración de registro debería implementar el equipo de seguridad para rastrear de manera efectiva las actividades detalladas de los usuarios y los cambios en el sistema sin un volumen excesivo de registros?",
+        "Options": {
+            "1": "Habilitar el registro de nivel de advertencia con baja verbosidad para servicios de AWS no críticos.",
+            "2": "Habilitar el registro de nivel de información con verbosidad estándar para todos los servicios de AWS.",
+            "3": "Habilitar el registro de nivel de depuración con alta verbosidad para todos los servicios de AWS.",
+            "4": "Habilitar el registro de nivel de error con verbosidad moderada para servicios críticos de AWS."
+        },
+        "Correct Answer": "Habilitar el registro de nivel de error con verbosidad moderada para servicios críticos de AWS.",
+        "Explanation": "El registro de nivel de error con verbosidad moderada logra un equilibrio entre capturar eventos significativos y minimizar el volumen de registros. Este enfoque permite al equipo de seguridad monitorear problemas críticos sin ser inundados con datos excesivos, facilitando la identificación y respuesta a incidentes de seguridad.",
+        "Other Options": [
+            "El registro de nivel de depuración con alta verbosidad generaría una cantidad abrumadora de datos de registro, lo que dificultaría filtrar e identificar información relevante, lo cual no es ideal para un monitoreo efectivo.",
+            "El registro de nivel de información con verbosidad estándar puede no capturar incidentes de seguridad críticos de manera efectiva, ya que podría pasar por alto mensajes de error importantes que necesitan ser abordados.",
+            "El registro de nivel de advertencia con baja verbosidad es insuficiente para monitorear de manera efectiva las actividades de los usuarios y los cambios en el sistema, ya que puede perder eventos cruciales que requieren atención inmediata."
+        ]
+    },
+    {
+        "Question Number": "60",
+        "Situation": "Un equipo de seguridad en una institución financiera necesita asegurarse de que cualquier intento de acceso no autorizado a sus recursos de AWS sea detectado y remediado automáticamente. Quieren aprovechar los servicios de AWS para crear una solución que active acciones de remediación al detectar tales incidentes.",
+        "Question": "¿Cuál de los siguientes enfoques debería implementar el equipo de seguridad para automatizar la remediación de intentos de acceso no autorizado en su entorno de AWS?",
+        "Options": {
+            "1": "Desplegar AWS WAF para filtrar el tráfico web e invocar AWS Step Functions para orquestar flujos de trabajo de remediación.",
+            "2": "Configurar AWS CloudTrail para registrar llamadas a la API y usar Amazon EventBridge para activar AWS Lambda para acciones de remediación.",
+            "3": "Configurar AWS Config para monitorear configuraciones de recursos y revertir automáticamente cambios no autorizados utilizando runbooks de AWS Systems Manager.",
+            "4": "Habilitar AWS Shield para proteger contra ataques DDoS y usar AWS Security Hub para hallazgos y alertas de seguridad centralizados."
+        },
+        "Correct Answer": "Configurar AWS CloudTrail para registrar llamadas a la API y usar Amazon EventBridge para activar AWS Lambda para acciones de remediación.",
+        "Explanation": "Este enfoque combina efectivamente AWS CloudTrail para registrar llamadas a la API y Amazon EventBridge para responder a patrones específicos de intentos de acceso no autorizado, activando AWS Lambda para ejecutar automáticamente acciones de remediación definidas.",
+        "Other Options": [
+            "Si bien AWS Config puede monitorear y hacer cumplir el cumplimiento de configuraciones, no está diseñado principalmente para la detección en tiempo real de intentos de acceso no autorizados. Esta opción no aborda directamente la necesidad de remediación inmediata.",
+            "AWS Shield se centra en la protección contra DDoS, y aunque AWS Security Hub proporciona una vista centralizada de los hallazgos de seguridad, no automatiza las acciones de remediación. Esta opción no cumple con el requisito de respuesta automática a accesos no autorizados.",
+            "AWS WAF es útil para filtrar el tráfico web, pero no proporciona inherentemente un mecanismo para orquestar flujos de trabajo de remediación complejos. Esta opción no cumple directamente con el requisito de automatización de respuesta a incidentes."
+        ]
+    },
+    {
+        "Question Number": "61",
+        "Situation": "Una empresa multinacional está diseñando una estrategia de red segura para conectar sus recursos de AWS en diferentes regiones. La arquitectura incluye el uso de Direct Connect con interfaces virtuales (VIFs) privadas y públicas para garantizar un acceso seguro a los recursos mientras se mantiene el cumplimiento de las regulaciones de protección de datos.",
+        "Question": "¿Cuál es el mejor enfoque para que la empresa asegure la transferencia segura de datos entre su centro de datos local y los recursos de AWS en múltiples regiones utilizando tanto VIFs privadas como públicas?",
+        "Options": {
+            "1": "Usar un VIF público para todo el tráfico hacia los recursos de AWS en diferentes regiones para asegurar que los datos estén encriptados en tránsito.",
+            "2": "Crear un VIF privado para el tráfico entre regiones y un VIF público para acceder a servicios públicos de AWS, asegurando que los datos sensibles fluyan solo a través del VIF privado.",
+            "3": "Establecer un VIF privado para conectar con los recursos de AWS en cada región mientras se usa un VIF público únicamente para acceder a los servicios públicos de AWS.",
+            "4": "Configurar AWS Transit Gateway para gestionar la conectividad entre regiones y usar VIFs públicos exclusivamente para toda la transferencia de datos."
+        },
+        "Correct Answer": "Crear un VIF privado para el tráfico entre regiones y un VIF público para acceder a servicios públicos de AWS, asegurando que los datos sensibles fluyan solo a través del VIF privado.",
+        "Explanation": "Usar un VIF privado para el tráfico entre regiones asegura que los datos sensibles se transmitan de manera segura a través de la infraestructura de red privada de AWS, mientras que el VIF público puede ser utilizado para acceder a servicios públicos de AWS sin exponer datos sensibles. Esta configuración se alinea con las mejores prácticas para la protección de datos y el cumplimiento.",
+        "Other Options": [
+            "Establecer un VIF privado para conectar con los recursos de AWS en cada región mientras se usa un VIF público únicamente para acceder a los servicios públicos de AWS no asegura adecuadamente que los datos sensibles permanezcan seguros, ya que no especifica la segregación adecuada de datos sensibles.",
+            "Usar un VIF público para todo el tráfico hacia los recursos de AWS en diferentes regiones compromete la seguridad al exponer datos sensibles a Internet público, violando los principios de protección de datos.",
+            "Configurar AWS Transit Gateway para gestionar la conectividad entre regiones mientras se usan VIFs públicos exclusivamente para toda la transferencia de datos no proporciona la seguridad necesaria para los datos sensibles, ya que los VIFs públicos no están diseñados para comunicaciones privadas y seguras."
+        ]
+    },
+    {
+        "Question Number": "62",
+        "Situation": "Una empresa ha detectado actividad inusual en una instancia de Amazon EC2, lo que indica una posible violación de seguridad. El Administrador de Seguridad necesita responder rápidamente para aislar la instancia y prevenir cualquier daño adicional al entorno.",
+        "Question": "¿Cuál de las siguientes acciones debería tomar el Administrador de Seguridad para aislar efectivamente la instancia de EC2 comprometida? (Seleccione Dos)",
+        "Options": {
+            "1": "Cambiar el tipo de instancia de la instancia de EC2 a un tipo diferente que no esté en uso.",
+            "2": "Desconectar la interfaz de red de la instancia de EC2 para cortar su conectividad con la VPC.",
+            "3": "Agregar una regla de lista de control de acceso de red (NACL) para denegar todo el tráfico hacia y desde la subred de la instancia comprometida.",
+            "4": "Detener la instancia de EC2 para prevenir cualquier acceso adicional y exfiltración de datos.",
+            "5": "Modificar el grupo de seguridad asociado con la instancia de EC2 para eliminar todas las reglas de entrada y salida."
+        },
+        "Is_Multiple": true,
+        "Correct Answer": [
+            "Detener la instancia de EC2 para prevenir cualquier acceso adicional y exfiltración de datos.",
+            "Agregar una regla de lista de control de acceso de red (NACL) para denegar todo el tráfico hacia y desde la subred de la instancia comprometida."
+        ],
+        "Explanation": "Detener la instancia de EC2 detiene inmediatamente todos los procesos que se están ejecutando en ella, previniendo cualquier posible exfiltración de datos o compromiso adicional. Agregar una regla de NACL para denegar todo el tráfico hacia y desde la subred proporciona una capa adicional de aislamiento, asegurando que no pueda ocurrir comunicación entre la instancia comprometida y otros recursos en la VPC.",
+        "Other Options": [
+            "Modificar el grupo de seguridad para eliminar todas las reglas podría aislar la instancia, pero puede no ser efectivo si hay conexiones existentes o si la instancia aún tiene otros medios de acceder a recursos. Detener la instancia es una acción más definitiva.",
+            "Desconectar la interfaz de red impediría la comunicación de red, pero la instancia aún podría estar comprometida y ejecutando procesos. Detener la instancia es una solución más integral para detener todas las actividades potenciales.",
+            "Cambiar el tipo de instancia no proporciona ningún aislamiento y puede crear confusión. Esta acción no aborda la necesidad inmediata de contener el compromiso de manera efectiva."
+        ]
+    },
+    {
+        "Question Number": "63",
+        "Situation": "Estás realizando una evaluación de seguridad de tu entorno de AWS y has decidido utilizar la AWS Well-Architected Tool para evaluar tu postura de seguridad. Quieres identificar cualquier brecha de seguridad que pueda existir en tu arquitectura como parte de tu estrategia de gestión y gobernanza de seguridad.",
+        "Question": "¿Cuál de las siguientes características de la AWS Well-Architected Tool es más útil para identificar brechas de seguridad en tu entorno de AWS?",
+        "Options": {
+            "1": "Ofrece un panel para monitoreo de amenazas en tiempo real.",
+            "2": "Proporciona mejores prácticas basadas en los controles de seguridad de AWS.",
+            "3": "Genera un informe de cumplimiento de seguridad basado en estándares externos.",
+            "4": "Automatiza la remediación de vulnerabilidades de seguridad."
+        },
+        "Correct Answer": "Proporciona mejores prácticas basadas en los controles de seguridad de AWS.",
+        "Explanation": "La AWS Well-Architected Tool ofrece información basada en las mejores prácticas de AWS, ayudando a los usuarios a identificar posibles brechas de seguridad en su arquitectura. Esta característica está diseñada específicamente para evaluar la postura de seguridad y recomendar mejoras alineadas con los controles de seguridad de AWS.",
+        "Other Options": [
+            "La AWS Well-Architected Tool no automatiza la remediación; es principalmente una herramienta de diagnóstico que proporciona recomendaciones pero no ejecuta correcciones.",
+            "Si bien la herramienta puede proporcionar información que podría ayudar en los esfuerzos de cumplimiento, no genera informes de cumplimiento formales basados en estándares externos por defecto.",
+            "La AWS Well-Architected Tool no ofrece monitoreo de amenazas en tiempo real; se centra en evaluar y mejorar la arquitectura basada en mejores prácticas en lugar de capacidades de monitoreo."
+        ]
+    },
+    {
+        "Question Number": "64",
+        "Situation": "Un ingeniero de seguridad tiene la tarea de configurar AWS Systems Manager Session Manager para permitir el acceso remoto seguro a una flota de instancias EC2. El ingeniero quiere asegurarse de que todas las sesiones estén registradas y que no se expongan puertos de entrada. El ingeniero ya ha creado un rol de IAM para las instancias EC2 con los permisos necesarios y ha lanzado las instancias utilizando este rol. ¿Qué debe hacer el ingeniero a continuación para completar la configuración para el acceso seguro a través de Session Manager?",
+        "Question": "¿Cuál es el siguiente paso que debe tomar el ingeniero de seguridad para configurar el registro de las sesiones de Session Manager?",
+        "Options": {
+            "1": "Deshabilitar todo el registro para las sesiones para mantener la privacidad del usuario.",
+            "2": "Crear un grupo de registros de CloudWatch y configurar Session Manager para usar este grupo de registros para el registro de sesiones.",
+            "3": "Habilitar el acceso SSH a las instancias EC2 y configurar el registro a través del demonio SSH.",
+            "4": "Configurar un host Bastion para registrar todas las conexiones entrantes a las instancias EC2."
+        },
+        "Correct Answer": "Crear un grupo de registros de CloudWatch y configurar Session Manager para usar este grupo de registros para el registro de sesiones.",
+        "Explanation": "Crear un grupo de registros de CloudWatch y configurar Session Manager para utilizarlo es esencial para registrar la actividad de las sesiones, asegurando el cumplimiento y la auditoría de las acciones realizadas durante esas sesiones.",
+        "Other Options": [
+            "Habilitar el acceso SSH contradice el propósito de usar Session Manager, que es eliminar la necesidad de SSH y sus riesgos de seguridad asociados.",
+            "Configurar un host Bastion va en contra del principio de usar Session Manager, que está diseñado para proporcionar acceso seguro sin necesidad de infraestructura adicional.",
+            "Deshabilitar todo el registro impediría que la organización rastreara las actividades de las sesiones, lo que socava los requisitos de seguridad y cumplimiento."
+        ]
+    },
+    {
+        "Question Number": "65",
+        "Situation": "Una empresa de servicios financieros está implementando una aplicación en instancias EC2 que requiere que los datos sensibles se almacenen de forma segura. El equipo está preocupado por la protección de datos tanto en reposo como en tránsito. Están considerando usar Amazon Elastic Block Store (EBS) y Amazon Elastic File System (EFS) para el almacenamiento, pero necesitan asegurarse de que cumplan con los estándares de cumplimiento para la encriptación y el control de acceso.",
+        "Question": "¿Qué debe implementar el equipo para asegurarse de que sus datos estén encriptados en reposo y en tránsito mientras utiliza tanto EBS como EFS?",
+        "Options": {
+            "1": "Utilizar EFS con configuraciones predeterminadas y confiar en AWS Shield para la seguridad, mientras usa CloudWatch para monitorear el tráfico hacia la aplicación.",
+            "2": "Configurar volúmenes EBS con instantáneas sin encriptar y usar grupos de seguridad para controlar el acceso a las instancias EC2 que ejecutan la aplicación.",
+            "3": "Habilitar la encriptación de EBS para todos los volúmenes y asegurarse de que las instancias EC2 estén configuradas para usar NFS sobre TLS para el acceso a EFS, mientras usa roles de IAM para la gestión de acceso.",
+            "4": "Usar Amazon S3 para almacenar datos, habilitar políticas de bucket para la encriptación y usar CloudTrail para rastrear los registros de acceso para el monitoreo de cumplimiento."
+        },
+        "Correct Answer": "Habilitar la encriptación de EBS para todos los volúmenes y asegurarse de que las instancias EC2 estén configuradas para usar NFS sobre TLS para el acceso a EFS, mientras usa roles de IAM para la gestión de acceso.",
+        "Explanation": "Esta opción aborda correctamente la necesidad de encriptación en reposo y en tránsito al habilitar la encriptación de EBS y utilizar NFS sobre TLS para EFS. También menciona el uso de roles de IAM, que es importante para la gestión de acceso en AWS.",
+        "Other Options": [
+            "Esta opción sugiere incorrectamente usar Amazon S3 en lugar de EBS y EFS, lo que no cumple con el requisito de usar almacenamiento en bloque y en archivo. Además, aunque las políticas de bucket para la encriptación son útiles, no se aplican a EBS o EFS.",
+            "Esta opción sugiere incorrectamente configurar volúmenes EBS con instantáneas sin encriptar, lo que no asegura la protección de datos en reposo. Usar grupos de seguridad por sí solo no proporciona encriptación ni cumplimiento.",
+            "Esta opción no menciona la encriptación para EBS o EFS, confiando únicamente en configuraciones predeterminadas y AWS Shield, lo que no aborda los requisitos de encriptación para datos sensibles."
+        ]
+    }
+]

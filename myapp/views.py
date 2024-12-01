@@ -492,7 +492,8 @@ def start_exam(request, course_id, test_number, mode='review'):
         'current_exam_id': course_id,
         'mode': mode,
         'time_limit': exam.time_limit,
-        "translations": translations
+        "translations": translations,
+        "score": exam.passing_score,
     }
 
     # Choose the template based on mode
