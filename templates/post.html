@@ -14,7 +14,18 @@
     <link rel="stylesheet" href="{% static 'post.css' %}">
 </head>
 
+
 <section id="exam-detail">
+
+
+    {% if active_discount %}
+    <div class="discount-banner-post">
+        <span class="sale-name">{{ active_discount.name }}</span>
+        <span class="sale-name">{{ active_discount.percentage|floatformat:0 }}% Off!</span>
+        <span class="countdown-timer" data-end-time="{{ active_discount.end_date|date:"c" }}"></span>
+    </div>
+    {% endif %}
+
     <div class="content-wrapper">
         <!-- Overlay with Title and Description -->
         <div class="overlay">
@@ -36,7 +47,23 @@
                     </form>
                     <form action="{% url 'purchase_course' course.id %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="purchase-button">Purchase for ${{course.price}}</button>
+                        <!-- Price Display with Discount -->
+                        {% if course.get_active_discount %}
+                        <button type="submit" class="purchase-button">
+                            Purchase for 
+                            <span class="original-price" style="text-decoration: line-through;">
+                                ${{ course.price|floatformat:2 }}
+                            </span>
+                            ${{ course.get_discounted_price|floatformat:2 }}
+                        </button>
+                        {% else %}
+                        <button type="submit" class="purchase-button">Purchase for ${{ course.price|floatformat:2 }}</button>
+                        {% endif %}
+                        {% if active_discount %}
+                            <div class="sale-countdown">
+                                <p>Sale ends in: <span class="countdown-timer" data-end-time="{{ active_discount.end_date|date:"c" }}"></span></p>
+                            </div>
+                        {% endif %}
                     </form>                    
                 </div>
             {% endif %}
@@ -214,7 +241,20 @@
                         <!-- Post Footer Section -->
                         <div class="other-course-footer">
                             <img src="{% static 'mango_cert_logo_transparent.png' %}" alt="Logo" class="logo">
-                            <span class="price">${{ other_course.price }}</span>
+                            <span class="price">
+                                {% if other_course.get_active_discount %}
+                                    <!-- Sale name in red circle -->
+                                    <span class="sale-badge">{{ other_course.get_active_discount.name }}</span>
+                                    <span class="original-price" style="text-decoration: line-through;">
+                                        ${{ other_course.price|floatformat:2 }}
+                                    </span>
+                                    <span class="discounted-price">
+                                        ${{ other_course.get_discounted_price|floatformat:2 }}
+                                    </span>
+                                {% else %}
+                                    ${{ other_course.price|floatformat:2 }}
+                                {% endif %}
+                            </span>
                         </div>
                     </a>
                 </div>
@@ -238,6 +278,38 @@
             }
         }
     </script>
+
+    {% if active_discount %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var countdownElements = document.querySelectorAll('.countdown-timer');
+            if (countdownElements.length > 0) {
+                function updateTimer() {
+                    var now = new Date();
+                    countdownElements.forEach(function(countdownElement) {
+                        var endTime = new Date(countdownElement.getAttribute('data-end-time'));
+                        var distance = endTime - now;
+                        if (distance < 0) {
+                            countdownElement.innerHTML = "Expired";
+                            return;
+                        }
+                        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                        countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+                    });
+                }
+                updateTimer(); // Initial call
+                var timerInterval = setInterval(updateTimer, 1000);
+            }
+        });
+    </script>
+
+    {% endif %}
+
+
 
 </section>
 {% endblock %}

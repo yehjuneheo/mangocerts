@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from decimal import Decimal
 
 # Certification Post Model
 class CertificationPost(models.Model):
@@ -63,6 +64,19 @@ class CertificationPost(models.Model):
     number_of_practices = models.CharField(max_length=100, null=True)
     default_count = models.IntegerField(default=4)
     passing_score = models.IntegerField(default=75)
+
+    def get_active_discount(self):
+        now = timezone.now()
+        active_discounts = self.discounts.filter(start_date__lte=now, end_date__gte=now)
+        if active_discounts.exists():
+            return active_discounts.order_by('-percentage').first()
+        return None
+
+    def get_discounted_price(self):
+        discount = self.get_active_discount()
+        if discount:
+            return self.price * (Decimal('1') - discount.percentage / Decimal('100'))
+        return self.price
 
     def __str__(self):
         return self.title
@@ -130,4 +144,18 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+
+class Discount(models.Model):
+    name = models.CharField(max_length=255)
+    percentage = models.DecimalField(max_digits=5, decimal_places=2)  # e.g., 20.00 for 20%
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    posts = models.ManyToManyField('CertificationPost', related_name='discounts', blank=True)
+
+    def __str__(self):
+        return self.name
+
+    def is_active(self):
+        now = timezone.now()
+        return self.start_date <= now <= self.end_date

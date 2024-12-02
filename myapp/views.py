@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView, redirect_to_login
 from django.contrib import messages
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User
-from .models import CertificationPost, Cart, PurchasedCourse, Review, Post, CertificationTest
+from .models import CertificationPost, Cart, PurchasedCourse, Review, Post, CertificationTest, Discount
 from django.db.models import Q
 from django.contrib.staticfiles import finders
 from django.contrib.auth.decorators import login_required
@@ -27,8 +27,9 @@ import boto3
 from django.conf import settings
 from botocore.exceptions import ClientError
 from django.core.paginator import Paginator
+from django.utils import timezone
 
-# Create your views here.
+
 def index(request):
     query = request.GET.get('q', '')  # Get the search query from the URL
     language = request.GET.get('language')  # Get the selected language from the URL
@@ -39,11 +40,22 @@ def index(request):
         posts = posts.filter(Q(title__icontains=query) | Q(description__icontains=query))
     if language and language != 'all':
         posts = posts.filter(language=language)  # Filter by language if selected
+
+    # Get the earliest active discount
+    now = timezone.now()
+    active_discounts = Discount.objects.filter(start_date__lte=now, end_date__gte=now)
+    earliest_discount = active_discounts.order_by('end_date').first() if active_discounts.exists() else None
+
     # Paginate the posts
     paginator = Paginator(posts, 9)  # Show 9 posts per page
     page_number = request.GET.get('page')
     posts = paginator.get_page(page_number)
-    return render(request, 'home.html', {'posts': posts, 'query': query, 'language': language})
+    return render(request, 'home.html', {
+        'posts': posts,
+        'query': query,
+        'language': language,
+        'earliest_discount': earliest_discount,
+    })
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'
@@ -161,7 +173,9 @@ def exam_detail(request, id, name, language):
     enrollment_count = PurchasedCourse.objects.filter(course=post).count() + post.default_count
     reviews = Review.objects.filter(course=post).order_by('-created_at')[:5]
     # Query for other courses in the same language
-    other_courses = CertificationPost.objects.filter(language=post.language).exclude(id=id)[:4]  # Limit to 4 courses
+    other_courses = CertificationPost.objects.filter(language=post.language).exclude(id=id)[:6]  # Limit to 4 courses
+
+    active_discount = post.get_active_discount()
 
     return render(request, 'post.html', {
         'course': post,
@@ -169,6 +183,7 @@ def exam_detail(request, id, name, language):
         'other_courses': other_courses,
         'enrollment_count': enrollment_count,
         'reviews': reviews,
+        'active_discount': active_discount,
     })
 
 
@@ -303,18 +318,30 @@ def purchase_course(request, course_id):
     if not request.user.is_authenticated:
         messages.info(request, "You need to be logged in to purchase courses")
         return redirect_to_login(request.get_full_path())  # Redirect to login page
-    # Get the course
+
     # Get the course
     course = get_object_or_404(CertificationPost, id=course_id)
-    
+
     # Check if the user already purchased this course
     if PurchasedCourse.objects.filter(user=request.user, course=course).exists():
         messages.info(request, "You have already purchased this course.")
         return redirect('my_learning')
-    
+
+    # Get the discounted price
+    discounted_price = course.get_discounted_price()
+
+    # Get the active discount name (if any)
+    active_discount = course.get_active_discount()
+    discount_name = active_discount.name if active_discount else None
+
     # Set Stripe API key
     stripe.api_key = settings.STRIPE_SECRET_KEY
     YOUR_DOMAIN = settings.REDIRECT_DOMAIN  # Replace with your actual domain
+
+    # Set the product name (include discount name if applicable)
+    product_name = course.title
+    if discount_name:
+        product_name += f" ({discount_name} Discount)"
 
     # Create a Stripe Checkout session
     checkout_session = stripe.checkout.Session.create(
@@ -324,9 +351,9 @@ def purchase_course(request, course_id):
                 'price_data': {
                     'currency': 'usd',
                     'product_data': {
-                        'name': course.title,
+                        'name': product_name,
                     },
-                    'unit_amount': int(course.price * 100),  # Price in cents
+                    'unit_amount': int(discounted_price * 100),  # Price in cents
                 },
                 'quantity': 1,
             },
@@ -336,10 +363,12 @@ def purchase_course(request, course_id):
         cancel_url=YOUR_DOMAIN + reverse('cancel'),
         client_reference_id=request.user.id,
         metadata={
-            'course_id': course_id  # Pass course_id here for access in the webhook
+            'course_id': course_id,  # Pass course_id here for access in the webhook
+            'discount_name': discount_name if discount_name else ''
         }
     )
     return redirect(checkout_session.url, code=303)
+
 
 
 def success_view(request):

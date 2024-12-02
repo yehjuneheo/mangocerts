@@ -14,6 +14,14 @@
     </div>
 </section>
 
+{% if earliest_discount %}
+<div class="discount-banner">
+    <span class="sale-name">{{ earliest_discount.name }}</span>
+    <span class="sale-name">{{ earliest_discount.percentage|floatformat:0 }}% Off!</span>
+    <span class="countdown-timer" data-end-time="{{ earliest_discount.end_date|date:"c" }}"></span>
+</div>
+{% endif %}
+
 <!-- Search Box Section -->
 <form method="get" action="{% url 'index' %}">
     <section id="search">
@@ -53,7 +61,20 @@
                         <!-- Post Footer Section -->
                         <div class="post-footer">
                             <img src="{% static 'mango_cert_logo_transparent.png' %}" alt="Logo" class="logo">
-                            <span class="price">${{ post.price }}</span>
+                            <span class="price">
+                                {% if post.get_active_discount %}
+                                    <!-- Sale name in red circle -->
+                                    <span class="sale-badge">{{ post.get_active_discount.name }}</span>
+                                    <span class="original-price" style="text-decoration: line-through;">
+                                        ${{ post.price|floatformat:2 }}
+                                    </span>
+                                    <span class="discounted-price">
+                                        ${{ post.get_discounted_price|floatformat:2 }}
+                                    </span>
+                                {% else %}
+                                    ${{ post.price|floatformat:2 }}
+                                {% endif %}
+                            </span>
                         </div>
                     </a>
                 </div>
@@ -84,6 +105,29 @@
         </div>
     {% endif %}
 </section>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var countdownElement = document.querySelector('.countdown-timer');
+        if (countdownElement) {
+            var endTime = new Date(countdownElement.getAttribute('data-end-time'));
+            function updateTimer() {
+                var now = new Date();
+                var distance = endTime - now;
+                if (distance < 0) {
+                    countdownElement.innerHTML = "Expired";
+                    return;
+                }
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+            }
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+    });
+</script>
 
 
 {% endblock %}
