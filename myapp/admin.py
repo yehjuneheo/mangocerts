@@ -15,3 +15,4 @@ class DiscountAdmin(admin.ModelAdmin):
     filter_horizontal = ('posts',)
 
 admin.site.register(Discount, DiscountAdmin)
+
